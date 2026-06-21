@@ -1,0 +1,620 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Navigation from "@/components/Navigation";
+import HorizontalMediaGallery from "@/components/ui/bento-gallery";
+import { formatTypography } from "@/utils/typography";
+import { ArrowLeft, ArrowUpRight, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import {
+  IconPlus,
+  IconPhone,
+  IconMail,
+  IconMapPin,
+  IconSend,
+  IconBrandTelegram,
+  IconBrandWhatsapp,
+} from "@tabler/icons-react";
+import { Button01 } from "@/components/ui/nextjsshop-button";
+
+// ─── Gallery Data ──────────────────────────────────────────────────────────────
+const diskokrasGallery = [
+  { name: "Покраска дисков",   role: "Satin Black",   src: "/cases/vozdukh.mp4", aspect: "4/5" },
+  { name: "Зеркальный блеск", role: "Полировка",      src: "/cases/vozdukh.mp4", aspect: "9/16" },
+  { name: "Стиль кузова",     role: "Carbon Fiber",   src: "/cases/vozdukh.mp4", aspect: "4/5" },
+  { name: "Керамика 9H",      role: "Защитный слой",  src: "/cases/vozdukh.mp4", aspect: "9/16" },
+  { name: "Салон автомобиля", role: "Детализация",    src: "/cases/vozdukh.mp4", aspect: "4/5" },
+  { name: "Вирусные Reels",   role: "2.4M просмотров",src: "/cases/vozdukh.mp4", aspect: "9/16" },
+];
+
+// ─── Metrics Data ──────────────────────────────────────────────────────────────
+const metrics = [
+  {
+    value: "2024",
+    label: "Ноябрь — старт масштабной работы с проектом",
+    index: "01",
+  },
+  {
+    value: "100%",
+    label: "Полностью выстроили SMM‑направление с нуля",
+    index: "02",
+  },
+  {
+    value: "Reels",
+    label: "Запуск органического роста через смыслы и алгоритмы",
+    index: "03",
+  },
+  {
+    value: "Бренд",
+    label: "Переход от страницы автосервиса к сильному комьюнити",
+    index: "04",
+  },
+];
+
+// ─── Content Blocks ────────────────────────────────────────────────────────────
+const contentBlocks = [
+  {
+    chapter: "01 / Концепция",
+    text: "Мы начали работу с проектом в ноябре 2024 года. И с самого начала понимали — здесь нельзя делать обычный автосервисный Instagram. Нужно было создать бренд, у которого есть лицо, энергия и свой вайб.",
+  },
+  {
+    chapter: "02 / Реализация",
+    text: "Построили весь проект вокруг личного бренда владельца: его знаний, подачи, отношения к машинам и людям. Именно это стало фундаментом всего визуала, контента и коммуникации. Мы полностью выстроили SMM‑направление: от позиционирования и атмосферы аккаунта до форматов Reels, подачи, смыслов и визуального стиля.",
+  },
+  {
+    chapter: "03 / Результат",
+    text: "За время работы Diskokras начал расти органически. Люди начали приходить через рекомендации, сохранения, Reels и узнаваемость. Сегодня аккаунт воспринимается уже не как страница сервиса, а как полноценный автомобильный бренд со своей эстетикой, подачей и комьюнити вокруг него. И это именно тот результат, который мы любим больше всего — когда бренд начинает вызывать эмоцию.",
+  },
+];
+
+// ─── Grain SVG as data URL ─────────────────────────────────────────────────────
+const GRAIN_STYLE: React.CSSProperties = {
+  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+  backgroundRepeat: "repeat",
+  backgroundSize: "180px 180px",
+};
+
+// ─── Contact Info Dark Component ─────────────────────────────────────────────
+interface ContactInfoDarkProps {
+  icon: React.ComponentType<{ className?: string }>;
+  value: string;
+  className?: string;
+}
+
+function ContactInfoDark({
+  icon: Icon,
+  value,
+  className,
+  ...props
+}: ContactInfoDarkProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isPhone = value === "+7 700 086 8608";
+
+  if (isPhone) {
+    return (
+      <div 
+        className={cn("flex items-center gap-4 py-3 rounded-none select-none", className)} 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        {...props}
+      >
+        <a
+          href="tel:+77000868608"
+          aria-label="Call +7 700 086 8608"
+          className="bg-white/5 p-3 rounded-none flex items-center justify-center flex-shrink-0 text-[#FD4B32] hover:text-white hover:bg-[#FD4B32] transition-colors duration-200 border border-white/10 cursor-pointer no-invert"
+        >
+          <Icon className="h-5 w-5" />
+        </a>
+        <div className="relative flex items-center h-12 w-48 overflow-hidden">
+          {/* Display Phone Number */}
+          <span
+            className={cn(
+              "font-sans font-bold text-sm text-white uppercase tracking-wider transition-all duration-300 absolute left-0 whitespace-nowrap no-invert",
+              isHovered ? "opacity-0 scale-95 pointer-events-none" : "opacity-100 scale-100"
+            )}
+          >
+            {value}
+          </span>
+
+          {/* Hover Icons Container (Telegram & WhatsApp only) */}
+          <div 
+            className={cn(
+              "flex items-center gap-3 transition-all duration-300 absolute left-0",
+              isHovered 
+                ? "opacity-100 scale-100 pointer-events-auto" 
+                : "opacity-0 scale-95 pointer-events-none"
+            )}
+          >
+            {/* Telegram Link */}
+            <a
+              href="https://t.me/+77000868608"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Telegram"
+              className="no-invert p-3 bg-white/5 hover:bg-[#FD4B32] text-white hover:text-white transition-colors duration-200 border border-white/10 rounded-none flex items-center justify-center cursor-pointer"
+            >
+              <IconBrandTelegram className="w-5 h-5" stroke={1.2} />
+            </a>
+
+            {/* WhatsApp Link */}
+            <a
+              href="https://wa.me/77000868608"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="no-invert p-3 bg-white/5 hover:bg-[#FD4B32] text-white hover:text-white transition-colors duration-200 border border-white/10 rounded-none flex items-center justify-center cursor-pointer"
+            >
+              <IconBrandWhatsapp className="w-5 h-5" stroke={1.2} />
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn("flex items-center gap-4 py-3 rounded-none", className)} {...props}>
+      <div className="bg-white/5 p-3 rounded-none flex items-center justify-center flex-shrink-0 text-[#FD4B32] border border-white/10">
+        <Icon className="h-5 w-5" />
+      </div>
+      <div>
+        <p className="font-sans font-bold text-sm text-white uppercase tracking-wider no-invert">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Component ─────────────────────────────────────────────────────────────────
+export default function DiskokrasCasePage() {
+  const [scrollY, setScrollY] = useState(0);
+  const [formData, setFormData] = useState({
+    name: "",
+    contact: "",
+    message: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <>
+      {/* ── Global nav (sits above, inherits site styles) ── */}
+      <Navigation />
+
+      {/* ══════════════════════════════════════════════════════
+          DARK WRAPPER — full dark theme isolated from swiss-grid
+          ══════════════════════════════════════════════════════ */}
+      <div
+        className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)]"
+        style={{ backgroundColor: "#060606", color: "#ffffff" }}
+      >
+
+        {/* ── HERO ─────────────────────────────────────────── */}
+        <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
+
+          {/* Background Cover Image (Desktop) */}
+          <div 
+            className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
+            style={{
+              backgroundImage: "url('/cases/diskokras.png')",
+            }}
+          />
+
+          {/* Background Cover Image (Mobile) */}
+          <div 
+            className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
+            style={{
+              backgroundImage: "url('/cases/diskokras_m.webp')",
+            }}
+          />
+
+          {/* Gradient Overlay for Text Readability */}
+          <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#060606] via-[#060606]/40 to-[#060606]/85" />
+
+          {/* Grain overlay */}
+          <div
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{ ...GRAIN_STYLE, opacity: 0.13 }}
+          />
+
+
+
+          {/* Back link */}
+          <div className="relative z-10 px-[var(--page-margin)] pt-40">
+            <Link
+              href="/#cases"
+              className="no-invert inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors duration-300 font-sans text-xs uppercase tracking-[0.2em]"
+            >
+              <ArrowLeft className="w-3 h-3" />
+              {formatTypography("Все кейсы")}
+            </Link>
+          </div>
+
+          {/* Hero headline */}
+          <div className="relative z-10 px-[var(--page-margin)] pt-16 pb-20 md:pb-28">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-8 items-end">
+
+              {/* Left: eyebrow + title */}
+              <div className="lg:col-span-8 space-y-6">
+                <h1
+                  className="no-invert font-sans font-semibold text-white leading-[0.9] tracking-tight"
+                  style={{ fontSize: "clamp(3rem, 9vw, 9rem)" }}
+                >
+                  Diskokras
+                </h1>
+              </div>
+
+              {/* Right: description + meta */}
+              <div className="lg:col-span-4 space-y-8">
+                <p
+                  className="no-invert font-sans text-white/60 leading-relaxed"
+                  style={{ fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)" }}
+                >
+                  {formatTypography("Построение полноценного автомобильного бренда со своей эстетикой, подачей и комьюнити вокруг личного бренда.")}
+                </p>
+
+                {/* Meta grid */}
+                <div className="grid grid-cols-3 gap-px border border-white/10">
+                  {[
+                    { label: "Старт",       value: "Ноябрь 2024" },
+                    { label: "Услуга",      value: "SMM" },
+                    { label: "Направление", value: "Автодетейлинг" },
+                  ].map(({ label, value }) => (
+                    <div
+                      key={label}
+                      className="p-4 border border-white/10"
+                      style={{ background: "rgba(255,255,255,0.03)" }}
+                    >
+                      <p className="no-invert font-sans text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">
+                        {label}
+                      </p>
+                      <p className="no-invert font-sans text-white text-sm font-semibold">
+                        {value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <a
+                  href="https://instagram.com/diskokras"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="no-invert inline-flex items-center gap-3 border border-white/20 text-white text-xs uppercase tracking-[0.2em] font-sans px-6 py-4 hover:border-white/60 hover:bg-white/5 transition-all duration-300 group w-full justify-between"
+                  style={{ borderRadius: 0 }}
+                >
+                  {formatTypography("Смотреть профиль")}
+                  <ArrowUpRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Bottom rule */}
+            <div className="mt-16 flex items-center gap-4">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="no-invert text-[10px] font-sans text-white/20 uppercase tracking-[0.3em]">
+                {formatTypography("2024 — н.\u00a0в.")}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* ── METRICS GRID ─────────────────────────────────── */}
+        <section className="relative border-b border-white/10 hidden">
+          <div
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{ ...GRAIN_STYLE, opacity: 0.08 }}
+          />
+
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            {metrics.map(({ value, label, index }, i) => (
+              <div
+                key={index}
+                className="relative p-8 md:p-10 border-r border-b border-white/10 last:border-r-0 sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:[&:nth-child(4)]:border-r-0 flex flex-col justify-between gap-10 group overflow-hidden"
+                style={{
+                  minHeight: "240px",
+                  transition: "background 0.4s ease",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "rgba(255,255,255,0.04)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "transparent")
+                }
+              >
+                {/* Index */}
+                <span className="no-invert font-sans text-[10px] text-white/20 uppercase tracking-[0.3em]">
+                  {index}
+                </span>
+
+                {/* Value */}
+                <div>
+                  <div
+                    className="no-invert font-sans font-semibold text-white leading-none tracking-tight"
+                    style={{ fontSize: "clamp(2.8rem, 5vw, 5.5rem)" }}
+                  >
+                    {value}
+                  </div>
+                  <p
+                    className="no-invert font-sans text-white/40 mt-4 leading-snug"
+                    style={{ fontSize: "clamp(0.75rem, 1vw, 0.9rem)" }}
+                  >
+                    {formatTypography(label)}
+                  </p>
+                </div>
+
+                {/* Hover accent line */}
+                <div
+                  className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500"
+                  style={{ backgroundColor: "#FD4B32" }}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── MAIN CONTENT — Asymmetric Swiss blocks ───────── */}
+        {contentBlocks.map(({ chapter, text }, idx) => (
+          <section
+            key={chapter}
+            className="relative border-b border-white/10"
+            style={{
+              background:
+                idx % 2 === 1
+                  ? "rgba(255,255,255,0.02)"
+                  : "transparent",
+            }}
+          >
+            <div
+              className="pointer-events-none absolute inset-0 z-0"
+              style={{ ...GRAIN_STYLE, opacity: 0.06 }}
+            />
+
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-px px-[var(--page-margin)] py-20 md:py-28">
+
+              {/* Left: chapter label (≈25%) */}
+              <div className="lg:col-span-3 flex flex-col justify-between gap-6 mb-8 lg:mb-0">
+                <div>
+                  <span
+                    className="no-invert font-sans text-[10px] uppercase tracking-[0.3em] text-white/25 block mb-3"
+                  >
+                    {chapter}
+                  </span>
+                  <div className="h-px w-10 bg-white/15" />
+                </div>
+
+                {/* Decorative index number */}
+                <div
+                  className="no-invert font-sans font-semibold text-white/05 select-none"
+                  style={{ fontSize: "clamp(5rem, 8vw, 9rem)", lineHeight: 1 }}
+                  aria-hidden
+                >
+                  {String(idx + 1).padStart(2, "0")}
+                </div>
+              </div>
+
+              {/* Right: content (≈75%) */}
+              <div className="lg:col-span-9 lg:pl-16">
+                <p
+                  className="no-invert font-sans text-white/85 leading-[1.6]"
+                  style={{ fontSize: "clamp(1.15rem, 2vw, 1.65rem)", letterSpacing: "-0.02em" }}
+                >
+                  {formatTypography(text)}
+                </p>
+
+                {/* No arrow CTA here */}
+              </div>
+            </div>
+          </section>
+        ))}
+
+        {/* ── VIDEO GALLERY ─────────────────────────────────── */}
+        <section className="relative border-b border-white/10">
+          <HorizontalMediaGallery
+            items={diskokrasGallery}
+            className="w-full"
+          />
+        </section>
+
+        {/* ── CONTACT FORM SECTION ─────────────────────────── */}
+        <section 
+          className="relative border-b border-white/10 px-[var(--page-margin)] py-20 md:py-28" 
+          id="contacts"
+        >
+          <div
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{ ...GRAIN_STYLE, opacity: 0.08 }}
+          />
+          <div
+            className="bg-[#0c0c0c] border border-white/10 relative flex flex-col md:grid h-full w-full md:grid-cols-2 lg:grid-cols-3 rounded-none z-10"
+          >
+            <IconPlus className="absolute -top-3 -left-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
+            <IconPlus className="absolute -top-3 -right-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
+            <IconPlus className="absolute -bottom-3 -left-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
+            <IconPlus className="absolute -right-3 -bottom-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
+            
+            <div className="flex flex-col justify-between lg:col-span-2 h-full">
+              <div className="relative h-full flex flex-col justify-between px-5 py-8 md:p-12 gap-8">
+                <div className="space-y-6">
+                  <h2 className="no-invert font-headline font-semibold text-white tracking-wide text-[clamp(1.4rem,2.2vw,2.5rem)] leading-[1.0] max-w-xl">
+                    {formatTypography("Хотите такие\u00a0же результаты\u00a0и контент?")}
+                  </h2>
+                  <p className="no-invert description-text text-white/60 max-w-xl leading-relaxed text-sm sm:text-base">
+                    {formatTypography("Если вы\u00a0хотите обсудить проект или\u00a0у\u00a0вас есть вопросы по\u00a0нашим услугам, пожалуйста, заполните форму. Мы\u00a0ответим вам в\u00a0течение 1\u00a0рабочего дня.")}
+                  </p>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap gap-x-8 gap-y-4 pt-6 border-t border-white/10 mt-auto">
+                  <ContactInfoDark icon={IconPhone} value="+7 700 086 8608" />
+                  <ContactInfoDark icon={IconMail} value="marketing@thepeak.kz" />
+                  <ContactInfoDark icon={IconMapPin} value="Алматы, Казахстан" />
+                </div>
+              </div>
+            </div>
+            <div
+              className="bg-white/[0.02] flex h-full w-full items-start border-t border-white/10 p-6 md:py-12 md:px-8 md:col-span-1 md:border-t-0 md:border-l md:border-white/10 rounded-none"
+            >
+              {submitted ? (
+                <div className="w-full text-center py-10 space-y-4">
+                  <div className="w-12 h-12 bg-[#FD4B32] text-white flex items-center justify-center mx-auto rounded-none no-invert">
+                    <IconSend className="w-5 h-5" stroke={1.2} />
+                  </div>
+                  <h3 className="no-invert font-headline font-semibold text-white text-base leading-[0.9]">
+                    {formatTypography("Спасибо за заявку!")}
+                  </h3>
+                  <p className="no-invert font-sans font-medium text-white/60 text-sm">
+                    {formatTypography("Мы свяжемся с вами в течение ближайшего времени.")}
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="w-full space-y-8">
+                  <div className="space-y-1.5">
+                    <label className="no-invert font-sans text-xs font-extrabold text-white/50 uppercase tracking-widest block">
+                      Ваше имя
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Иван Иванов"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-white/20"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="no-invert font-sans text-xs font-extrabold text-white/50 uppercase tracking-widest block">
+                      Контакты (Телефон / Telegram)
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="+7 (700) 000-00-00"
+                      value={formData.contact}
+                      onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-white/20"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="no-invert font-sans text-xs font-extrabold text-white/50 uppercase tracking-widest block">
+                      О вашем проекте
+                    </label>
+                    <textarea
+                      rows={3}
+                      placeholder="Расскажите о задачах и целях проекта..."
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-white/20"
+                    />
+                  </div>
+
+                  <Button01
+                    type="submit"
+                    text="Отправить заявку"
+                    variant="dark"
+                    className="w-full justify-between"
+                  />
+                </form>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ── FOOTER ────────────────────────────────────────── */}
+        <footer className="relative border-t border-white/10">
+          <div
+            className="pointer-events-none absolute inset-0 z-0"
+            style={{ ...GRAIN_STYLE, opacity: 0.1 }}
+          />
+
+          <div className="relative z-10 px-[var(--page-margin)] py-16 md:py-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+              
+              {/* Left/Col 1: Agency Brand Statement */}
+              <div className="space-y-6">
+                <span className="no-invert font-sans font-bold text-white text-lg tracking-wider">
+                  ThePeak Agency
+                </span>
+                <p className="no-invert font-sans text-white/40 text-xs leading-relaxed max-w-xs">
+                  {formatTypography("Создаем сильные бренды и\u00a0цифровые продукты с\u00a0фокусом на\u00a0чистую эстетику и\u00a0результаты.")}
+                </p>
+              </div>
+
+              {/* Middle/Col 2: Quick Links */}
+              <div>
+                <p className="no-invert font-sans text-white/20 text-[10px] uppercase tracking-[0.3em] mb-6">
+                  Навигация
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    { href: "/#about",    label: "О нас" },
+                    { href: "/#services", label: "Услуги" },
+                    { href: "/#cases",    label: "Кейсы" },
+                    { href: "/#contact",  label: "Контакты" },
+                  ].map(({ href, label }) => (
+                    <li key={href}>
+                      <Link
+                        href={href}
+                        className="no-invert group inline-flex items-center gap-2 font-sans text-white/40 hover:text-white text-sm transition-colors duration-300"
+                      >
+                        <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        {formatTypography(label)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Right/Col 3: Socials */}
+              <div>
+                <p className="no-invert font-sans text-white/20 text-[10px] uppercase tracking-[0.3em] mb-6">
+                  Соцсети
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {[
+                    { href: "https://instagram.com/diskokras", label: "Instagram" },
+                    { href: "https://t.me/thepeak_kz",         label: "Telegram" },
+                  ].map(({ href, label }) => (
+                    <a
+                      key={href}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="no-invert inline-flex items-center gap-2 font-sans text-white/30 hover:text-white text-xs uppercase tracking-[0.15em] border border-white/10 hover:border-white/30 px-4 py-2.5 transition-all duration-300 group"
+                      style={{ borderRadius: 0 }}
+                    >
+                      {label}
+                      <ArrowUpRight className="w-2.5 h-2.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Bottom bar */}
+            <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <p className="no-invert font-sans text-white/20 text-[11px] uppercase tracking-[0.2em]">
+                © {new Date().getFullYear()} ThePeak Agency
+              </p>
+              <p className="no-invert font-sans text-white/15 text-[11px] uppercase tracking-[0.2em]">
+                {formatTypography("Diskokras — SMM Case Study")}
+              </p>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+    </>
+  );
+}

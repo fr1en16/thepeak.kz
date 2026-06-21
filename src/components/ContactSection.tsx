@@ -1,0 +1,264 @@
+"use client";
+
+import React, { useState } from "react";
+import { cn } from "@/lib/utils";
+import {
+  IconPlus,
+  IconPhone,
+  IconMail,
+  IconMapPin,
+  IconSend,
+  IconBrandTelegram,
+  IconBrandWhatsapp,
+} from "@tabler/icons-react";
+import { Button01 } from "@/components/ui/nextjsshop-button";
+import { formatTypography } from "@/utils/typography";
+
+type ContactInfoProps = React.ComponentProps<"div"> & {
+  icon: React.ComponentType<{ className?: string }>;
+  label?: string;
+  value: string;
+};
+
+type ContactCardProps = React.ComponentProps<"div"> & {
+  title?: string;
+  description?: string;
+  contactInfo?: ContactInfoProps[];
+  formSectionClassName?: string;
+};
+
+export function ContactCard({
+  title = "Связаться с нами",
+  description = "Если у вас есть вопросы по нашим услугам или вы хотите обсудить проект, пожалуйста, заполните форму. Мы ответим вам в течение 1 рабочего дня.",
+  contactInfo,
+  className,
+  formSectionClassName,
+  children,
+  ...props
+}: ContactCardProps) {
+  return (
+    <div
+      className={cn(
+        "bg-white border border-brand-gray/15 relative flex flex-col md:grid h-full w-full md:grid-cols-2 lg:grid-cols-3 rounded-none",
+        className
+      )}
+      {...props}
+    >
+      <IconPlus className="absolute -top-3 -left-3 h-6 w-6 text-brand-red select-none" stroke={1.2} />
+      <IconPlus className="absolute -top-3 -right-3 h-6 w-6 text-brand-red select-none" stroke={1.2} />
+      <IconPlus className="absolute -bottom-3 -left-3 h-6 w-6 text-brand-red select-none" stroke={1.2} />
+      <IconPlus className="absolute -right-3 -bottom-3 h-6 w-6 text-brand-red select-none" stroke={1.2} />
+      
+      <div className="flex flex-col justify-between lg:col-span-2 h-full">
+        <div className="relative h-full flex flex-col justify-between px-5 py-8 md:p-12 gap-8">
+          <div className="space-y-6">
+            <h2 className="font-headline font-semibold text-brand-gray tracking-wide text-[clamp(1.4rem,1.44vw,1.92rem)] leading-[0.9]">
+              {formatTypography(title)}
+            </h2>
+            <p className="description-text text-brand-gray/80 max-w-xl">
+              {formatTypography(description)}
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap gap-x-8 gap-y-4 pt-6 border-t border-brand-gray/10 mt-auto">
+            {contactInfo?.map((info, index) => (
+              <ContactInfo key={index} {...info} />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div
+        className={cn(
+          "bg-brand-light-gray/40 flex h-full w-full items-start border-t border-brand-gray/15 p-6 md:py-12 md:px-8 md:col-span-1 md:border-t-0 md:border-l rounded-none",
+          formSectionClassName
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function ContactInfo({
+  icon: Icon,
+  value,
+  className,
+  ...props
+}: ContactInfoProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isPhone = value === "+7 700 086 8608";
+
+  if (isPhone) {
+    return (
+      <div 
+        className={cn("flex items-center gap-4 py-3 rounded-none select-none", className)} 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        {...props}
+      >
+        <a
+          href="tel:+77000868608"
+          aria-label="Call +7 700 086 8608"
+          className="bg-brand-light-gray p-3 rounded-none flex items-center justify-center flex-shrink-0 text-brand-red hover:text-white hover:bg-brand-red transition-colors duration-200 border border-brand-gray/10 cursor-pointer no-invert"
+        >
+          <Icon className="h-5 w-5" />
+        </a>
+        <div className="relative flex items-center h-12 w-48 overflow-hidden">
+          {/* Display Phone Number */}
+          <span
+            className={cn(
+              "font-sans font-bold text-sm text-brand-gray uppercase tracking-wider transition-all duration-300 absolute left-0 whitespace-nowrap",
+              isHovered ? "opacity-0 scale-95 pointer-events-none" : "opacity-100 scale-100"
+            )}
+          >
+            {value}
+          </span>
+
+          {/* Hover Icons Container (Telegram & WhatsApp only) */}
+          <div 
+            className={cn(
+              "flex items-center gap-3 transition-all duration-300 absolute left-0",
+              isHovered 
+                ? "opacity-100 scale-100 pointer-events-auto" 
+                : "opacity-0 scale-95 pointer-events-none"
+            )}
+          >
+            {/* Telegram Link */}
+            <a
+              href="https://t.me/+77000868608"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Telegram"
+              className="no-invert p-3 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer"
+            >
+              <IconBrandTelegram className="w-5 h-5" stroke={1.2} />
+            </a>
+
+            {/* WhatsApp Link */}
+            <a
+              href="https://wa.me/77000868608"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="no-invert p-3 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer"
+            >
+              <IconBrandWhatsapp className="w-5 h-5" stroke={1.2} />
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn("flex items-center gap-4 py-3 rounded-none", className)} {...props}>
+      <div className="bg-brand-light-gray p-3 rounded-none flex items-center justify-center flex-shrink-0 text-brand-red border border-brand-gray/10">
+        <Icon className="h-5 w-5" />
+      </div>
+      <div>
+        <p className="font-sans font-bold text-sm text-brand-gray uppercase tracking-wider">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+export default function ContactSection() {
+  const [formData, setFormData] = useState({
+    name: "",
+    contact: "",
+    message: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
+  const contactData: ContactInfoProps[] = [
+    {
+      icon: IconPhone,
+      value: "+7 700 086 8608",
+    },
+    {
+      icon: IconMail,
+      value: "marketing@thepeak.kz",
+    },
+    {
+      icon: IconMapPin,
+      value: "Алматы, Казахстан",
+    },
+  ];
+
+  return (
+    <section 
+      className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] pt-[var(--page-margin)] pb-[clamp(3.5rem,7vw,7rem)] border-b border-brand-gray/10 bg-brand-light-gray/10 px-[var(--page-margin)] scroll-mt-[clamp(2rem,2.8vw,3.5rem)]" 
+      id="contacts"
+    >
+      <ContactCard contactInfo={contactData}>
+        {submitted ? (
+          <div className="w-full text-center py-10 space-y-4">
+            <div className="w-12 h-12 bg-brand-red text-white flex items-center justify-center mx-auto rounded-none">
+              <IconSend className="w-5 h-5" stroke={1.2} />
+            </div>
+            <h3 className="font-headline font-semibold text-brand-gray text-base leading-[0.9]">
+              {formatTypography("Спасибо за заявку!")}
+            </h3>
+            <p className="font-sans font-medium text-brand-gray/70 text-sm">
+              {formatTypography("Мы свяжемся с вами в течение ближайшего времени.")}
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="w-full space-y-8">
+            <div className="space-y-1.5">
+              <label className="font-sans text-xs sm:text-xs font-extrabold text-brand-gray uppercase tracking-widest block">
+                Ваше имя
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Иван Иванов"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="w-full font-sans text-sm text-brand-gray bg-transparent border-b border-brand-gray/30 focus:border-brand-red py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-brand-gray/30"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-sans text-xs font-extrabold text-brand-gray uppercase tracking-widest block">
+                Контакты (Телефон / Telegram)
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="+7 (700) 000-00-00"
+                value={formData.contact}
+                onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                className="w-full font-sans text-sm text-brand-gray bg-transparent border-b border-brand-gray/30 focus:border-brand-red py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-brand-gray/30"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-sans text-xs font-extrabold text-brand-gray uppercase tracking-widest block">
+                О вашем проекте
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Расскажите о задачах и целях проекта..."
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                className="w-full font-sans text-sm text-brand-gray bg-transparent border-b border-brand-gray/30 focus:border-brand-red py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-brand-gray/30"
+              />
+            </div>
+
+            <Button01
+              type="submit"
+              text="Отправить заявку"
+              variant="light"
+              className="w-full justify-between"
+            />
+          </form>
+        )}
+      </ContactCard>
+    </section>
+  );
+}

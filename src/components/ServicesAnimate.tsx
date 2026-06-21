@@ -1,0 +1,290 @@
+"use client";
+
+import React from "react";
+import { useAnimate } from "framer-motion";
+import { MorphingText } from "@/components/ui/liquid-text";
+import { formatTypography } from "@/utils/typography";
+
+interface ServiceItem {
+  title: string;
+  description: string;
+  price: string;
+  shape: string;
+}
+
+const servicesData: ServiceItem[] = [
+  {
+    title: "Smm & Digital",
+    description:
+      "Превращаем социальные сети в инструмент привлечения клиентов. Разрабатываем контент-стратегию, создаем контент, организуем инфлюенс-маркетинг и выстраиваем регулярную коммуникацию с аудиторией. Работаем на рост узнаваемости бренда, вовлеченности и количества обращений.",
+    price: "от 350 000 ₸",
+    shape: "/shapes/shape-smm.svg",
+  },
+  {
+    title: "Маркетинг и стратегия",
+    description:
+      "Начинаем с аудита бизнеса и маркетинга, чтобы увидеть реальные точки роста. Формируем стратегию на 6–12 месяцев, выстраиваем путь клиента и определяем инструменты, которые помогут привлекать больше клиентов и масштабировать продажи.",
+    price: "от 600 000 ₸",
+    shape: "/shapes/shape-marketing.svg",
+  },
+  {
+    title: "Таргет и реклама",
+    description:
+      "Запускаем рекламу, которая работает в связке с маркетинговой стратегией. Анализируем аудиторию, создаём рекламные связки, тестируем гипотезы и оптимизируем кампании на основе данных. Наша задача не просто привести трафик, а превратить его в заявки и продажи.",
+    price: "от 200 000 ₸",
+    shape: "/shapes/shape-target.svg",
+  },
+  {
+    title: "Дизайн и брендинг",
+    description:
+      "Создаём визуальную систему, которая помогает бизнесу выглядеть профессионально и запоминаться. Разрабатываем фирменный стиль, рекламные материалы, презентации и носители бренда, сохраняя единый образ на всех площадках.",
+    price: "от 100 000 ₸",
+    shape: "/shapes/shape-design.svg",
+  },
+  {
+    title: "Продакшн",
+    description:
+      "Берём на себя полный цикл создания контента: от идеи, сценария и подбора команды до съёмки, монтажа, графики и адаптации под рекламные площадки. Управляем всеми этапами производства, чтобы каждый материал работал на маркетинговые цели бизнеса и усиливал бренд.",
+    price: "Расчет индивидуально",
+    shape: "/shapes/shape-production.svg",
+  },
+  {
+    title: "Разработка и web",
+    description:
+      "Быстрые конверсионные сайты с продуманным UX/UI. Экспресс-лендинги для теста ниши, и корпоративные сайты.",
+    price: "от 250 000 ₸",
+    shape: "/shapes/shape-web.svg",
+  },
+  {
+    title: "Организация и сопровождение",
+    description:
+      "Технический надзор, аудит digital-процессов и контроль подрядчиков. Долгосрочная поддержка сайта и консалтинг по оптимизации маркетинга.",
+    price: "от 150 000 ₸",
+    shape: "/shapes/shape-organization.svg",
+  },
+];
+
+const NO_CLIP = "polygon(0 0, 100% 0, 100% 100%, 0% 100%)";
+const BOTTOM_RIGHT_CLIP = "polygon(0 0, 100% 0, 0 0, 0% 100%)";
+const TOP_RIGHT_CLIP = "polygon(0 0, 0 100%, 100% 100%, 0% 100%)";
+const BOTTOM_LEFT_CLIP = "polygon(100% 100%, 100% 0, 100% 100%, 0 100%)";
+const TOP_LEFT_CLIP = "polygon(0 0, 100% 0, 100% 100%, 100% 0)";
+
+const ENTRANCE_KEYFRAMES = {
+  left: [BOTTOM_RIGHT_CLIP, NO_CLIP],
+  bottom: [BOTTOM_RIGHT_CLIP, NO_CLIP],
+  top: [BOTTOM_RIGHT_CLIP, NO_CLIP],
+  right: [TOP_LEFT_CLIP, NO_CLIP],
+};
+
+const EXIT_KEYFRAMES = {
+  left: [NO_CLIP, TOP_RIGHT_CLIP],
+  bottom: [NO_CLIP, TOP_RIGHT_CLIP],
+  top: [NO_CLIP, TOP_RIGHT_CLIP],
+  right: [NO_CLIP, BOTTOM_LEFT_CLIP],
+};
+
+interface ServiceCardProps {
+  title: string;
+  description: string;
+  price: string;
+  shape?: string;
+  isCTA?: boolean;
+  onClick?: () => void;
+}
+
+const ServiceCard: React.FC<ServiceCardProps> = ({
+  title,
+  description,
+  price,
+  shape,
+  isCTA = false,
+  onClick,
+}) => {
+  const [scope, animate] = useAnimate();
+
+  const getNearestSide = (e: React.MouseEvent<HTMLDivElement>) => {
+    const box = e.currentTarget.getBoundingClientRect();
+
+    const proximityToLeft = {
+      proximity: Math.abs(box.left - e.clientX),
+      side: "left" as const,
+    };
+    const proximityToRight = {
+      proximity: Math.abs(box.right - e.clientX),
+      side: "right" as const,
+    };
+    const proximityToTop = {
+      proximity: Math.abs(box.top - e.clientY),
+      side: "top" as const,
+    };
+    const proximityToBottom = {
+      proximity: Math.abs(box.bottom - e.clientY),
+      side: "bottom" as const,
+    };
+
+    const sortedProximity = [
+      proximityToLeft,
+      proximityToRight,
+      proximityToTop,
+      proximityToBottom,
+    ].sort((a, b) => a.proximity - b.proximity);
+
+    return sortedProximity[0].side;
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Only run hover animation on desktop screens
+    if (window.innerWidth >= 768) {
+      const side = getNearestSide(e);
+      animate(scope.current, {
+        clipPath: ENTRANCE_KEYFRAMES[side],
+      });
+    }
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.innerWidth >= 768) {
+      const side = getNearestSide(e);
+      animate(scope.current, {
+        clipPath: EXIT_KEYFRAMES[side],
+      });
+    }
+  };
+
+  const cardClasses = isCTA
+    ? "group relative flex flex-col justify-between pt-[clamp(1.25rem,2.5vw,3rem)] pr-[clamp(1.25rem,2.5vw,3rem)] pb-[clamp(1.25rem,2.5vw,3rem)] pl-[clamp(0.5rem,0.83vw,1rem)] bg-brand-red text-white border-r border-b border-brand-gray/15 min-h-[clamp(12rem,22vw,25rem)] cursor-pointer overflow-hidden"
+    : "group relative flex flex-col justify-between pt-[clamp(1.25rem,2.5vw,3rem)] pr-[clamp(1.25rem,2.5vw,3rem)] pb-[clamp(1.25rem,2.5vw,3rem)] pl-[clamp(0.5rem,0.83vw,1rem)] bg-white text-brand-gray border-r border-b border-brand-gray/15 min-h-[clamp(12rem,22vw,25rem)] overflow-hidden cursor-pointer";
+
+  const overlayBg = isCTA ? "bg-brand-gray text-white" : "bg-brand-red text-white";
+
+  return (
+    <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      className={cardClasses}
+    >
+      {/* Default State Content */}
+      <div className="flex flex-col justify-between h-full z-0">
+        <div>
+          {shape && (
+            <div className="mb-[clamp(1rem,1.8vw,2.2rem)] select-none">
+              <img
+                src={shape}
+                alt=""
+                className="w-[clamp(1.2rem,1.8vw,2rem)] h-[clamp(1.2rem,1.8vw,2rem)] object-contain"
+              />
+            </div>
+          )}
+          <h3 className={`no-invert font-headline font-semibold text-[clamp(1.2rem,1.78vw,1.6rem)] mb-[clamp(0.75rem,1.5vw,1.5rem)] tracking-wide ${isCTA ? "text-white" : "text-brand-gray"} leading-[0.9]`}>
+            {title}
+          </h3>
+          {/* Description: always visible on mobile, hidden on desktop (shown via hover overlay) */}
+          <p className={`no-invert font-sans font-medium text-[clamp(0.9rem,0.9vw,0.95rem)] leading-relaxed mb-8 md:hidden ${isCTA ? "text-white/85" : "text-brand-gray/75"}`}>
+            {description}
+          </p>
+        </div>
+
+        <div className="flex justify-between items-end mt-auto pt-4">
+          <div className={`no-invert font-sans text-[clamp(0.95rem,1vw,1.1rem)] font-semibold tracking-wider leading-[0.98] ${isCTA ? "text-white" : "text-brand-red"}`}>
+            {price}
+          </div>
+        </div>
+      </div>
+
+      {/* Hover Reveal State Overlay - Hidden on mobile, active on desktop */}
+      <div
+        ref={scope}
+        style={{
+          clipPath: BOTTOM_RIGHT_CLIP,
+        }}
+        className={`absolute inset-0 hidden md:flex flex-col justify-between pt-[clamp(1.5rem,2.5vw,3rem)] pr-[clamp(1.5rem,2.5vw,3rem)] pb-[clamp(1.5rem,2.5vw,3rem)] pl-[clamp(0.5rem,0.83vw,1rem)] z-10 pointer-events-none ${overlayBg}`}
+      >
+        <div className="flex flex-col justify-between h-full w-full">
+          <div>
+            {shape && (
+              <div className="mb-[clamp(1rem,1.8vw,2.2rem)] select-none">
+                <img
+                  src={shape}
+                  alt=""
+                  className="w-[clamp(1.2rem,1.8vw,2rem)] h-[clamp(1.2rem,1.8vw,2rem)] object-contain"
+                  style={{ filter: "brightness(0) invert(1)" }}
+                />
+              </div>
+            )}
+            <h3 className="no-invert font-headline font-semibold text-white text-[clamp(1.2rem,1.78vw,1.6rem)] mb-[clamp(0.75rem,1.5vw,1.5rem)] tracking-wide leading-[0.9]">
+              {title}
+            </h3>
+            <p className="no-invert font-sans font-medium text-[clamp(0.75rem,0.9vw,0.95rem)] leading-relaxed mb-8 text-white/90">
+              {description}
+            </p>
+          </div>
+
+          <div className="flex justify-between items-end mt-auto pt-4">
+            <div className="no-invert font-sans text-[clamp(0.95rem,1vw,1.1rem)] font-semibold tracking-wider leading-[0.98] text-white">
+              {price}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function ServicesAnimate() {
+  const handleScrollToContacts = () => {
+    const contactsSection = document.getElementById("contacts");
+    if (contactsSection) {
+      contactsSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  return (
+    <section
+      className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] pt-[var(--page-margin)] pb-[clamp(3.5rem,7vw,7rem)] bg-white scroll-mt-[clamp(2rem,2.8vw,3.5rem)]"
+      id="services"
+    >
+      {/* Section Header aligning with Swiss Grid columns */}
+      <div className="swiss-grid mb-[clamp(2.5rem,5vw,4.5rem)]">
+        <h2 className="col-span-12 md:col-start-7 md:col-span-6 lg:col-start-5 lg:col-span-8 xl:col-start-4 xl:col-span-9 font-headline font-semibold text-brand-gray text-[clamp(1.6rem,2.91vw,2.5rem)] leading-[0.9] select-none no-invert">
+          <span className="inverttext">{formatTypography("Услуги, которые")}</span> <br />
+          <span className="inverttext">{formatTypography("приносят ")}</span>
+          <MorphingText
+            texts={[
+              "результат",
+              "гордость",
+              "узнаваемость",
+              "клиентов",
+              "прибыль",
+            ]}
+            className="text-brand-red font-headline font-semibold text-[clamp(1.6rem,2.91vw,2.5rem)] leading-[0.9]"
+          />
+        </h2>
+      </div>
+
+      {/* Nested Grid aligning with Swiss Grid columns */}
+      <div className="swiss-grid w-full">
+        <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 border-t border-l border-brand-gray/15 rounded-none w-full">
+          {servicesData.map((service, index) => (
+            <ServiceCard
+              key={index}
+              title={formatTypography(service.title)}
+              description={formatTypography(service.description)}
+              price={formatTypography(service.price)}
+              shape={service.shape}
+            />
+          ))}
+
+          {/* Last slot: Elegant CTA card with same hover animation */}
+          <ServiceCard
+            title={formatTypography("Есть индивидуальный запрос?")}
+            description={formatTypography("Расскажите нам о ваших бизнес-целях. Мы подготовим индивидуальную стратегию продвижения и сделаем расчет стоимости под ваши требования.")}
+            price={formatTypography("Обсудить проект")}
+            isCTA={true}
+            onClick={handleScrollToContacts}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
