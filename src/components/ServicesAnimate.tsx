@@ -359,8 +359,17 @@ export default function ServicesAnimate() {
 
       {/* Swiss Pop-up Modal Form */}
       {selectedService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
-          <div className="bg-[#060606] border border-white/10 w-full max-w-lg p-6 md:p-10 relative rounded-none animate-in fade-in zoom-in-95 duration-200">
+        <div 
+          onClick={() => {
+            setSelectedService(null);
+            setModalStatus("idle");
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 cursor-pointer"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-[#060606] border border-white/10 w-full max-w-lg p-6 md:p-10 relative rounded-none animate-in fade-in zoom-in-95 duration-200 cursor-default"
+          >
             
             {/* Plus indicators in corners to match site's style */}
             <div className="absolute -top-2.5 -left-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
@@ -374,9 +383,12 @@ export default function ServicesAnimate() {
                 setSelectedService(null);
                 setModalStatus("idle");
               }}
-              className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors duration-200 uppercase text-[10px] tracking-widest font-bold font-sans cursor-pointer py-1 px-2 border border-white/10 hover:border-white/30 rounded-none"
+              className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors duration-200 cursor-pointer p-2 border border-white/10 hover:border-white/30 rounded-none flex items-center justify-center"
+              aria-label="Close modal"
             >
-              Закрыть
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
 
             <div className="space-y-6">
