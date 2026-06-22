@@ -302,7 +302,7 @@ export default function ServicesAnimate() {
 
   return (
     <section
-      className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] pt-[var(--page-margin)] pb-[clamp(3.5rem,7vw,7rem)] bg-white scroll-mt-[clamp(2rem,2.8vw,3.5rem)]"
+      className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] pt-[3rem] md:pt-[var(--page-margin)] pb-[clamp(3.5rem,7vw,7rem)] bg-white scroll-mt-[clamp(2rem,2.8vw,3.5rem)]"
       id="services"
     >
       {/* Section Header aligning with Swiss Grid columns */}
@@ -413,7 +413,7 @@ export default function ServicesAnimate() {
                     Заявка отправлена
                   </h4>
                   <p className="font-sans text-xs text-neutral-400">
-                    Мы свяжемся с вами за 15 минут.
+                    Мы свяжемся с вами в ближайшее время.
                   </p>
                 </div>
               ) : (

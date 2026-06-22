@@ -118,7 +118,7 @@ export const BentoCard = ({
         </div>
 
         {/* Top row */}
-        <div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center p-4">
+        <div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center p-2 md:p-4">
           <div className="mix-blend-difference select-none pointer-events-none">
             {logo}
           </div>
@@ -128,7 +128,7 @@ export const BentoCard = ({
         </div>
 
         {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 p-4 pb-6 flex flex-col justify-end">
+        <div className="absolute bottom-0 left-0 right-0 z-20 p-2 pb-3 md:p-4 md:pb-6 flex flex-col justify-end">
           <p className="font-sans font-normal text-[13px] leading-relaxed text-white select-none mix-blend-difference pointer-events-none">
             {text}
           </p>

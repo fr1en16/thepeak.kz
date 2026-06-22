@@ -121,7 +121,7 @@ export default function ClientLogosBlock() {
 
         {/* Row 3 (starts with 38, scrolls left) — hidden on mobile */}
         <div
-          className="hidden sm:block relative w-full h-[60px] sm:h-[80px] md:h-[84px] overflow-hidden border-b border-brand-gray/15"
+          className="relative w-full h-[60px] sm:h-[80px] md:h-[84px] overflow-hidden border-b border-brand-gray/15"
           style={{
             maskImage:
               "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
@@ -154,7 +154,7 @@ export default function ClientLogosBlock() {
 
         {/* Row 4 (starts with 53, scrolls right) — hidden on mobile */}
         <div
-          className="hidden sm:block relative w-full h-[60px] sm:h-[80px] md:h-[84px] overflow-hidden border-b border-brand-gray/15"
+          className="relative w-full h-[60px] sm:h-[80px] md:h-[84px] overflow-hidden border-b border-brand-gray/15"
           style={{
             maskImage:
               "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",

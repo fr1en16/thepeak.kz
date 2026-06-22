@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
   IconPlus,
@@ -247,7 +248,7 @@ export default function ContactSection() {
               {formatTypography("Заявка отправлена")}
             </h3>
             <p className="font-sans font-medium text-neutral-400 text-sm">
-              {formatTypography("Мы свяжемся с вами за 15 минут.")}
+              {formatTypography("Мы свяжемся с вами в ближайшее время.")}
             </p>
           </div>
         ) : (
@@ -336,6 +337,19 @@ export default function ContactSection() {
           </form>
         )}
       </ContactCard>
+
+      {/* Footer bar */}
+      <div className="mt-8 pt-6 border-t border-brand-gray/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <p className="font-sans text-xs text-brand-gray/40">
+          © {new Date().getFullYear()} ThePeak. Все права защищены.
+        </p>
+        <Link
+          href="/privacy"
+          className="font-sans text-xs text-brand-gray/40 hover:text-brand-red transition-colors duration-200 underline underline-offset-4 decoration-brand-gray/20 hover:decoration-brand-red"
+        >
+          Политика конфиденциальности
+        </Link>
+      </div>
     </section>
   );
 }

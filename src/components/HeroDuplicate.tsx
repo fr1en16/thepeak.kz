@@ -7,13 +7,29 @@ import { formatTypography } from "@/utils/typography";
 
 export default function HeroDuplicate() {
   const logoIds = [2, 12, 20, 21, 24, 38, 39, 40, 41, 44];
-  // Duplicate logos for infinite loop
-  const marqueeItems = [...logoIds, ...logoIds, ...logoIds, ...logoIds];
+  // Two copies for seamless loop (translateX -50% = exactly one set)
+  const marqueeItems = [...logoIds, ...logoIds];
 
   return (
-    <section className="col-span-12 relative w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] overflow-hidden min-h-screen flex flex-col justify-between pt-[clamp(4rem,8vw,6rem)] pb-0 border-b border-brand-gray/10 select-none" id="hero-alternative">
-      {/* 1. Background Video */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+    <section className="col-span-12 relative w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] overflow-hidden h-screen md:h-auto md:min-h-screen flex flex-col justify-between pt-[60px] md:pt-[clamp(4rem,8vw,6rem)] pb-0 border-b border-brand-gray/10 select-none" id="hero-alternative">
+      {/* 1. Background Video — mobile */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden block md:hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source
+            src="/bg m.webm"
+            type="video/webm"
+          />
+        </video>
+      </div>
+
+      {/* 1. Background Video — desktop */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden hidden md:block">
         <video
           autoPlay
           muted
@@ -33,9 +49,9 @@ export default function HeroDuplicate() {
       </div>
 
       {/* Top Content Row */}
-      <div className="swiss-grid w-full relative flex-grow flex items-center">
+      <div className="swiss-grid w-full relative flex-grow flex items-start md:items-center">
         <div className="col-span-12 text-left">
-          <h1 className="font-headline font-semibold text-white text-[clamp(1.6rem,3.07vw,2.77rem)] leading-[0.92] tracking-[-0.02em] mb-8 md:mb-12">
+          <h1 className="font-headline font-semibold text-white text-[clamp(1.92rem,3.07vw,2.77rem)] leading-[0.9] tracking-[-0.02em] mb-8 md:mb-12">
             {/* Mobile: 4 lines; Desktop: 2 lines */}
             <span className="inverttext block md:hidden">{"Маркетинг,"}</span>
             <span className="inverttext block md:hidden">{"который работает"}</span>
@@ -54,7 +70,7 @@ export default function HeroDuplicate() {
               href="#contacts"
               text={formatTypography("оставить заявку")}
               variant="light"
-              className="w-full sm:w-auto"
+              className="sm:w-auto scale-[0.7] origin-left md:scale-100"
             />
           </div>
         </div>
@@ -72,29 +88,40 @@ export default function HeroDuplicate() {
 
         {/* Content rows inside bottom container with z-10 */}
         <div className="w-full relative z-10 flex flex-col">
-          {/* Bottom Slider Row — hidden on mobile to save space */}
-          <div className="swiss-grid w-full hidden sm:grid" style={{ height: '84px' }}>
-            <div className="col-span-12 flex flex-row items-center h-full gap-6">
-              <div className="max-w-[200px] border-r border-white/10 pr-8 flex-shrink-0 self-stretch flex items-center">
-                <p className="font-headline font-bold text-white/70 uppercase text-[16px] leading-[1.2] m-0 tracking-wider text-left">
-                  Нам доверяют лучшие
+          {/* Bottom Slider Row — visible on all screens */}
+          <div className="w-full">
+            {/* Mobile: label above logos */}
+            <div className="sm:hidden px-[var(--page-margin)] pt-5 pb-2">
+              <p className="no-invert font-headline font-bold text-brand-gray text-[13px] leading-[1.2] m-0 tracking-wider">
+                Нам доверяют лучшие
+              </p>
+            </div>
+
+            {/* Logo slider row */}
+            <div className="flex flex-row items-stretch h-[70px] sm:h-[84px]">
+              {/* Desktop-only side label */}
+              <div className="hidden sm:flex border-r border-brand-gray/10 pl-[var(--page-margin)] pr-8 flex-shrink-0 self-stretch items-center" style={{ minWidth: '220px' }}>
+                <p className="no-invert font-headline font-bold text-brand-gray text-[16px] leading-[1.2] m-0 tracking-wider text-left">
+                  Нам доверяют лучшие
                 </p>
               </div>
-              <div 
-                className="relative flex-grow overflow-hidden h-full flex items-center" 
-                style={{ 
-                  maskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)', 
-                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)' 
+
+              {/* Logos marquee */}
+              <div
+                className="relative flex-grow overflow-hidden h-full flex items-center"
+                style={{
+                  maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
                 }}
               >
-                <div 
-                  className="flex items-center gap-12 w-max"
+                <div
+                  className="flex items-center w-max"
                   style={{
-                    animation: 'marquee-scroll-horizontal 80s linear infinite',
+                    animation: 'marquee-scroll-horizontal 30s linear infinite',
                   }}
                 >
                   {marqueeItems.map((id, index) => (
-                    <div key={index} className="flex-shrink-0 h-[58px] flex items-center justify-center">
+                    <div key={index} className="flex-shrink-0 h-[56px] sm:h-[58px] flex items-center justify-center mr-10">
                       <img
                         src={`/logo/clot-${id}.webp`}
                         alt="Partner Logo"
@@ -109,11 +136,13 @@ export default function HeroDuplicate() {
             </div>
           </div>
 
-          {/* Divider Line */}
-          <div className="w-full border-t border-brand-gray/10" />
+          {/* Divider Line - desktop only */}
+          <div className="hidden md:block w-full border-t border-brand-gray/10" />
 
-          {/* Integrated Stats Block */}
-          <StatsBlock />
+          {/* Integrated Stats Block - desktop only */}
+          <div className="hidden md:block">
+            <StatsBlock />
+          </div>
         </div>
       </div>
     </section>

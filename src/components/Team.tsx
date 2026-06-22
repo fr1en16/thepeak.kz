@@ -45,7 +45,7 @@ export default function Team() {
         
         {/* Left Column: Philosophical/Intro Text - matches service card width (33.33% on lg, 25% on xl) */}
         <div className="col-span-12 lg:col-span-4 xl:col-span-3 text-left pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] pt-0 lg:pr-[var(--grid-gap)] border-solid border-brand-gray/25 border-b lg:border-b-0 lg:border-r self-stretch flex flex-col">
-          <div className="max-w-[95%] flex flex-col justify-between flex-grow gap-8 pt-[var(--page-margin)]">
+          <div className="max-w-[95%] flex flex-col justify-between flex-grow gap-8 pt-[3rem] md:pt-[var(--page-margin)]">
             <h2 className="font-headline font-semibold text-brand-gray text-[clamp(1.4rem,2.56vw,1.6rem)] leading-[1.0] select-none">
               {"Каждое"} <br />
               {"направление ThePeak"} <br />
@@ -61,7 +61,7 @@ export default function Team() {
 
         {/* Right Column: Grid of Team Members - spans remaining columns (66.67% on lg, 75% on xl) */}
         <div className="col-span-12 lg:col-span-8 xl:col-span-9 pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] pt-0 lg:pl-[clamp(1.5rem,3vw,3rem)] w-full">
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-3 w-full pt-[var(--page-margin)]">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-3 w-full pt-[3rem] md:pt-[var(--page-margin)]">
             {teamMembers.map((member, index) => (
               <div 
                 key={index}
@@ -88,7 +88,7 @@ export default function Team() {
                   <h3 className="font-headline font-semibold text-[clamp(1rem,1.34vw,1.2rem)] tracking-wide mix-blend-difference leading-[1.1] w-full">
                     {formatTypography(member.name)}
                   </h3>
-                  <p className="font-sans text-[clamp(0.8rem,0.85vw,0.85rem)] leading-[1.2] font-medium mix-blend-difference text-white w-full">
+                  <p className="font-sans !text-[0.8rem] md:!text-[clamp(0.8rem,0.85vw,0.85rem)] leading-[1.2] font-medium mix-blend-difference text-white w-full">
                     {formatTypography(member.description)}
                   </p>
                 </div>

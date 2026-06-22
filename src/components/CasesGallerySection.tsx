@@ -411,6 +411,7 @@ export default function CasesGallerySection() {
       text: "Построили дерзкий street food-бренд в Instagram и TikTok: viral-контент, офлайн-активации и механики, которые давали х2 рост продаж за два дня.",
       image: "https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-2",
+      href: "#contacts",
     },
     {
       logo: "HIGHTOWER / DODO PIZZA",
@@ -418,6 +419,7 @@ export default function CasesGallerySection() {
       text: "Лендинг для привлечения сотрудников и арендаторов помещений под пиццерии.",
       image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
+      href: "#contacts",
     },
     {
       logo: "SENSATA GROUP",
@@ -425,6 +427,7 @@ export default function CasesGallerySection() {
       text: "Имиджевый продакшн полного цикла: от разработки концепции и сценария до съемок масштабных строительных объектов и финального монтажа.",
       image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
+      href: "#contacts",
     },
     {
       logo: "Diskokras",
@@ -432,7 +435,7 @@ export default function CasesGallerySection() {
       text: "Построили личный бренд вокруг владельца, органический рост и живое комьюнити вместо обычной страницы автосервиса.",
       image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
-      href: "/cases/diskokras",
+      href: "#contacts",
     },
     {
       logo: "Qazsip",
@@ -440,6 +443,7 @@ export default function CasesGallerySection() {
       text: "Настроили таргет, отсеяли нецелевой трафик — и в первый месяц получили 3 крупные продажи при цене лида меньше $1.30.",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-2",
+      href: "#contacts",
     },
     {
       logo: "LUKOIL",
@@ -447,6 +451,7 @@ export default function CasesGallerySection() {
       text: "Выстроили современную коммуникацию для крупнейшего бренда: Instagram, TikTok, YouTube, дизайн дрифт-кара и х2 рост охватов.",
       image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
+      href: "#contacts",
     },
     {
       logo: "ВИРАЖ ГРУППА",
@@ -454,6 +459,7 @@ export default function CasesGallerySection() {
       text: "Таргет для автохолдинга: 40 000+ лидов для FAW Kazakhstan и 10 000+ заявок для UAZ Kazakhstan, стоимость лида от $2.2 до $3.7.",
       image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
+      href: "#contacts",
     },
     {
       logo: "Я ТУТ",
@@ -461,6 +467,7 @@ export default function CasesGallerySection() {
       text: "Логотип с тёплой природной эстетикой и глубоким смыслом для базы отдыха.",
       image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
+      href: "#contacts",
     },
     {
       logo: "METRO",
@@ -468,6 +475,7 @@ export default function CasesGallerySection() {
       text: "Продакшн рекламных и презентационных роликов для торговой сети: съемки торговых залов, новинок меню и крупных ритейл-эвентов.",
       image: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
+      href: "#contacts",
     },
     {
       logo: "Compass Consulting",
@@ -475,6 +483,7 @@ export default function CasesGallerySection() {
       text: "Комплексный брендинг и современный корпоративный сайт для одной из крупнейших консалтинговых компаний Узбекистана.",
       image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-2",
+      href: "#contacts",
     },
   ];
 
@@ -526,8 +535,7 @@ export default function CasesGallerySection() {
           <div className="swiss-grid pt-[clamp(3.5rem,7vw,7rem)] pb-10 text-center">
             <div className="col-span-12 flex flex-col items-center justify-center text-center">
               <h2 className="font-headline font-semibold text-brand-gray text-[clamp(1.6rem,2.91vw,2.5rem)] leading-[0.9] mb-6 select-none text-center no-invert">
-                {formatTypography("За каждым кейсом стоят стратегия,")} <br />
-                {formatTypography("сильная команда и конкретные показатели.")}
+                {formatTypography("За каждым кейсом стоят стратегия, сильная команда и конкретные показатели.")}
               </h2>
               <p className="font-sans font-medium text-brand-gray/80 text-[clamp(1.05rem,1.3vw,1.35rem)] leading-relaxed max-w-[1100px] select-none text-center mt-2 no-invert">
                 {formatTypography(
@@ -555,8 +563,7 @@ export default function CasesGallerySection() {
           <div className="swiss-grid pt-[clamp(3.5rem,7vw,7rem)] pb-10 text-center">
             <div className="col-span-12 flex flex-col items-center justify-center text-center">
               <h2 className="font-headline font-semibold text-brand-gray text-[clamp(1.6rem,2.91vw,2.5rem)] leading-[0.9] mb-6 select-none text-center no-invert">
-                {formatTypography("За каждым кейсом стоят стратегия,")} <br />
-                {formatTypography("сильная команда и конкретные показатели.")}
+                {formatTypography("За каждым кейсом стоят стратегия, сильная команда и конкретные показатели.")}
               </h2>
               <p className="font-sans font-medium text-brand-gray/80 text-[clamp(1.05rem,1.3vw,1.35rem)] leading-relaxed max-w-[1100px] select-none text-center mt-2 no-invert">
                 {formatTypography(

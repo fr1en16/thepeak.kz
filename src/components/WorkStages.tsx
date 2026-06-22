@@ -103,7 +103,7 @@ export default function WorkStages() {
         {/* Left Column: Fixed Content */}
         <div className="col-span-12 lg:col-span-5 xl:col-span-5 border-b lg:border-b-0 lg:border-r border-white/10 pt-[clamp(2.5rem,5vw,4.5rem)] pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] pr-0 lg:pr-[clamp(1.5rem,3vw,3rem)] flex flex-col justify-between">
           <div className="flex flex-col gap-6">
-            <span className="no-invert font-mono text-[10px] tracking-[0.25em] text-[#FD4B32] uppercase font-bold">
+            <span className="no-invert font-mono text-[10px] tracking-[0.25em] text-[#FD4B32] uppercase font-bold hidden lg:inline-block">
               /// ЭТАПЫ РАБОТЫ
             </span>
             <h2 className="no-invert font-headline font-bold text-[clamp(2rem,3.5vw,3.2rem)] leading-[1.0] tracking-tight text-white max-w-sm">
@@ -127,12 +127,12 @@ export default function WorkStages() {
         {/* Right Column: Interactive Content */}
         <div className="col-span-12 lg:col-span-7 xl:col-span-7 pt-[clamp(2.5rem,5vw,4.5rem)] pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] lg:pl-[clamp(1.5rem,3vw,3rem)] flex flex-col">
           {/* Accordion List */}
-          <div className="flex flex-col border-t border-white/10">
+          <div className="flex flex-col border-t-0 lg:border-t border-white/10">
             {stagesData.map((stage) => {
               const isOpen = activeStage === stage.id;
               const StageIcon = iconMap[stage.iconName] || Search;
               return (
-                <div key={stage.id} className="border-b border-white/10">
+                <div key={stage.id} className="border-b border-white/10 last:border-b-0 lg:last:border-b">
                   <button
                     onClick={() => setActiveStage(isOpen ? null : stage.id)}
                     className="w-full text-left py-6 flex items-center justify-between group cursor-pointer focus:outline-none select-none"
@@ -176,7 +176,7 @@ export default function WorkStages() {
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="no-invert pb-6 pl-8 md:pl-12 lg:pl-[64px] text-white/50 font-sans text-xs md:text-sm leading-relaxed max-w-xl">
+                        <div className="no-invert pb-6 pl-8 md:pl-12 lg:pl-[64px] text-white/50 font-sans text-[clamp(0.95rem,1.05vw,1.1rem)] leading-relaxed max-w-xl">
                           {formatTypography(stage.description)}
                         </div>
                       </motion.div>
