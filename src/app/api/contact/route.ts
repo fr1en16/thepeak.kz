@@ -11,7 +11,7 @@ function escapeMarkdownV2(text: string): string {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, phone, comment } = body;
+    const { name, phone, comment, source } = body;
 
     // Validate inputs
     if (!name || typeof name !== "string" || !name.trim()) {
@@ -43,12 +43,16 @@ export async function POST(request: NextRequest) {
     const escapedComment = comment && typeof comment === "string" && comment.trim()
       ? escapeMarkdownV2(comment.trim())
       : "Не указан";
+    const escapedSource = source && typeof source === "string" && source.trim()
+      ? escapeMarkdownV2(source.trim())
+      : "Не указан";
 
     const text = [
       "⚡️ *Новая заявка с сайта*",
       `👤 *Имя:* ${escapedName}`,
       `📞 *Телефон:* ${escapedPhone}`,
-      `💬 *Проект:* ${escapedComment}`
+      `💬 *Проект:* ${escapedComment}`,
+      `📍 *Источник:* ${escapedSource}`
     ].join("\n");
 
     const url = `https://api.telegram.org/bot${token}/sendMessage`;

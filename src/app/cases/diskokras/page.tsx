@@ -147,15 +147,54 @@ export default function DiskokrasCasePage() {
   const [scrollY, setScrollY] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
-    contact: "+7",
+    contact: "",
     contactMethod: "WhatsApp",
     message: "",
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (!formData.name.trim() || !formData.contact.trim()) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      const commentText = formData.message.trim()
+        ? `${formData.message.trim()}\n\n[Способ связи: ${formData.contactMethod}]`
+        : `[Способ связи: ${formData.contactMethod}]`;
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          phone: formData.contact.trim(),
+          comment: commentText,
+          source: "Кейс Diskokras (Хотите такие же результаты и контент?)",
+        }),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setFormData({
+          name: "",
+          contact: "",
+          contactMethod: "WhatsApp",
+          message: "",
+        });
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error("Failed to submit form:", err);
+      setStatus("error");
+    }
   };
 
   useEffect(() => {
@@ -383,16 +422,16 @@ export default function DiskokrasCasePage() {
             <div
               className="bg-white/[0.02] flex h-full w-full items-start border-t border-white/10 p-6 md:py-12 md:px-8 md:col-span-1 md:border-t-0 md:border-l md:border-white/10 rounded-none"
             >
-              {submitted ? (
+              {status === "success" ? (
                 <div className="w-full text-center py-10 space-y-4">
-                  <div className="w-12 h-12 bg-[#FD4B32] text-white flex items-center justify-center mx-auto rounded-none no-invert">
-                    <IconSend className="w-5 h-5" stroke={1.2} />
+                  <div className="w-12 h-12 bg-white text-black flex items-center justify-center mx-auto rounded-none no-invert">
+                    <IconSend className="w-5 h-5" stroke={1.5} />
                   </div>
-                  <h3 className="no-invert font-headline font-semibold text-white text-base leading-[0.9]">
-                    {formatTypography("Спасибо за заявку!")}
+                  <h3 className="no-invert font-headline font-semibold text-white text-base leading-[1.2]">
+                    {formatTypography("Заявка отправлена")}
                   </h3>
                   <p className="no-invert font-sans font-medium text-white/60 text-sm">
-                    {formatTypography("Мы свяжемся с вами в течение ближайшего времени.")}
+                    {formatTypography("Мы свяжемся с вами за 15 минут.")}
                   </p>
                 </div>
               ) : (
@@ -404,10 +443,11 @@ export default function DiskokrasCasePage() {
                     <input
                       type="text"
                       required
+                      disabled={status === "loading"}
                       placeholder="Иван Иванов"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-white/20"
+                      className="no-invert w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -419,6 +459,8 @@ export default function DiskokrasCasePage() {
                       value={formData.contact}
                       onChange={(val) => setFormData({ ...formData, contact: val })}
                       theme="dark"
+                      variant="box"
+                      required
                     />
                   </div>
 
@@ -433,10 +475,11 @@ export default function DiskokrasCasePage() {
                           <button
                             key={method}
                             type="button"
+                            disabled={status === "loading"}
                             onClick={() => setFormData({ ...formData, contactMethod: method })}
-                            className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-colors duration-200 border cursor-pointer rounded-none ${isActive
+                            className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-all duration-200 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${isActive
                               ? "bg-white text-black border-white"
-                              : "bg-transparent text-white/50 border-white/20 hover:bg-white/5"
+                              : "bg-transparent text-white/50 border-white/20 hover:bg-white/5 hover:text-white"
                               }`}
                           >
                             {formatTypography(method)}
@@ -452,19 +495,27 @@ export default function DiskokrasCasePage() {
                     </label>
                     <textarea
                       rows={3}
+                      disabled={status === "loading"}
                       placeholder="Расскажите о задачах и целях проекта..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-white/20"
+                      className="no-invert w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 resize-none rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
-                  <Button01
+                  {status === "error" && (
+                    <p className="text-red-500 font-sans text-xs font-semibold">
+                      Произошла ошибка при отправке заявки. Пожалуйста, свяжитесь с нами напрямую или попробуйте ещё раз.
+                    </p>
+                  )}
+
+                  <button
                     type="submit"
-                    text="Отправить заявку"
-                    variant="dark"
-                    className="w-full justify-between"
-                  />
+                    disabled={status === "loading"}
+                    className="w-full flex items-center justify-center bg-white text-black font-medium py-3.5 tracking-wider uppercase text-xs transition-opacity duration-200 cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100"
+                  >
+                    {status === "loading" ? "Отправка..." : "Отправить заявку"}
+                  </button>
                 </form>
               )}
             </div>

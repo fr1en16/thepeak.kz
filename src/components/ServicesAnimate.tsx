@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useAnimate } from "framer-motion";
 import { MorphingText } from "@/components/ui/liquid-text";
 import { formatTypography } from "@/utils/typography";
+import PhoneInput from "@/components/ui/PhoneInput";
 
 interface ServiceItem {
   title: string;
@@ -233,12 +234,72 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 };
 
 export default function ServicesAnimate() {
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
+  const [modalForm, setModalForm] = useState({
+    name: "",
+    contact: "",
+    contactMethod: "WhatsApp",
+    message: "",
+  });
+  const [modalStatus, setModalStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
   const handleScrollToContacts = () => {
     const contactsSection = document.getElementById("contacts");
     if (contactsSection) {
       contactsSection.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  const handleModalSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedService || !modalForm.name.trim() || !modalForm.contact.trim()) {
+      setModalStatus("error");
+      return;
+    }
+
+    setModalStatus("loading");
+
+    try {
+      const commentText = modalForm.message.trim()
+        ? `Услуга: ${selectedService.title}\n\n${modalForm.message.trim()}\n\n[Способ связи: ${modalForm.contactMethod}]`
+        : `Заявка на услугу: ${selectedService.title}\n\n[Способ связи: ${modalForm.contactMethod}]`;
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: modalForm.name.trim(),
+          phone: modalForm.contact.trim(),
+          comment: commentText,
+          source: `Попап услуги: ${selectedService.title}`,
+        }),
+      });
+
+      if (response.ok) {
+        setModalStatus("success");
+        // Reset form fields
+        setModalForm({
+          name: "",
+          contact: "",
+          contactMethod: "WhatsApp",
+          message: "",
+        });
+        // Close modal after delay
+        setTimeout(() => {
+          setSelectedService(null);
+          setModalStatus("idle");
+        }, 2200);
+      } else {
+        setModalStatus("error");
+      }
+    } catch (err) {
+      console.error("Failed to submit modal form:", err);
+      setModalStatus("error");
+    }
+  };
+
   return (
     <section
       className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] pt-[var(--page-margin)] pb-[clamp(3.5rem,7vw,7rem)] bg-white scroll-mt-[clamp(2rem,2.8vw,3.5rem)]"
@@ -272,6 +333,16 @@ export default function ServicesAnimate() {
               description={formatTypography(service.description)}
               price={formatTypography(service.price)}
               shape={service.shape}
+              onClick={() => {
+                setSelectedService(service);
+                setModalForm({
+                  name: "",
+                  contact: "",
+                  contactMethod: "WhatsApp",
+                  message: "",
+                });
+                setModalStatus("idle");
+              }}
             />
           ))}
 
@@ -285,6 +356,143 @@ export default function ServicesAnimate() {
           />
         </div>
       </div>
+
+      {/* Swiss Pop-up Modal Form */}
+      {selectedService && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+          <div className="bg-[#060606] border border-white/10 w-full max-w-lg p-6 md:p-10 relative rounded-none animate-in fade-in zoom-in-95 duration-200">
+            
+            {/* Plus indicators in corners to match site's style */}
+            <div className="absolute -top-2.5 -left-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
+            <div className="absolute -top-2.5 -right-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
+            <div className="absolute -bottom-2.5 -left-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
+            <div className="absolute -right-2.5 -bottom-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
+            
+            {/* Close button */}
+            <button 
+              onClick={() => {
+                setSelectedService(null);
+                setModalStatus("idle");
+              }}
+              className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors duration-200 uppercase text-[10px] tracking-widest font-bold font-sans cursor-pointer py-1 px-2 border border-white/10 hover:border-white/30 rounded-none"
+            >
+              Закрыть
+            </button>
+
+            <div className="space-y-6">
+              <div>
+                <span className="font-sans text-[10px] uppercase tracking-widest font-extrabold text-[#FD4B32]">Услуга</span>
+                <h3 className="font-headline font-bold text-white text-xl md:text-2xl mt-1 tracking-wide leading-tight">
+                  {selectedService.title}
+                </h3>
+                <p className="font-sans text-xs text-white/60 mt-2 leading-relaxed">
+                  {selectedService.description}
+                </p>
+              </div>
+
+              {modalStatus === "success" ? (
+                <div className="text-center py-8 space-y-4">
+                  <div className="w-12 h-12 bg-white text-black flex items-center justify-center mx-auto rounded-none">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h4 className="font-headline font-semibold text-white text-base leading-tight">
+                    Заявка отправлена
+                  </h4>
+                  <p className="font-sans text-xs text-neutral-400">
+                    Мы свяжемся с вами за 15 минут.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleModalSubmit} className="space-y-5">
+                  <div className="space-y-1.5">
+                    <label className="font-sans text-[10px] font-extrabold text-neutral-400 uppercase tracking-widest block">
+                      Ваше имя
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      disabled={modalStatus === "loading"}
+                      placeholder="Иван Иванов"
+                      value={modalForm.name}
+                      onChange={(e) => setModalForm({ ...modalForm, name: e.target.value })}
+                      className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="font-sans text-[10px] font-extrabold text-neutral-400 uppercase tracking-widest block">
+                      Телефон
+                    </label>
+                    <PhoneInput
+                      value={modalForm.contact}
+                      onChange={(val) => setModalForm({ ...modalForm, contact: val })}
+                      theme="dark"
+                      variant="box"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="font-sans text-[10px] font-extrabold text-neutral-400 uppercase tracking-widest block">
+                      Где с вами связаться?
+                    </label>
+                    <div className="flex flex-wrap gap-2 w-fit">
+                      {["WhatsApp", "Telegram", "Звонок"].map((method) => {
+                        const isActive = modalForm.contactMethod === method;
+                        return (
+                          <button
+                            key={method}
+                            type="button"
+                            disabled={modalStatus === "loading"}
+                            onClick={() => setModalForm({ ...modalForm, contactMethod: method })}
+                            className={`py-1.5 px-3 text-center font-sans text-[9px] uppercase tracking-wider font-bold transition-all duration-200 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${
+                              isActive
+                                ? "bg-white text-black border-white"
+                                : "bg-transparent text-neutral-400 border-white/10 hover:bg-white/5 hover:text-white"
+                            }`}
+                          >
+                            {formatTypography(method)}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="font-sans text-[10px] font-extrabold text-neutral-400 uppercase tracking-widest block">
+                      О проекте / Комментарий
+                    </label>
+                    <textarea
+                      rows={2}
+                      disabled={modalStatus === "loading"}
+                      placeholder="Что вас интересует в этой услуге?"
+                      value={modalForm.message}
+                      onChange={(e) => setModalForm({ ...modalForm, message: e.target.value })}
+                      className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 resize-none rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                  </div>
+
+                  {modalStatus === "error" && (
+                    <p className="text-red-500 font-sans text-xs font-semibold">
+                      Произошла ошибка. Пожалуйста, попробуйте еще раз.
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={modalStatus === "loading"}
+                    className="w-full flex items-center justify-center bg-white text-black font-medium py-3.5 tracking-wider uppercase text-xs transition-opacity duration-200 cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100"
+                  >
+                    {modalStatus === "loading" ? "Отправка..." : "Отправить заявку"}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

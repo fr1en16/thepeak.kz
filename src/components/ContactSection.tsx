@@ -193,6 +193,7 @@ export default function ContactSection() {
           name: formData.name.trim(),
           phone: formData.contact.trim(),
           comment: commentText,
+          source: "Главная страница (Связаться с нами)",
         }),
       });
 
