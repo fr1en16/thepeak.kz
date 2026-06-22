@@ -57,7 +57,8 @@ export async function POST(request: NextRequest) {
 
     const url = `https://api.telegram.org/bot${token}/sendMessage`;
 
-    const telegramResponse = await fetch(url, {
+    // 1. Prepare Telegram request promise
+    const telegramPromise = fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,6 +69,55 @@ export async function POST(request: NextRequest) {
         parse_mode: "MarkdownV2",
       }),
     });
+
+    // 2. Prepare Trello request promise if credentials are provided
+    const trelloKey = process.env.TRELLO_API_KEY;
+    const trelloToken = process.env.TRELLO_TOKEN;
+    const trelloListId = process.env.TRELLO_LIST_ID;
+
+    let trelloPromise = Promise.resolve();
+    if (trelloKey && trelloToken && trelloListId) {
+      const trelloUrl = new URL("https://api.trello.com/1/cards");
+      trelloUrl.searchParams.append("key", trelloKey);
+      trelloUrl.searchParams.append("token", trelloToken);
+      trelloUrl.searchParams.append("idList", trelloListId);
+
+      const trelloDesc = [
+        `Имя: ${name.trim()}`,
+        `Телефон: ${phone.trim()}`,
+        `Комментарий: ${comment && typeof comment === "string" ? comment.trim() : "Не указан"}`,
+        `Источник: ${source && typeof source === "string" ? source.trim() : "Не указан"}`
+      ].join("\n");
+
+      trelloPromise = fetch(trelloUrl.toString(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: `Заявка от ${name.trim()}`,
+          desc: trelloDesc,
+          pos: "top",
+        }),
+      }).then(async (res) => {
+        if (!res.ok) {
+          const errMsg = await res.text();
+          console.error("Trello API Error Response:", errMsg);
+        } else {
+          console.log("Successfully created Trello card for client:", name.trim());
+        }
+      }).catch((err) => {
+        console.error("Failed to submit request to Trello:", err);
+      });
+    } else {
+      console.warn("Trello integration is skipped: TRELLO_API_KEY, TRELLO_TOKEN or TRELLO_LIST_ID is missing");
+    }
+
+    // 3. Execute both requests concurrently, but await completion to keep serverless function active
+    const [telegramResponse] = await Promise.all([
+      telegramPromise,
+      trelloPromise
+    ]);
 
     if (!telegramResponse.ok) {
       const errorData = await telegramResponse.text();
