@@ -21,12 +21,12 @@ import PhoneInput from "@/components/ui/PhoneInput";
 
 // ─── Gallery Data ──────────────────────────────────────────────────────────────
 const diskokrasGallery = [
-  { name: "Покраска дисков", role: "Satin Black", src: "/cases/vozdukh.mp4", aspect: "4/5" },
-  { name: "Зеркальный блеск", role: "Полировка", src: "/cases/vozdukh.mp4", aspect: "9/16" },
-  { name: "Стиль кузова", role: "Carbon Fiber", src: "/cases/vozdukh.mp4", aspect: "4/5" },
-  { name: "Керамика 9H", role: "Защитный слой", src: "/cases/vozdukh.mp4", aspect: "9/16" },
-  { name: "Салон автомобиля", role: "Детализация", src: "/cases/vozdukh.mp4", aspect: "4/5" },
-  { name: "Вирусные Reels", role: "2.4M просмотров", src: "/cases/vozdukh.mp4", aspect: "9/16" },
+  { name: "Покраска дисков", role: "Satin Black", src: "/cases/diskokras/vozdukh.mp4", aspect: "4/5" },
+  { name: "Зеркальный блеск", role: "Полировка", src: "/cases/diskokras/vozdukh.mp4", aspect: "9/16" },
+  { name: "Стиль кузова", role: "Carbon Fiber", src: "/cases/diskokras/vozdukh.mp4", aspect: "4/5" },
+  { name: "Керамика 9H", role: "Защитный слой", src: "/cases/diskokras/vozdukh.mp4", aspect: "9/16" },
+  { name: "Салон автомобиля", role: "Детализация", src: "/cases/diskokras/vozdukh.mp4", aspect: "4/5" },
+  { name: "Вирусные Reels", role: "2.4M просмотров", src: "/cases/diskokras/vozdukh.mp4", aspect: "9/16" },
 ];
 
 // ─── Content Blocks ────────────────────────────────────────────────────────────
@@ -223,7 +223,7 @@ export default function DiskokrasCasePage() {
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
             style={{
-              backgroundImage: "url('/cases/diskokras.png')",
+              backgroundImage: "url('/cases/diskokras/diskokras.png')",
             }}
           />
 
@@ -231,7 +231,7 @@ export default function DiskokrasCasePage() {
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
             style={{
-              backgroundImage: "url('/cases/diskokras_m.webp')",
+              backgroundImage: "url('/cases/diskokras/diskokras_m.webp')",
             }}
           />
 
