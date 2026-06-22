@@ -15,16 +15,16 @@ interface CaseItem {
 
 const getLogoPath = (logo: string): string => {
   const name = logo.toLowerCase();
-  if (name.includes("gippo")) return "/logo/clot-5.webp";
-  if (name.includes("dodo")) return "/logo/clot-44.webp";
-  if (name.includes("sensata")) return "/logo/clot-11.webp";
-  if (name.includes("diskokras")) return "/logo/clot-2.webp";
-  if (name.includes("qazsip")) return "/logo/clot-41.webp";
-  if (name.includes("lukoil")) return "/logo/clot-12.webp";
-  if (name.includes("вираж")) return "/logo/clot-24.webp";
-  if (name.includes("тут")) return "/logo/clot-57.webp";
-  if (name.includes("metro")) return "/logo/clot-40.webp";
-  if (name.includes("compass")) return "/logo/clot-13.webp";
+  if (name.includes("qazsip")) return "/cases/logo/Qazsip.webp";
+  if (name.includes("gippo")) return "/cases/logo/Gippo.webp";
+  if (name.includes("sensata")) return "/cases/logo/Сенсата.webp";
+  if (name.includes("metro")) return "/cases/logo/Метро.webp";
+  if (name.includes("lukoil")) return "/cases/logo/Лукойл.webp";
+  if (name.includes("compass")) return "/cases/logo/Компасс.webp";
+  if (name.includes("dodo")) return "/cases/logo/Додо.webp";
+  if (name.includes("diskokras")) return "/cases/logo/Дискокрас.webp";
+  if (name.includes("вираж")) return "/cases/logo/Вираж.webp";
+  if (name.includes("марафон")) return "/cases/logo/Алматы Марафон.webp";
   return "";
 };
 
@@ -71,7 +71,7 @@ export default function CasesMasonrySection() {
     {
       logo: "SENSATA GROUP",
       type: "продакшн",
-      text: "Имиджевый продакшн полного цикла: от разработки концепции и сценария до съемок масштабных строительных объектов и финального монтажа.",
+      text: "Рыба плавает в воде, ест других рыб и иногда попадает на крючок. Некоторые рыбы большие, некоторые маленькие. Рыба — это рыба.",
       image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
       href: "#contacts",
@@ -79,7 +79,7 @@ export default function CasesMasonrySection() {
     {
       logo: "Diskokras",
       type: "smm",
-      text: "Построили личный бренд вокруг владельца, органический рост и живое комьюнити вместо обычной страницы автосервиса.",
+      text: "Построили личный бренд вокруг владельца, органический рост и живое комьюнити вместо обычной страницы сервиса.",
       image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
       href: "#contacts",
@@ -87,7 +87,7 @@ export default function CasesMasonrySection() {
     {
       logo: "Qazsip",
       type: "таргет",
-      text: "Настроили таргет, отсеяли нецелевой трафик — и в первый месяц получили 3 крупные продажи при цене лида меньше $1.30.",
+      text: "Настроили таргет, отсеяли нецелевой трафик — и в первый месяц 3 крупные продажи при цене лида меньше $1.30.",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-2",
       href: "#contacts",
@@ -95,7 +95,7 @@ export default function CasesMasonrySection() {
     {
       logo: "LUKOIL",
       type: "smm",
-      text: "Выстроили современную коммуникацию для крупнейшего бренда в нише: Instagram, TikTok, YouTube, дизайн дрифт-кара и х2 рост охватов каждый месяц.",
+      text: "Выстроили современную коммуникацию для одного из крупнейших брендов в нише: Instagram, TikTok, YouTube, дизайн для дрифт-команды и х2 рост охватов каждый месяц.",
       image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
       href: "#contacts",
@@ -111,7 +111,7 @@ export default function CasesMasonrySection() {
     {
       logo: "ВИРАЖ ГРУППА",
       type: "таргет",
-      text: "Таргет для автохолдинга Вираж: 40 000+ лидов для FAW Kazakhstan и 10 000+ заявок для UAZ Kazakhstan, стоимость лида от $2.2 до $3.7. Работаем более 3 лет.",
+      text: "Таргет для автомобильного холдинга Вираж — 40 000+ лидов для FAW Kazakhstan и 10 000+ заявок для UAZ Kazakhstan, стоимость лида от $2.2 до $3.7. Работаем более 3 лет.",
       image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
       href: "#contacts",
@@ -125,9 +125,17 @@ export default function CasesMasonrySection() {
       href: "#contacts",
     },
     {
+      logo: "АЛМАТЫ МАРАФОН",
+      type: "мероприятие",
+      text: "Рыба плавает в воде, ест других рыб и иногда попадает на крючок. Некоторые рыбы большие, некоторые маленькие. Рыба — это рыба.",
+      image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=800&q=80",
+      className: "col-span-1 lg:col-span-1 lg:row-span-1",
+      href: "#contacts",
+    },
+    {
       logo: "METRO",
       type: "продакшн",
-      text: "Продакшн рекламных и презентационных роликов для торговой сети: съемки торговых залов, новинок меню и ритейл-эвентов.",
+      text: "Рыба плавает в воде, ест других рыб и иногда попадает на крючок. Некоторые рыбы большие, некоторые маленькие. Рыба — это рыба.",
       image: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
       href: "#contacts",
