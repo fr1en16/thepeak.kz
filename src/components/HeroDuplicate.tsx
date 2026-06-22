@@ -10,20 +10,6 @@ export default function HeroDuplicate() {
   // Duplicate logos for infinite loop
   const marqueeItems = [...logoIds, ...logoIds, ...logoIds, ...logoIds];
 
-  const contentRef = React.useRef<HTMLDivElement>(null);
-  const [cardHeight, setCardHeight] = React.useState(0);
-
-  React.useEffect(() => {
-    if (!contentRef.current) return;
-    const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        setCardHeight(entry.target.clientHeight);
-      }
-    });
-    observer.observe(contentRef.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section className="col-span-12 relative w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] overflow-hidden min-h-screen flex flex-col justify-between pt-[clamp(4rem,8vw,6rem)] pb-0 border-b border-brand-gray/10 select-none" id="hero-alternative">
       {/* 1. Background Video */}
@@ -74,59 +60,61 @@ export default function HeroDuplicate() {
         </div>
       </div>
 
-      {/* Background card container */}
-      <div 
-        className="absolute bottom-0 left-0 w-full z-0 border-t border-brand-gray/10 pointer-events-none"
-        style={{
-          height: cardHeight,
-          backgroundColor: "rgba(232, 239, 242, 0.85)",
-        }}
-      />
-
       {/* Bottom Container: Logos + Stats Block */}
-      <div ref={contentRef} className="w-full relative flex flex-col z-10 mt-auto">
-        {/* Bottom Slider Row — hidden on mobile to save space */}
-        <div className="swiss-grid w-full hidden sm:grid" style={{ height: '84px' }}>
-          <div className="col-span-12 flex flex-row items-center h-full gap-6">
-            <div className="max-w-[200px] border-r border-white/10 pr-8 flex-shrink-0 self-stretch flex items-center">
-              <p className="font-headline font-bold text-white/70 uppercase text-[16px] leading-[1.2] m-0 tracking-wider text-left">
-                Нам доверяют лучшие
-              </p>
-            </div>
-            <div 
-              className="relative flex-grow overflow-hidden h-full flex items-center" 
-              style={{ 
-                maskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)', 
-                WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)' 
-              }}
-            >
+      <div className="w-full relative flex flex-col mt-auto">
+        {/* Background card container inside the same stacking context */}
+        <div 
+          className="absolute inset-0 w-full z-0 border-t border-brand-gray/10 pointer-events-none"
+          style={{
+            backgroundColor: "rgba(232, 239, 242, 0.85)",
+          }}
+        />
+
+        {/* Content rows inside bottom container with z-10 */}
+        <div className="w-full relative z-10 flex flex-col">
+          {/* Bottom Slider Row — hidden on mobile to save space */}
+          <div className="swiss-grid w-full hidden sm:grid" style={{ height: '84px' }}>
+            <div className="col-span-12 flex flex-row items-center h-full gap-6">
+              <div className="max-w-[200px] border-r border-white/10 pr-8 flex-shrink-0 self-stretch flex items-center">
+                <p className="font-headline font-bold text-white/70 uppercase text-[16px] leading-[1.2] m-0 tracking-wider text-left">
+                  Нам доверяют лучшие
+                </p>
+              </div>
               <div 
-                className="flex items-center gap-12 w-max"
-                style={{
-                  animation: 'marquee-scroll-horizontal 80s linear infinite',
+                className="relative flex-grow overflow-hidden h-full flex items-center" 
+                style={{ 
+                  maskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)', 
+                  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)' 
                 }}
               >
-                {marqueeItems.map((id, index) => (
-                  <div key={index} className="flex-shrink-0 h-[58px] flex items-center justify-center">
-                    <img
-                      src={`/logo/clot-${id}.webp`}
-                      alt="Partner Logo"
-                      className="h-full w-auto object-contain hover:opacity-80 transition-opacity duration-300 pointer-events-none"
-                      width={125}
-                      height={58}
-                    />
-                  </div>
-                ))}
+                <div 
+                  className="flex items-center gap-12 w-max"
+                  style={{
+                    animation: 'marquee-scroll-horizontal 80s linear infinite',
+                  }}
+                >
+                  {marqueeItems.map((id, index) => (
+                    <div key={index} className="flex-shrink-0 h-[58px] flex items-center justify-center">
+                      <img
+                        src={`/logo/clot-${id}.webp`}
+                        alt="Partner Logo"
+                        className="h-full w-auto object-contain hover:opacity-80 transition-opacity duration-300 pointer-events-none"
+                        width={125}
+                        height={58}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Divider Line */}
+          <div className="w-full border-t border-brand-gray/10" />
+
+          {/* Integrated Stats Block */}
+          <StatsBlock />
         </div>
-
-        {/* Divider Line */}
-        <div className="w-full border-t border-brand-gray/10" />
-
-        {/* Integrated Stats Block */}
-        <StatsBlock />
       </div>
     </section>
   );
