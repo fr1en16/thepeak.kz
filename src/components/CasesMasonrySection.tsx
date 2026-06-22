@@ -81,7 +81,7 @@ export default function CasesMasonrySection() {
       type: "smm",
       text: "Построили личный бренд вокруг владельца, органический рост и живое комьюнити вместо обычной страницы сервиса.",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
-      href: "#contacts",
+      href: "/cases/diskokras",
     },
     {
       logo: "Qazsip",
