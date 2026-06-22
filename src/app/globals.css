@@ -149,7 +149,7 @@ html {
 /* Apply difference blending globally to all headlines, text paragraphs, links, and custom blend elements, excluding no-invert class */
 h1:not(.no-invert), h2:not(.no-invert), h3:not(.no-invert), h4:not(.no-invert), h5:not(.no-invert), h6:not(.no-invert), p:not(.no-invert), nav a:not(.no-invert), a[href^="tel:"]:not(.no-invert), .inverttext {
   mix-blend-mode: difference !important;
-  isolation: auto !important;
+  isolation: isolate !important;
   color: #ffffff !important;
 }
 

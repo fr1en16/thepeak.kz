@@ -25,7 +25,7 @@ export default function Hero() {
             type="video/webm"
           />
           <source
-            src="https://dl.dropboxusercontent.com/s/tnj9qkfpdp5va13nb8f12/bg06.webm?rlkey=32ilxa7ag218eb08qkyni9qt2&st=8vhy8z75&dl=0"
+            src="/bg.mp4"
             type="video/mp4"
           />
         </video>
