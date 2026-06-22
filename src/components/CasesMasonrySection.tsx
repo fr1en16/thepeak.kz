@@ -8,7 +8,8 @@ interface CaseItem {
   logo: string;
   type: string;
   text: string;
-  image: string;
+  image?: string;
+  video?: string;
   className: string;
   href?: string;
 }
@@ -56,7 +57,7 @@ export default function CasesMasonrySection() {
       logo: "GIPPO",
       type: "smm, таргет",
       text: "Построили дерзкий street food-бренд в Instagram и TikTok: viral-контент, офлайн-активации и механики, которые давали х2 рост продаж за два дня.",
-      image: "https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=800&q=80",
+      image: "/cases/gippo.webp",
       className: "col-span-1 lg:col-span-1 lg:row-span-2",
       href: "#contacts",
     },
@@ -64,7 +65,7 @@ export default function CasesMasonrySection() {
       logo: "HIGHTOWER / DODO PIZZA",
       type: "сайт",
       text: "Лендинг для привлечения сотрудников и арендаторов помещений под пиццерии.",
-      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+      image: "/cases/dodo.webp",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
       href: "#contacts",
     },
@@ -72,7 +73,6 @@ export default function CasesMasonrySection() {
       logo: "SENSATA GROUP",
       type: "продакшн",
       text: "Рыба плавает в воде, ест других рыб и иногда попадает на крючок. Некоторые рыбы большие, некоторые маленькие. Рыба — это рыба.",
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
       href: "#contacts",
     },
@@ -80,7 +80,6 @@ export default function CasesMasonrySection() {
       logo: "Diskokras",
       type: "smm",
       text: "Построили личный бренд вокруг владельца, органический рост и живое комьюнити вместо обычной страницы сервиса.",
-      image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
       href: "#contacts",
     },
@@ -88,7 +87,7 @@ export default function CasesMasonrySection() {
       logo: "Qazsip",
       type: "таргет",
       text: "Настроили таргет, отсеяли нецелевой трафик — и в первый месяц 3 крупные продажи при цене лида меньше $1.30.",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+      image: "/cases/qazsip.webp",
       className: "col-span-1 lg:col-span-1 lg:row-span-2",
       href: "#contacts",
     },
@@ -96,7 +95,6 @@ export default function CasesMasonrySection() {
       logo: "LUKOIL",
       type: "smm",
       text: "Выстроили современную коммуникацию для одного из крупнейших брендов в нише: Instagram, TikTok, YouTube, дизайн для дрифт-команды и х2 рост охватов каждый месяц.",
-      image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
       href: "#contacts",
     },
@@ -104,7 +102,7 @@ export default function CasesMasonrySection() {
       logo: "compass",
       type: "брендинг, сайт",
       text: "Брендинг и сайт для Compass Consulting — одной из крупнейших консалтинговых компаний Узбекистана.",
-      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80",
+      image: "/cases/compass.webp",
       className: "col-span-1 lg:col-span-1 lg:row-span-2",
       href: "#contacts",
     },
@@ -112,7 +110,7 @@ export default function CasesMasonrySection() {
       logo: "ВИРАЖ ГРУППА",
       type: "таргет",
       text: "Таргет для автомобильного холдинга Вираж — 40 000+ лидов для FAW Kazakhstan и 10 000+ заявок для UAZ Kazakhstan, стоимость лида от $2.2 до $3.7. Работаем более 3 лет.",
-      image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
+      image: "/cases/viraz.webp",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
       href: "#contacts",
     },
@@ -120,7 +118,7 @@ export default function CasesMasonrySection() {
       logo: "Я ТУТ",
       type: "лого",
       text: "Логотип с тёплой природной эстетикой и глубоким смыслом для базы отдыха.",
-      image: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=800&q=80",
+      image: "/cases/yatut.webp",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
       href: "#contacts",
     },
@@ -128,7 +126,6 @@ export default function CasesMasonrySection() {
       logo: "АЛМАТЫ МАРАФОН",
       type: "мероприятие",
       text: "Рыба плавает в воде, ест других рыб и иногда попадает на крючок. Некоторые рыбы большие, некоторые маленькие. Рыба — это рыба.",
-      image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=800&q=80",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
       href: "#contacts",
     },
@@ -136,7 +133,8 @@ export default function CasesMasonrySection() {
       logo: "METRO",
       type: "продакшн",
       text: "Рыба плавает в воде, ест других рыб и иногда попадает на крючок. Некоторые рыбы большие, некоторые маленькие. Рыба — это рыба.",
-      image: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80",
+      image: "/cases/metro.webp",
+      video: "/cases/metro.mp4",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
       href: "#contacts",
     },
@@ -171,11 +169,25 @@ export default function CasesMasonrySection() {
                 className={item.className}
                 href={item.href}
                 background={
-                  <img
-                    src={item.image}
-                    alt={item.logo}
-                    className="w-full h-full object-cover opacity-85 transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
+                  item.video ? (
+                    <video
+                      src={item.video}
+                      poster={item.image}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover opacity-85 transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  ) : item.image ? (
+                    <img
+                      src={item.image}
+                      alt={item.logo}
+                      className="w-full h-full object-cover opacity-85 transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-black" />
+                  )
                 }
                 logo={renderBrandLogo(item.logo)}
                 type={item.type}

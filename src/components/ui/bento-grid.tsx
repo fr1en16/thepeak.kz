@@ -83,7 +83,7 @@ export const BentoCard = ({
     <motion.div
       ref={cardRef}
       className={cn(
-        "relative w-full h-full select-none cursor-pointer",
+        "group relative w-full h-full select-none cursor-pointer",
         className
       )}
       style={{
