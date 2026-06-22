@@ -66,9 +66,9 @@ export default function HeroDuplicate() {
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
             <Button01
               href="#contacts"
-              text="оставить заявку"
+              text={formatTypography("оставить заявку")}
               variant="light"
-              className="w-full sm:w-[200px]"
+              className="w-full sm:w-auto"
             />
           </div>
         </div>

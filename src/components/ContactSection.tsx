@@ -11,8 +11,8 @@ import {
   IconBrandTelegram,
   IconBrandWhatsapp,
 } from "@tabler/icons-react";
-import { Button01 } from "@/components/ui/nextjsshop-button";
 import { formatTypography } from "@/utils/typography";
+import PhoneInput from "@/components/ui/PhoneInput";
 
 type ContactInfoProps = React.ComponentProps<"div"> & {
   icon: React.ComponentType<{ className?: string }>;
@@ -165,13 +165,52 @@ export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: "",
     contact: "",
+    contactMethod: "WhatsApp",
     message: "",
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (!formData.name.trim() || !formData.contact.trim()) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      const commentText = formData.message.trim()
+        ? `${formData.message.trim()}\n\n[Способ связи: ${formData.contactMethod}]`
+        : `[Способ связи: ${formData.contactMethod}]`;
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          phone: formData.contact.trim(),
+          comment: commentText,
+        }),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setFormData({
+          name: "",
+          contact: "",
+          contactMethod: "WhatsApp",
+          message: "",
+        });
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error("Failed to submit form:", err);
+      setStatus("error");
+    }
   };
 
   const contactData: ContactInfoProps[] = [
@@ -194,68 +233,105 @@ export default function ContactSection() {
       className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] pt-[var(--page-margin)] pb-[clamp(3.5rem,7vw,7rem)] border-b border-brand-gray/10 bg-brand-light-gray/10 px-[var(--page-margin)] scroll-mt-[clamp(2rem,2.8vw,3.5rem)]" 
       id="contacts"
     >
-      <ContactCard contactInfo={contactData}>
-        {submitted ? (
+      <ContactCard 
+        contactInfo={contactData}
+        formSectionClassName="bg-[#060606] border-t md:border-t-0 md:border-l border-white/10"
+      >
+        {status === "success" ? (
           <div className="w-full text-center py-10 space-y-4">
-            <div className="w-12 h-12 bg-brand-red text-white flex items-center justify-center mx-auto rounded-none">
-              <IconSend className="w-5 h-5" stroke={1.2} />
+            <div className="w-12 h-12 bg-white text-black flex items-center justify-center mx-auto rounded-none">
+              <IconSend className="w-5 h-5" stroke={1.5} />
             </div>
-            <h3 className="font-headline font-semibold text-brand-gray text-base leading-[0.9]">
-              {formatTypography("Спасибо за заявку!")}
+            <h3 className="font-headline font-semibold text-white text-base leading-[1.2]">
+              {formatTypography("Заявка отправлена")}
             </h3>
-            <p className="font-sans font-medium text-brand-gray/70 text-sm">
-              {formatTypography("Мы свяжемся с вами в течение ближайшего времени.")}
+            <p className="font-sans font-medium text-neutral-400 text-sm">
+              {formatTypography("Мы свяжемся с вами за 15 минут.")}
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="w-full space-y-8">
             <div className="space-y-1.5">
-              <label className="font-sans text-xs sm:text-xs font-extrabold text-brand-gray uppercase tracking-widest block">
+              <label className="font-sans text-xs sm:text-xs font-extrabold text-neutral-400 uppercase tracking-widest block">
                 Ваше имя
               </label>
               <input
                 type="text"
                 required
+                disabled={status === "loading"}
                 placeholder="Иван Иванов"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full font-sans text-sm text-brand-gray bg-transparent border-b border-brand-gray/30 focus:border-brand-red py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-brand-gray/30"
+                className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-sans text-xs font-extrabold text-brand-gray uppercase tracking-widest block">
-                Контакты (Телефон / Telegram)
+              <label className="font-sans text-xs font-extrabold text-neutral-400 uppercase tracking-widest block">
+                Контакты (Телефон)
               </label>
-              <input
-                type="text"
-                required
-                placeholder="+7 (700) 000-00-00"
+              <PhoneInput
                 value={formData.contact}
-                onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                className="w-full font-sans text-sm text-brand-gray bg-transparent border-b border-brand-gray/30 focus:border-brand-red py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-brand-gray/30"
+                onChange={(val) => setFormData({ ...formData, contact: val })}
+                theme="dark"
+                variant="box"
+                required
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-sans text-xs font-extrabold text-brand-gray uppercase tracking-widest block">
+              <label className="font-sans text-xs font-extrabold text-neutral-400 uppercase tracking-widest block">
+                Где с вами связаться?
+              </label>
+              <div className="flex flex-wrap gap-2 w-fit">
+                {["WhatsApp", "Telegram", "Звонок"].map((method) => {
+                  const isActive = formData.contactMethod === method;
+                  return (
+                    <button
+                      key={method}
+                      type="button"
+                      disabled={status === "loading"}
+                      onClick={() => setFormData({ ...formData, contactMethod: method })}
+                      className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-all duration-200 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${
+                        isActive
+                          ? "bg-white text-black border-white"
+                          : "bg-transparent text-neutral-400 border-white/10 hover:bg-white/5 hover:text-white"
+                      }`}
+                    >
+                      {formatTypography(method)}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-sans text-xs font-extrabold text-neutral-400 uppercase tracking-widest block">
                 О вашем проекте
               </label>
               <textarea
                 rows={3}
+                disabled={status === "loading"}
                 placeholder="Расскажите о задачах и целях проекта..."
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full font-sans text-sm text-brand-gray bg-transparent border-b border-brand-gray/30 focus:border-brand-red py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-brand-gray/30"
+                className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 resize-none rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
 
-            <Button01
+            {status === "error" && (
+              <p className="text-red-500 font-sans text-xs font-semibold">
+                Произошла ошибка при отправке заявки. Пожалуйста, свяжитесь с нами напрямую или попробуйте ещё раз.
+              </p>
+            )}
+
+            <button
               type="submit"
-              text="Отправить заявку"
-              variant="light"
-              className="w-full justify-between"
-            />
+              disabled={status === "loading"}
+              className="w-full flex items-center justify-center bg-white text-black font-medium py-3.5 tracking-wider uppercase text-xs transition-opacity duration-200 cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100"
+            >
+              {status === "loading" ? "Отправка..." : "Отправить заявку"}
+            </button>
           </form>
         )}
       </ContactCard>

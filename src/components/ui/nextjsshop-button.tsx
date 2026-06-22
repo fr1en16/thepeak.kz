@@ -13,30 +13,48 @@ export const Button01 = React.forwardRef<HTMLElement, Button01Props>(
   ({ text, href, className, onClick, type = 'button', variant = 'light', ...props }, ref) => {
     const isDark = variant === 'dark';
     
-    const commonClass = cn(
-      "no-invert inline-flex items-center justify-between gap-3 px-5 py-5 whitespace-nowrap transition-all duration-300 group font-sans text-xs uppercase tracking-[0.2em] font-semibold border cursor-pointer select-none",
+    const outerClass = cn(
+      "no-invert group inline-flex items-stretch border p-0 cursor-pointer select-none rounded-none w-fit transition-colors duration-300",
       isDark
-        ? "border-white/20 text-white hover:border-[#FD4B32] hover:text-[#FD4B32] hover:bg-white/5"
-        : "border-black/20 text-[#1a1a1a] hover:border-[#FD4B32] hover:text-[#FD4B32] hover:bg-black/5",
+        ? "border-white/20 hover:border-[#FD4B32]"
+        : "border-[#060606]/20 hover:border-[#FD4B32]",
       className
+    );
+
+    const leftSquareClass = cn(
+      "w-12 h-12 flex items-center justify-center border-r transition-colors duration-300 shrink-0",
+      isDark
+        ? "bg-white text-black border-white/20 group-hover:bg-[#FD4B32] group-hover:text-white"
+        : "bg-[#060606] text-white border-[#060606]/20 group-hover:bg-[#FD4B32] group-hover:text-white"
+    );
+
+    const rightRectClass = cn(
+      "px-6 flex items-center font-sans text-xs uppercase tracking-[0.2em] font-bold transition-colors duration-300 flex-grow justify-center",
+      isDark
+        ? "bg-[#060606] text-white group-hover:text-[#FD4B32]"
+        : "bg-white text-black group-hover:text-[#FD4B32]"
     );
 
     const ArrowIcon = () => (
       <svg 
-        className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" 
+        className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
         fill="none" 
         viewBox="0 0 24 24" 
         stroke="currentColor" 
-        strokeWidth={2}
+        strokeWidth={2.5}
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
       </svg>
     );
 
-    const innerContent = (
+    const splitContent = (
       <>
-        <span>{text}</span>
-        <ArrowIcon />
+        <div className={leftSquareClass}>
+          <ArrowIcon />
+        </div>
+        <div className={rightRectClass}>
+          <span>{text}</span>
+        </div>
       </>
     );
 
@@ -44,13 +62,13 @@ export const Button01 = React.forwardRef<HTMLElement, Button01Props>(
       return (
         <a
           href={href}
-          className={commonClass}
+          className={outerClass}
           onClick={onClick as React.MouseEventHandler<HTMLAnchorElement>}
           ref={ref as React.ForwardedRef<HTMLAnchorElement>}
           {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
           style={{ borderRadius: 0 }}
         >
-          {innerContent}
+          {splitContent}
         </a>
       );
     }
@@ -58,13 +76,13 @@ export const Button01 = React.forwardRef<HTMLElement, Button01Props>(
     return (
       <button
         type={type}
-        className={commonClass}
+        className={outerClass}
         onClick={onClick}
         ref={ref as React.ForwardedRef<HTMLButtonElement>}
         {...props}
         style={{ borderRadius: 0 }}
       >
-        {innerContent}
+        {splitContent}
       </button>
     );
   }
