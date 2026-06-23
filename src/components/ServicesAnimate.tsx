@@ -9,7 +9,6 @@ import PhoneInput from "@/components/ui/PhoneInput";
 interface ServiceItem {
   title: string;
   description: string;
-  price: string;
   shape: string;
 }
 
@@ -18,49 +17,42 @@ const servicesData: ServiceItem[] = [
     title: "Smm & Digital",
     description:
       "Превращаем социальные сети в инструмент привлечения клиентов. Разрабатываем контент-стратегию, создаем контент, организуем инфлюенс-маркетинг и выстраиваем регулярную коммуникацию с аудиторией. Работаем на рост узнаваемости бренда, вовлеченности и количества обращений.",
-    price: "от 350 000 ₸",
     shape: "/shapes/shape-smm.svg",
   },
   {
     title: "Маркетинг и стратегия",
     description:
       "Начинаем с аудита бизнеса и маркетинга, чтобы увидеть реальные точки роста. Формируем стратегию на 6–12 месяцев, выстраиваем путь клиента и определяем инструменты, которые помогут привлекать больше клиентов и масштабировать продажи.",
-    price: "от 600 000 ₸",
     shape: "/shapes/shape-marketing.svg",
   },
   {
     title: "Таргет и реклама",
     description:
       "Запускаем рекламу, которая работает в связке с маркетинговой стратегией. Анализируем аудиторию, создаём рекламные связки, тестируем гипотезы и оптимизируем кампании на основе данных. Наша задача не просто привести трафик, а превратить его в заявки и продажи.",
-    price: "от 200 000 ₸",
     shape: "/shapes/shape-target.svg",
   },
   {
     title: "Дизайн и брендинг",
     description:
       "Создаём визуальную систему, которая помогает бизнесу выглядеть профессионально и запоминаться. Разрабатываем фирменный стиль, рекламные материалы, презентации и носители бренда, сохраняя единый образ на всех площадках.",
-    price: "от 100 000 ₸",
     shape: "/shapes/shape-design.svg",
   },
   {
     title: "Продакшн",
     description:
       "Берём на себя полный цикл создания контента: от идеи, сценария и подбора команды до съёмки, монтажа, графики и адаптации под рекламные площадки. Управляем всеми этапами производства, чтобы каждый материал работал на маркетинговые цели бизнеса и усиливал бренд.",
-    price: "Расчет индивидуально",
     shape: "/shapes/shape-production.svg",
   },
   {
     title: "Разработка и web",
     description:
       "Быстрые конверсионные сайты с продуманным UX/UI. Экспресс-лендинги для теста ниши, и корпоративные сайты.",
-    price: "от 250 000 ₸",
     shape: "/shapes/shape-web.svg",
   },
   {
     title: "Организация и сопровождение",
     description:
       "Технический надзор, аудит digital-процессов и контроль подрядчиков. Долгосрочная поддержка сайта и консалтинг по оптимизации маркетинга.",
-    price: "от 150 000 ₸",
     shape: "/shapes/shape-organization.svg",
   },
 ];
@@ -88,7 +80,6 @@ const EXIT_KEYFRAMES = {
 interface ServiceCardProps {
   title: string;
   description: string;
-  price: string;
   shape?: string;
   isCTA?: boolean;
   onClick?: () => void;
@@ -97,7 +88,6 @@ interface ServiceCardProps {
 const ServiceCard: React.FC<ServiceCardProps> = ({
   title,
   description,
-  price,
   shape,
   isCTA = false,
   onClick,
@@ -135,7 +125,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Only run hover animation on desktop screens
     if (window.innerWidth >= 768) {
       const side = getNearestSide(e);
       animate(scope.current, {
@@ -167,7 +156,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       className={cardClasses}
     >
       {/* Default State Content */}
-      <div className="flex flex-col justify-between h-full z-0">
+      <div className="flex flex-col mb-4 h-full z-0">
         <div>
           {shape && (
             <div className="mb-[clamp(1rem,1.8vw,2.2rem)] select-none">
@@ -181,17 +170,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
           <h3 className={`no-invert font-headline font-semibold text-[clamp(1.2rem,1.78vw,1.6rem)] mb-[clamp(0.75rem,1.5vw,1.5rem)] tracking-wide ${isCTA ? "text-white" : "text-brand-gray"} leading-[0.9]`}>
             {title}
           </h3>
-          {/* Description: always visible on mobile, hidden on desktop (shown via hover overlay) */}
-          <p className={`no-invert font-sans font-medium text-[clamp(0.9rem,0.9vw,0.95rem)] leading-relaxed mb-8 md:hidden ${isCTA ? "text-white/85" : "text-brand-gray/75"}`}>
-            {description}
-          </p>
         </div>
 
-        <div className="flex justify-between items-end mt-auto pt-4">
-          <div className={`no-invert font-sans text-[clamp(0.95rem,1vw,1.1rem)] font-semibold tracking-wider leading-[0.98] ${isCTA ? "text-white" : "text-brand-red"}`}>
-            {price}
-          </div>
-        </div>
+        {/* Description: Always visible on mobile, hidden on desktop (shown via hover overlay) */}
+        <p className={`no-invert font-sans font-medium text-[clamp(0.9rem,0.9vw,0.95rem)] leading-relaxed mt-auto md:hidden ${isCTA ? "text-white/85" : "text-brand-gray/75"}`}>
+          {description}
+        </p>
       </div>
 
       {/* Hover Reveal State Overlay - Hidden on mobile, active on desktop */}
@@ -200,9 +184,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         style={{
           clipPath: BOTTOM_RIGHT_CLIP,
         }}
-        className={`absolute inset-0 hidden md:flex flex-col justify-between pt-[clamp(1.5rem,2.5vw,3rem)] pr-[clamp(1.5rem,2.5vw,3rem)] pb-[clamp(1.5rem,2.5vw,3rem)] pl-[clamp(0.5rem,0.83vw,1rem)] z-10 pointer-events-none ${overlayBg}`}
+        className={`absolute inset-0 hidden md:flex flex-col pt-[clamp(1.5rem,2.5vw,3rem)] pr-[clamp(1.5rem,2.5vw,3rem)] pb-[clamp(1.5rem,2.5vw,3rem)] pl-[clamp(0.5rem,0.83vw,1rem)] z-10 pointer-events-none ${overlayBg}`}
       >
-        <div className="flex flex-col justify-between h-full w-full">
+        <div className="flex flex-col h-full w-full">
           <div>
             {shape && (
               <div className="mb-[clamp(1rem,1.8vw,2.2rem)] select-none">
@@ -217,16 +201,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             <h3 className="no-invert font-headline font-semibold text-white text-[clamp(1.2rem,1.78vw,1.6rem)] mb-[clamp(0.75rem,1.5vw,1.5rem)] tracking-wide leading-[0.9]">
               {title}
             </h3>
-            <p className="no-invert font-sans font-medium text-[clamp(0.75rem,0.9vw,0.95rem)] leading-relaxed mb-8 text-white/90">
-              {description}
-            </p>
           </div>
 
-          <div className="flex justify-between items-end mt-auto pt-4">
-            <div className="no-invert font-sans text-[clamp(0.95rem,1vw,1.1rem)] font-semibold tracking-wider leading-[0.98] text-white">
-              {price}
-            </div>
-          </div>
+          {/* Description perfectly aligned to the bottom grid alignment */}
+          <p className="no-invert font-sans font-medium text-[clamp(0.75rem,0.9vw,0.95rem)] leading-relaxed text-white/90 mt-auto">
+            {description}
+          </p>
         </div>
       </div>
     </div>
@@ -279,14 +259,12 @@ export default function ServicesAnimate() {
 
       if (response.ok) {
         setModalStatus("success");
-        // Reset form fields
         setModalForm({
           name: "",
           contact: "",
           contactMethod: "WhatsApp",
           message: "",
         });
-        // Close modal after delay
         setTimeout(() => {
           setSelectedService(null);
           setModalStatus("idle");
@@ -323,7 +301,7 @@ export default function ServicesAnimate() {
         </h2>
       </div>
 
-      {/* Nested Grid aligning with Swiss Grid columns */}
+      {/* Grid Container */}
       <div className="swiss-grid w-full">
         <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 border-t border-l border-brand-gray/15 rounded-none w-full">
           {servicesData.map((service, index) => (
@@ -331,7 +309,6 @@ export default function ServicesAnimate() {
               key={index}
               title={formatTypography(service.title)}
               description={formatTypography(service.description)}
-              price={formatTypography(service.price)}
               shape={service.shape}
               onClick={() => {
                 setSelectedService(service);
@@ -350,7 +327,6 @@ export default function ServicesAnimate() {
           <ServiceCard
             title={formatTypography("Есть индивидуальный запрос?")}
             description={formatTypography("Расскажите нам о ваших бизнес-целях. Мы подготовим индивидуальную стратегию продвижения и сделаем расчет стоимости под ваши требования.")}
-            price={formatTypography("Обсудить проект")}
             isCTA={true}
             onClick={handleScrollToContacts}
           />
@@ -359,26 +335,23 @@ export default function ServicesAnimate() {
 
       {/* Swiss Pop-up Modal Form */}
       {selectedService && (
-        <div 
+        <div
           onClick={() => {
             setSelectedService(null);
             setModalStatus("idle");
           }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 cursor-pointer"
         >
-          <div 
+          <div
             onClick={(e) => e.stopPropagation()}
             className="bg-[#060606] border border-white/10 w-full max-w-lg p-6 md:p-10 relative rounded-none animate-in fade-in zoom-in-95 duration-200 cursor-default"
           >
-            
-            {/* Plus indicators in corners to match site's style */}
             <div className="absolute -top-2.5 -left-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
             <div className="absolute -top-2.5 -right-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
             <div className="absolute -bottom-2.5 -left-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
             <div className="absolute -right-2.5 -bottom-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
-            
-            {/* Close button */}
-            <button 
+
+            <button
               onClick={() => {
                 setSelectedService(null);
                 setModalStatus("idle");
@@ -459,11 +432,10 @@ export default function ServicesAnimate() {
                             type="button"
                             disabled={modalStatus === "loading"}
                             onClick={() => setModalForm({ ...modalForm, contactMethod: method })}
-                            className={`py-1.5 px-3 text-center font-sans text-[9px] uppercase tracking-wider font-bold transition-all duration-200 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${
-                              isActive
-                                ? "bg-white text-black border-white"
-                                : "bg-transparent text-neutral-400 border-white/10 hover:bg-white/5 hover:text-white"
-                            }`}
+                            className={`py-1.5 px-3 text-center font-sans text-[9px] uppercase tracking-wider font-bold transition-all duration-200 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${isActive
+                              ? "bg-white text-black border-white"
+                              : "bg-transparent text-neutral-400 border-white/10 hover:bg-white/5 hover:text-white"
+                              }`}
                           >
                             {formatTypography(method)}
                           </button>
