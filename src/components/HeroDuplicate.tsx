@@ -55,8 +55,12 @@ export default function HeroDuplicate() {
       {/* Top Content Row */}
       <div className="swiss-grid w-full relative flex-grow flex items-start md:items-center">
         <div className="col-span-12 text-left">
-          {/* Увеличили минимальный порог с 1.92rem до 2.5rem */}
-          <h1 className="font-headline font-semibold text-white text-[clamp(2.5rem,3.07vw,2.77rem)] leading-[0.95] tracking-[-0.03em] mb-8 md:mb-12">
+          {/* Разгоняем clamp:
+      - На мобилках стартует с 2.5rem
+      - На средних экранах плавно растет как 4.5vw от ширины окна
+      - На 27 дюймовых мониторах упирается в жирные, заметные 5.5rem
+    */}
+          <h1 className="font-headline font-semibold text-white text-[clamp(2.5rem,4.5vw,5.5rem)] leading-[0.95] tracking-[-0.03em] mb-8 md:mb-12">
             {/* Mobile: 4 lines; Desktop: 2 lines */}
             <span className="inverttext block md:hidden">{"Маркетинг,"}</span>
             <span className="inverttext block md:hidden">{"который работает"}</span>
@@ -65,7 +69,7 @@ export default function HeroDuplicate() {
             <span className="inverttext hidden md:block">{"Маркетинг, который работает"}</span>
             <span className="inverttext hidden md:block">{"от идеи до результата"}</span>
           </h1>
-          <p className="description-text text-white/80 mb-8 md:mb-[4.5rem]">
+          <p className="description-text text-white/80 mb-8 md:mb-[4.5rem] text-[clamp(0.95rem,1.1vw,1.25rem)]">
             <span className="inverttext">{formatTypography("Приходите к нам с задачей «сделать не как у всех».")}</span> <br />
             <span className="inverttext">{formatTypography("Мы создаём маркетинг, который становится референсом для других.")}</span>
           </p>
@@ -75,8 +79,10 @@ export default function HeroDuplicate() {
               href="#contacts"
               text={formatTypography("оставить заявку")}
               variant="light"
-              /* Убрали мелкий scale-[0.7] для мобилок, теперь кнопка полноразмерная */
-              className="w-full sm:w-auto scale-100 origin-left"
+              /* max-w-[80%] — забирает лишнюю длину на мобилке.
+                md:max-w-none — отменяет это ограничение на компьютерах.
+              */
+              className="w-full max-w-[80%] sm:w-auto md:max-w-none scale-100 origin-left"
             />
           </div>
         </div>
