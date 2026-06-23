@@ -54,22 +54,6 @@ const metrics = [
   },
 ];
 
-// ─── Content Blocks ────────────────────────────────────────────────────────────
-const contentBlocks = [
-  {
-    chapter: "01 / Концепция",
-    text: "Работа с крупным девелопером требует особого визуального языка. Нашей задачей было показать не просто объемы бетона и квадратные метры, а передать масштаб архитектурной мысли, статус объектов и лайфстайл будущих резидентов Sensata.",
-  },
-  {
-    chapter: "02 / Реализация",
-    text: "Мы выстроили комплексный продакшн: от динамичной аэросъемки строящихся объектов до выверенных интерьерных пролетов и атмосферного стрит-контента. Особый упор делался на работу со светом и премиальную цветокоррекцию, подчеркивающую фактуру натуральных материалов, геометрию фасадов и чистоту линий.",
-  },
-  {
-    chapter: "03 / Результат",
-    text: "Создана бесперебойная система генерации контента высокого класса. Выпущенные Reels успешно решают сразу несколько задач: презентуют локации потенциальным покупателям, демонстрируют надежность инвесторам и закрепляют за Sensata образ застройщика, формирующего современный облик города.",
-  },
-];
-
 // ─── Grain SVG as data URL ─────────────────────────────────────────────────────
 const GRAIN_STYLE: React.CSSProperties = {
   backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
@@ -325,45 +309,6 @@ export default function SensataCasePage() {
           </div>
         </section>
 
-        {/* ── MAIN CONTENT Blocks ───────────────────────────── */}
-        {contentBlocks.map(({ chapter, text }, idx) => (
-          <section
-            key={chapter}
-            className="relative border-b border-white/10"
-            style={{ background: idx % 2 === 1 ? "rgba(255,255,255,0.02)" : "transparent" }}
-          >
-            <div
-              className="pointer-events-none absolute inset-0 z-0"
-              style={{ ...GRAIN_STYLE, opacity: 0.06 }}
-            />
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-px px-[var(--page-margin)] py-20 md:py-28">
-              <div className="lg:col-span-3 flex flex-col justify-between gap-6 mb-8 lg:mb-0">
-                <div>
-                  <span className="no-invert font-sans text-[10px] uppercase tracking-[0.3em] text-white/25 block mb-3">
-                    {chapter}
-                  </span>
-                  <div className="h-px w-10 bg-white/15" />
-                </div>
-                <div
-                  className="no-invert font-sans font-semibold text-white/05 select-none"
-                  style={{ fontSize: "clamp(5rem, 8vw, 9rem)", lineHeight: 1 }}
-                  aria-hidden
-                >
-                  {String(idx + 1).padStart(2, "0")}
-                </div>
-              </div>
-              <div className="lg:col-span-9 lg:pl-16">
-                <p
-                  className="no-invert font-sans text-white/85 leading-[1.6]"
-                  style={{ fontSize: "clamp(1.15rem, 2vw, 1.65rem)", letterSpacing: "-0.02em" }}
-                >
-                  {formatTypography(text)}
-                </p>
-              </div>
-            </div>
-          </section>
-        ))}
-
         {/* ── REELS GRID GALLERY ────────────────────────────── */}
         <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -480,8 +425,8 @@ export default function SensataCasePage() {
                             type="button"
                             onClick={() => setFormData({ ...formData, contactMethod: method })}
                             className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-colors duration-200 border cursor-pointer rounded-none ${isActive
-                                ? "bg-white text-black border-white"
-                                : "bg-transparent text-white/50 border-white/20 hover:bg-white/5"
+                              ? "bg-white text-black border-white"
+                              : "bg-transparent text-white/50 border-white/20 hover:bg-white/5"
                               }`}
                           >
                             {formatTypography(method)}
