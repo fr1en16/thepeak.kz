@@ -55,7 +55,8 @@ export default function HeroDuplicate() {
       {/* Top Content Row */}
       <div className="swiss-grid w-full relative flex-grow flex items-start md:items-center">
         <div className="col-span-12 text-left">
-          <h1 className="font-headline font-semibold text-white text-[clamp(1.92rem,3.07vw,2.77rem)] leading-[0.9] tracking-[-0.02em] mb-8 md:mb-12">
+          {/* Увеличили минимальный порог с 1.92rem до 2.5rem */}
+          <h1 className="font-headline font-semibold text-white text-[clamp(2.5rem,3.07vw,2.77rem)] leading-[0.95] tracking-[-0.03em] mb-8 md:mb-12">
             {/* Mobile: 4 lines; Desktop: 2 lines */}
             <span className="inverttext block md:hidden">{"Маркетинг,"}</span>
             <span className="inverttext block md:hidden">{"который работает"}</span>
@@ -69,21 +70,21 @@ export default function HeroDuplicate() {
             <span className="inverttext">{formatTypography("Мы создаём маркетинг, который становится референсом для других.")}</span>
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full">
             <Button01
               href="#contacts"
               text={formatTypography("оставить заявку")}
               variant="light"
-              className="sm:w-auto scale-[0.7] origin-left md:scale-100"
+              /* Убрали мелкий scale-[0.7] для мобилок, теперь кнопка полноразмерная */
+              className="w-full sm:w-auto scale-100 origin-left"
             />
           </div>
         </div>
       </div>
-
       {/* Bottom Container: Logos + Stats Block */}
       <div className="w-full relative flex flex-col mt-auto">
         {/* Background card container inside the same stacking context */}
-        <div 
+        <div
           className="absolute inset-0 w-full z-0 border-t border-brand-gray/10 pointer-events-none"
           style={{
             backgroundColor: "rgba(232, 239, 242, 0.85)",
