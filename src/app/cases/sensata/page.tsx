@@ -18,37 +18,38 @@ import {
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
 
-// ─── Reels Data ────────────────────────────────────────────────────────────────
-const diskokrasReels = [
-  { name: "Вирусные Reels", role: "2.4M просмотров", src: "https://www.instagram.com/p/DZfWSb9oQXr/embed" },
-  { name: "Зеркальный блеск", role: "Полировка кузова", src: "https://www.instagram.com/p/DTz2TOajWS-/embed" },
-  { name: "Стиль и эстетика", role: "Процесс детейлинга", src: "https://www.instagram.com/p/DRUDlTzjeQT/embed" },
-  { name: "Покраска дисков", role: "Satin Black", src: "https://www.instagram.com/p/DQoqwVhiCQV/embed" },
-  { name: "Керамика 9H", role: "Защитный слой", src: "https://www.instagram.com/p/DPdaihLiBRX/embed" },
-  { name: "Салон автомобиля", role: "Детализация", src: "https://www.instagram.com/p/DOsG35vjfLX/embed" },
-  { name: "Атмосфера бренда", role: "Смыслы и вайб", src: "https://www.instagram.com/p/DYtdfQuoQsh/embed" },
+// ─── Sensata Reels Data (8 items) ─────────────────────────────────────────────
+const sensataReels = [
+  { name: "Обзор проекта", role: "Архитектура", src: "https://www.instagram.com/p/DUsvHZGiOs7/embed" },
+  { name: "Динамика строительства", role: "Процесс", src: "https://www.instagram.com/p/DT2uze3iIBv/embed" },
+  { name: "Эстетика комплекса", role: "Лайфстайл", src: "https://www.instagram.com/p/DSm3RA0iErr/embed" },
+  { name: "Внимание к деталям", role: "Интерьеры", src: "https://www.instagram.com/p/DSKg0HECMcO/embed" },
+  { name: "Аэросъемка локации", role: "Масштаб", src: "https://www.instagram.com/p/DR1jwDvCEDb/embed" },
+  { name: "Атмосфера района", role: "Вечерний вайб", src: "https://www.instagram.com/p/DUpSV74iPd7/embed" },
+  { name: "Презентация планировок", role: "Пространство", src: "https://www.instagram.com/p/DTdCYT-iCkL/embed" },
+  { name: "Премиальный визуал", role: "Концепция", src: "https://www.instagram.com/p/DW872iMCC96/embed" },
 ];
 
-// ─── Metrics Data ──────────────────────────────────────────────────────────────
+// ─── Metrics Data (Hidden by default in layout) ──────────────────────────────
 const metrics = [
   {
-    value: "2024",
-    label: "Ноябрь — старт масштабной работы с проектом",
+    value: "2025",
+    label: "Масштабный видеопродакшн для объектов застройщика",
     index: "01",
   },
   {
     value: "100%",
-    label: "Полностью выстроили SMM‑направление с нуля",
+    label: "Передача архитектурной эстетики и премиальности",
     index: "02",
   },
   {
     value: "Reels",
-    label: "Запуск органического роста через смыслы и алгоритмы",
+    label: "Регулярный выпуск вовлекающего видеоконтента",
     index: "03",
   },
   {
-    value: "Бренд",
-    label: "Переход от страницы автосервиса к сильному комьюнити",
+    value: "Статус",
+    label: "Формирование имиджа технологичного девелопера",
     index: "04",
   },
 ];
@@ -57,15 +58,15 @@ const metrics = [
 const contentBlocks = [
   {
     chapter: "01 / Концепция",
-    text: "Мы начали работу с проектом в ноябре 2024 года. И с самого начала понимали — здесь нельзя делать обычный автосервисный Instagram. Нужно было создать бренд, у которого есть лицо, энергия и свой вайб.",
+    text: "Работа с крупным девелопером требует особого визуального языка. Нашей задачей было показать не просто объемы бетона и квадратные метры, а передать масштаб архитектурной мысли, статус объектов и лайфстайл будущих резидентов Sensata.",
   },
   {
     chapter: "02 / Реализация",
-    text: "Постробили весь проект вокруг личного бренда владельца: его знаний, подачи, отношения к машинам и людям. Именно это стало фундаментом всего визуала, контента и коммуникации. Мы полностью выстроили SMM‑направление: от позиционирования и атмосферы аккаунта до форматов Reels, подачи, смыслов и визуального стиля.",
+    text: "Мы выстроили комплексный продакшн: от динамичной аэросъемки строящихся объектов до выверенных интерьерных пролетов и атмосферного стрит-контента. Особый упор делался на работу со светом и премиальную цветокоррекцию, подчеркивающую фактуру натуральных материалов, геометрию фасадов и чистоту линий.",
   },
   {
     chapter: "03 / Результат",
-    text: "За время работы Diskokras начал расти органически. Люди начали приходить через рекомендации, сохранения, Reels и узнаваемость. Сегодня аккаунт воспринимается уже не как страница сервиса, а как полноценный автомобильный бренд со своей эстетикой, подачей и комьюнити вокруг него. И это именно тот результат, который мы любим больше всего — когда бренд начинает вызывать эмоцию.",
+    text: "Создана бесперебойная система генерации контента высокого класса. Выпущенные Reels успешно решают сразу несколько задач: презентуют локации потенциальным покупателям, демонстрируют надежность инвесторам и закрепляют за Sensata образ застройщика, формирующего современный облик города.",
   },
 ];
 
@@ -163,7 +164,7 @@ function ContactInfoDark({
 }
 
 // ─── Main Page Component ───────────────────────────────────────────────────────
-export default function DiskokrasCasePage() {
+export default function SensataCasePage() {
   const [scrollY, setScrollY] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
@@ -194,16 +195,14 @@ export default function DiskokrasCasePage() {
       >
         {/* ── HERO ─────────────────────────────────────────── */}
         <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
-          {/* Background Cover Image (Desktop) */}
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
-            style={{ backgroundImage: "url('/cases/diskokras/diskokras.webp')" }}
+            style={{ backgroundImage: "url('/cases/sensata/sensata.webp')" }}
           />
 
-          {/* Background Cover Image (Mobile) */}
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
-            style={{ backgroundImage: "url('/cases/diskokras/diskokras_m.webp')" }}
+            style={{ backgroundImage: "url('/cases/sensata/sensata_m.webp')" }}
           />
 
           <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#060606] via-[#060606]/40 to-[#060606]/85" />
@@ -230,7 +229,7 @@ export default function DiskokrasCasePage() {
                   className="no-invert font-sans font-semibold text-white leading-[0.9] tracking-tight"
                   style={{ fontSize: "clamp(3rem, 9vw, 9rem)" }}
                 >
-                  Diskokras
+                  Sensata
                 </h1>
               </div>
 
@@ -239,14 +238,14 @@ export default function DiskokrasCasePage() {
                   className="no-invert font-sans text-white/60 leading-relaxed"
                   style={{ fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)" }}
                 >
-                  {formatTypography("Построение полноценного автомобильного бренда со своей эстетикой, подачей и комьюнити вокруг личного бренда.")}
+                  {formatTypography("Комплексный видеопродакшн для крупного девелопера: трансляция масштаба архитектуры, динамики строительства и премиальной эстетики жизни.")}
                 </p>
 
                 <div className="grid grid-cols-3 gap-px border border-white/10">
                   {[
-                    { label: "Старт", value: "Ноябрь 2024" },
-                    { label: "Услуга", value: "SMM" },
-                    { label: "Направление", value: "Автосервис" },
+                    { label: "Старт", value: "2025" },
+                    { label: "Услуга", value: "Продакшн" },
+                    { label: "Направление", value: "Недвижимость" },
                   ].map(({ label, value }) => (
                     <div
                       key={label}
@@ -264,7 +263,7 @@ export default function DiskokrasCasePage() {
                 </div>
 
                 <a
-                  href="https://instagram.com/diskokras.kz"
+                  href="https://www.instagram.com/sensata_almaty/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="no-invert inline-flex items-center gap-3 border border-white/20 text-white text-xs uppercase tracking-[0.2em] font-sans px-6 py-4 hover:border-white/60 hover:bg-white/5 transition-all duration-300 group w-full justify-between"
@@ -279,13 +278,13 @@ export default function DiskokrasCasePage() {
             <div className="mt-16 flex items-center gap-4">
               <div className="h-px flex-1 bg-white/10" />
               <span className="no-invert text-[10px] font-sans text-white/20 uppercase tracking-[0.3em]">
-                {formatTypography("2024 — н.\u00a0в.")}
+                {formatTypography("2025")}
               </span>
             </div>
           </div>
         </section>
 
-        {/* ── METRICS GRID (Hidden as per original) ─────────── */}
+        {/* ── METRICS GRID (Hidden as per reference layout) ── */}
         <section className="relative border-b border-white/10 hidden">
           <div
             className="pointer-events-none absolute inset-0 z-0"
@@ -368,7 +367,7 @@ export default function DiskokrasCasePage() {
         {/* ── REELS GRID GALLERY ────────────────────────────── */}
         <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {diskokrasReels.map((item, index) => (
+            {sensataReels.map((item, index) => (
               <div
                 key={index}
                 className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
@@ -481,8 +480,8 @@ export default function DiskokrasCasePage() {
                             type="button"
                             onClick={() => setFormData({ ...formData, contactMethod: method })}
                             className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-colors duration-200 border cursor-pointer rounded-none ${isActive
-                              ? "bg-white text-black border-white"
-                              : "bg-transparent text-white/50 border-white/20 hover:bg-white/5"
+                                ? "bg-white text-black border-white"
+                                : "bg-transparent text-white/50 border-white/20 hover:bg-white/5"
                               }`}
                           >
                             {formatTypography(method)}
