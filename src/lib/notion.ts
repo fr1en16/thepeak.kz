@@ -7,7 +7,8 @@ export async function getCaseData(slug: string) {
         throw new Error("Missing NOTION_DATABASE_ID in .env.local");
     }
 
-    const response = await notion.databases.query({
+    // Обходим поломанный кэш типов Верселя через (notion.databases as any)
+    const response = await (notion.databases as any).query({
         database_id: process.env.NOTION_DATABASE_ID,
         filter: {
             property: 'slug',
@@ -15,7 +16,7 @@ export async function getCaseData(slug: string) {
         },
     });
 
-    if (!response.results.length) return null;
+    if (!response?.results?.length) return null;
 
     const page: any = response.results[0];
     const p = page.properties;
@@ -26,8 +27,8 @@ export async function getCaseData(slug: string) {
     const reels = rawReels
         .split('\n')
         .filter(Boolean)
-        .map((line) => {
-            const [url = '', name = '', role = ''] = line.split('|').map((s) => s.trim());
+        .map((line: string) => {
+            const [url = '', name = '', role = ''] = line.split('|').map((s: string) => s.trim());
             const cleanUrl = url.split('?')[0].replace('/reels/', '/p/').replace('/reel/', '/p/') + 'embed';
             return {
                 name: name || 'Reel',
@@ -48,7 +49,7 @@ export async function getCaseData(slug: string) {
             { chapter: txt(p.block1_title), text: txt(p.block1_text) },
             { chapter: txt(p.block2_title), text: txt(p.block2_text) },
             { chapter: txt(p.block3_title), text: txt(p.block3_text) },
-        ].filter(b => Boolean(b.chapter) && Boolean(b.text)),
+        ].filter((b: any) => Boolean(b.chapter) && Boolean(b.text)),
         reels,
     };
 }
