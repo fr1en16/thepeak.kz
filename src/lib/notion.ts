@@ -3,28 +3,38 @@ import { Client } from '@notionhq/client';
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
 export async function getCaseData(slug: string) {
-    if (!process.env.NOTION_DATABASE_ID) return null;
+    if (!process.env.NOTION_DATABASE_ID) {
+        console.error("DEBUG: DATABASE_ID не задан");
+        return null;
+    }
 
     try {
+        console.log("DEBUG: Ищем slug:", slug);
         const response = await (notion.databases as any).query({
             database_id: process.env.NOTION_DATABASE_ID,
             filter: {
                 property: 'slug',
-                title: { equals: slug.toLowerCase() },
+                title: { equals: slug }, // Попробуем точное совпадение (может быть чувствительно к регистру!)
             },
         });
+
+        console.log("DEBUG: Notion ответил, найдено записей:", response?.results?.length);
 
         if (!response?.results?.length) return null;
 
         const page: any = response.results[0];
         const p = page.properties;
 
-        // Самый безопасный метод получения текста
+        // Добавляем логирование для каждого поля, чтобы найти, где падает
+        console.log("DEBUG: Данные страницы загружены");
+
         const txt = (field: any) => {
-            if (!field) return "";
-            if (field.type === "title") return field.title?.[0]?.plain_text || "";
-            if (field.type === "rich_text") return field.rich_text?.[0]?.plain_text || "";
-            return "";
+            try {
+                if (!field) return "";
+                if (field.type === "title") return field.title?.[0]?.plain_text || "";
+                if (field.type === "rich_text") return field.rich_text?.[0]?.plain_text || "";
+                return "";
+            } catch (e) { return ""; }
         };
 
         return {
@@ -35,16 +45,11 @@ export async function getCaseData(slug: string) {
             service: txt(p.service),
             industry: txt(p.industry),
             insta_url: txt(p.insta_url),
-            // Безопасная сборка блоков
-            contentBlocks: [
-                { chapter: txt(p.block1_title), text: txt(p.block1_text) },
-                { chapter: txt(p.block2_title), text: txt(p.block2_text) },
-                { chapter: txt(p.block3_title), text: txt(p.block3_text) },
-            ].filter((b) => b.chapter.length > 0 || b.text.length > 0),
+            contentBlocks: [],
             reels: []
         };
     } catch (e) {
-        console.error("Ошибка Notion:", e);
-        return null;
+        console.error("DEBUG: ОШИБКА NOTION API:", e);
+        throw e; // Пробрасываем ошибку, чтобы она попала в логи Vercel
     }
 }
