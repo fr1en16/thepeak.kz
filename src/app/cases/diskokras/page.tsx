@@ -20,13 +20,13 @@ import PhoneInput from "@/components/ui/PhoneInput";
 
 // ─── Reels Data ────────────────────────────────────────────────────────────────
 const diskokrasReels = [
-  { name: "Вирусные Reels", role: "2.4M просмотров", src: "https://www.instagram.com/p/DZfWSb9oQXr/embed" },
-  { name: "Зеркальный блеск", role: "Полировка кузова", src: "https://www.instagram.com/p/DTz2TOajWS-/embed" },
-  { name: "Стиль и эстетика", role: "Процесс детейлинга", src: "https://www.instagram.com/p/DRUDlTzjeQT/embed" },
-  { name: "Покраска дисков", role: "Satin Black", src: "https://www.instagram.com/p/DQoqwVhiCQV/embed" },
-  { name: "Керамика 9H", role: "Защитный слой", src: "https://www.instagram.com/p/DPdaihLiBRX/embed" },
-  { name: "Салон автомобиля", role: "Детализация", src: "https://www.instagram.com/p/DOsG35vjfLX/embed" },
-  { name: "Атмосфера бренда", role: "Смыслы и вайб", src: "https://www.instagram.com/p/DYtdfQuoQsh/embed" },
+  { src: "https://www.instagram.com/p/DZfWSb9oQXr/embed" },
+  { src: "https://www.instagram.com/p/DTz2TOajWS-/embed" },
+  { src: "https://www.instagram.com/p/DRUDlTzjeQT/embed" },
+  { src: "https://www.instagram.com/p/DQoqwVhiCQV/embed" },
+  { src: "https://www.instagram.com/p/DPdaihLiBRX/embed" },
+  { src: "https://www.instagram.com/p/DOsG35vjfLX/embed" },
+  { src: "https://www.instagram.com/p/DYtdfQuoQsh/embed" },
 ];
 
 // ─── Metrics Data ──────────────────────────────────────────────────────────────
@@ -194,13 +194,11 @@ export default function DiskokrasCasePage() {
       >
         {/* ── HERO ─────────────────────────────────────────── */}
         <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
-          {/* Background Cover Image (Desktop) */}
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
             style={{ backgroundImage: "url('/cases/diskokras/diskokras.webp')" }}
           />
 
-          {/* Background Cover Image (Mobile) */}
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
             style={{ backgroundImage: "url('/cases/diskokras/diskokras_m.webp')" }}
@@ -371,28 +369,17 @@ export default function DiskokrasCasePage() {
             {diskokrasReels.map((item, index) => (
               <div
                 key={index}
-                className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
+                className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden"
               >
-                {/* Окно-маска. Строгие пропорции 9/16. */}
+                {/* Окно-маска. Строгие пропорции 9/16. Чистый iframe без метаданных */}
                 <div className="relative w-full aspect-[9/16] bg-zinc-900 overflow-hidden">
                   <iframe
                     src={item.src}
                     className="absolute -left-[1px] -top-[54px] w-[calc(100%+2px)] h-[calc(100%+56px)] border-0 rounded-none max-w-none"
                     scrolling="no"
                     allow="encrypted-media"
-                    title={item.name}
                     loading="lazy"
                   />
-                </div>
-
-                {/* Технический подвал */}
-                <div className="p-4 border-t border-white/5 bg-black/40 z-10 relative">
-                  <p className="no-invert font-sans font-medium text-xs text-white uppercase tracking-wider mb-0.5">
-                    {item.name}
-                  </p>
-                  <p className="no-invert font-mono text-[10px] text-white/40 uppercase tracking-widest">
-                    {item.role}
-                  </p>
                 </div>
               </div>
             ))}
