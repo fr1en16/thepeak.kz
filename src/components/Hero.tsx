@@ -33,7 +33,7 @@ export default function Hero() {
 
       {/* 2. Left Column: Headline and CTA - spans columns 1-6 (ends at 50% line) */}
       <div className="col-span-12 lg:col-span-6 flex flex-col justify-center items-start text-left relative self-center">
-        <h1 className="font-headline font-black text-white text-[clamp(1.15rem,3.2vw,4rem)] leading-[1.1] tracking-[-0.02em] uppercase mb-[clamp(1.2rem,3vw,4rem)]">
+        <h1 className="font-headline font-black text-white text-[clamp(1.15rem,4.8vw,6.5rem)] leading-[0.95] tracking-[-0.03em] uppercase mb-[clamp(1.2rem,3vw,3.5rem)]">
           <span className="block md:whitespace-nowrap lg:whitespace-nowrap">Маркетинг,</span>
           <span className="block md:whitespace-nowrap lg:whitespace-nowrap">который работает от идеи</span>
           <span className="block md:whitespace-nowrap lg:whitespace-nowrap">до готового результата</span>
