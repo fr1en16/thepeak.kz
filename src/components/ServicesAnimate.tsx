@@ -344,7 +344,7 @@ export default function ServicesAnimate() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-[#060606] border border-white/10 w-full max-w-lg p-6 md:p-10 relative rounded-none animate-in fade-in zoom-in-95 duration-200 cursor-default"
+            className="bg-[#060606] border border-white/10 w-full max-w-lg p-6 md:p-10 relative rounded-none animate-in fade-in zoom-in-95 duration-400 cursor-default"
           >
             <div className="absolute -top-2.5 -left-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
             <div className="absolute -top-2.5 -right-2.5 text-[#FD4B32] select-none text-xl font-light pointer-events-none">+</div>
@@ -356,7 +356,7 @@ export default function ServicesAnimate() {
                 setSelectedService(null);
                 setModalStatus("idle");
               }}
-              className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors duration-200 cursor-pointer p-2 border border-white/10 hover:border-white/30 rounded-none flex items-center justify-center"
+              className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors duration-400 cursor-pointer p-2 border border-white/10 hover:border-white/30 rounded-none flex items-center justify-center"
               aria-label="Close modal"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -402,7 +402,7 @@ export default function ServicesAnimate() {
                       placeholder="Иван Иванов"
                       value={modalForm.name}
                       onChange={(e) => setModalForm({ ...modalForm, name: e.target.value })}
-                      className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-400 rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -432,7 +432,7 @@ export default function ServicesAnimate() {
                             type="button"
                             disabled={modalStatus === "loading"}
                             onClick={() => setModalForm({ ...modalForm, contactMethod: method })}
-                            className={`py-1.5 px-3 text-center font-sans text-[9px] uppercase tracking-wider font-bold transition-all duration-200 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${isActive
+                            className={`py-1.5 px-3 text-center font-sans text-[9px] uppercase tracking-wider font-bold transition-all duration-400 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${isActive
                               ? "bg-white text-black border-white"
                               : "bg-transparent text-neutral-400 border-white/10 hover:bg-white/5 hover:text-white"
                               }`}
@@ -454,7 +454,7 @@ export default function ServicesAnimate() {
                       placeholder="Что вас интересует в этой услуге?"
                       value={modalForm.message}
                       onChange={(e) => setModalForm({ ...modalForm, message: e.target.value })}
-                      className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 resize-none rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-400 resize-none rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -467,7 +467,7 @@ export default function ServicesAnimate() {
                   <button
                     type="submit"
                     disabled={modalStatus === "loading"}
-                    className="w-full flex items-center justify-center bg-white text-black font-medium py-3.5 tracking-wider uppercase text-xs transition-opacity duration-200 cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100"
+                    className="w-full flex items-center justify-center bg-white text-black font-medium py-3.5 tracking-wider uppercase text-xs transition-opacity duration-400 cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100"
                   >
                     {modalStatus === "loading" ? "Отправка..." : "Отправить заявку"}
                   </button>
