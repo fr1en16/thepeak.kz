@@ -6,6 +6,7 @@ import { MorphingText } from "@/components/ui/liquid-text";
 interface ServiceItem {
   title: string;
   description: string;
+  price: string;
   shape: string;
 }
 
@@ -20,36 +21,42 @@ const servicesData: ServiceItem[] = [
     title: "Маркетинг и стратегия",
     description:
       "Начинаем с аудита бизнеса и маркетинга, чтобы увидеть реальные точки роста. Формируем стратегию на 6–12 месяцев, выстраиваем путь клиента и определяем инструменты, которые помогут привлекать больше клиентов и масштабировать продажи.",
+
     shape: "/shapes/shape-marketing.svg",
   },
   {
     title: "Таргет и реклама",
     description:
       "Запускаем рекламу, которая работает в связке с маркетинговой стратегией. Анализируем аудиторию, создаём рекламные связки, тестируем гипотезы и оптимизируем кампании на основе данных. Наша задача не просто привести трафик, а превратить его в заявки и продажи.",
+
     shape: "/shapes/shape-target.svg",
   },
   {
     title: "Дизайн и брендинг",
     description:
       "Создаём визуальную систему, которая помогает бизнесу выглядеть профессионально и запоминаться. Разрабатываем фирменный стиль, рекламные материалы, презентации и носители бренда, сохраняя единый образ на всех площадках.",
+
     shape: "/shapes/shape-design.svg",
   },
   {
     title: "Продакшн",
     description:
       "Берём на себя полный цикл создания контента: от идеи, сценария и подбора команды до съёмки, монтажа, графики и адаптации под рекламные площадки. Управляем всеми этапами производства, чтобы каждый материал работал на маркетинговые цели бизнеса и усиливал бренд.",
+
     shape: "/shapes/shape-production.svg",
   },
   {
     title: "Разработка и web",
     description:
       "Быстрые конверсионные сайты с продуманным UX/UI. Экспресс-лендинги для теста ниши, и корпоративные сайты.",
+
     shape: "/shapes/shape-web.svg",
   },
   {
     title: "Организация и сопровождение",
     description:
       "Технический надзор, аудит digital-процессов и контроль подрядчиков. Долгосрочная поддержка сайта и консалтинг по оптимизации маркетинга.",
+
     shape: "/shapes/shape-organization.svg",
   },
 ];
@@ -67,7 +74,7 @@ export default function Services() {
       className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] py-[clamp(3.5rem,7vw,7rem)] border-b border-brand-gray/10 bg-white"
       id="services"
     >
-      {/* Section Header */}
+      {/* Section Header aligning with Swiss Grid columns */}
       <div className="swiss-grid mb-[clamp(2.5rem,5vw,4.5rem)]">
         <h2 className="col-span-12 font-headline font-black text-brand-gray text-[clamp(1.02rem,2.24vw,1.92rem)] leading-[1.1] uppercase select-none no-invert">
           <span className="inverttext">Услуги, которые</span> <br />
@@ -87,7 +94,7 @@ export default function Services() {
         </h2>
       </div>
 
-      {/* Grid Container */}
+      {/* Nested Grid aligning with Swiss Grid columns */}
       <div className="swiss-grid w-full">
         <div className="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 border-t border-l border-brand-gray/15 rounded-none w-full">
           {servicesData.map((service, index) => (
@@ -95,32 +102,32 @@ export default function Services() {
               key={index}
               className="isometric-group group relative flex flex-col justify-between p-[clamp(1.5rem,2.5vw,3rem)] bg-white border-r border-b border-brand-gray/15 hover:bg-brand-light-gray/30 transition-colors duration-300 min-h-[clamp(16rem,22vw,25rem)] rounded-none"
             >
-              {/* Контентный блок карточки */}
-              <div className="flex-1 flex flex-col mb-8">
-                {/* Иконка и Заголовок остаются наверху */}
-                <div>
-                  {service.shape && (
-                    <div className="mb-[clamp(1rem,1.8vw,2.2rem)] select-none">
-                      <img
-                        src={service.shape}
-                        alt=""
-                        className="w-[clamp(1.2rem,1.8vw,2rem)] h-[clamp(1.2rem,1.8vw,2rem)] object-contain"
-                      />
-                    </div>
-                  )}
-                  <h3 className="font-headline font-bold text-brand-gray text-[clamp(0.6rem,0.76vw,0.8rem)] uppercase mb-[clamp(0.75rem,1.5vw,1.5rem)] tracking-wide">
-                    {service.title}
-                  </h3>
-                </div>
-
-                {/* Описание благодаря mt-auto падает строго вниз контентной зоны */}
-                <p className="font-sans font-medium text-brand-gray/75 text-[clamp(0.75rem,0.9vw,0.95rem)] leading-relaxed mt-auto">
+              <div>
+                {/* Shape Icon */}
+                {service.shape && (
+                  <div className="mb-[clamp(1rem,1.8vw,2.2rem)] select-none">
+                    <img
+                      src={service.shape}
+                      alt=""
+                      className="w-[clamp(1.2rem,1.8vw,2rem)] h-[clamp(1.2rem,1.8vw,2rem)] object-contain"
+                    />
+                  </div>
+                )}
+                {/* Title */}
+                <h3 className="font-headline font-bold text-brand-gray text-[clamp(0.6rem,0.76vw,0.8rem)] uppercase mb-[clamp(0.75rem,1.5vw,1.5rem)] tracking-wide">
+                  {service.title}
+                </h3>
+                {/* Description */}
+                <p className="font-sans font-medium text-brand-gray/75 text-[clamp(0.75rem,0.9vw,0.95rem)] leading-relaxed mb-8">
                   {service.description}
                 </p>
               </div>
 
-              {/* Ряд со стрелкой (Action-зона) */}
-              <div className="flex justify-end items-end pt-4 border-t border-transparent">
+              {/* Bottom Price & Call-To-Action Arrow Row */}
+              <div className="flex justify-between items-end mt-auto pt-4">
+                <div className="font-sans text-[clamp(0.85rem,1vw,1.1rem)] font-extrabold text-brand-red uppercase tracking-wider">
+                  {service.price}
+                </div>
                 <div className="p-2 cursor-pointer bg-brand-light-gray group-hover:bg-brand-red group-hover:text-white text-brand-red transition-all duration-300 rounded-none">
                   <svg
                     className="w-3 h-3 transition-transform duration-300 text-current group-hover:translate-x-1"
@@ -158,24 +165,22 @@ export default function Services() {
             </div>
           ))}
 
-          {/* Последний слот: CTA карточка */}
+          {/* Last slot: Elegant CTA card */}
           <div
             onClick={handleScrollToContacts}
             className="group relative flex flex-col justify-between p-[clamp(1.5rem,2.5vw,3rem)] bg-brand-red hover:bg-brand-gray text-white border-r border-b border-brand-gray/15 transition-all duration-300 min-h-[clamp(16rem,22vw,25rem)] cursor-pointer rounded-none"
           >
-            <div className="flex-1 flex flex-col mb-8">
-              <div>
-                <h3 className="font-headline font-black text-[clamp(0.7rem,0.89vw,0.96rem)] uppercase tracking-wide mb-[clamp(0.75rem,1.5vw,1.5rem)]">
-                  Есть индивидуальный запрос?
-                </h3>
-              </div>
-              <p className="font-sans font-medium text-[clamp(0.75rem,0.9vw,0.95rem)] opacity-85 leading-relaxed mt-auto">
+            <div>
+              <h3 className="font-headline font-black text-[clamp(0.7rem,0.89vw,0.96rem)] uppercase tracking-wide mb-[clamp(0.75rem,1.5vw,1.5rem)]">
+                Есть индивидуальный запрос?
+              </h3>
+              <p className="font-sans font-medium text-[clamp(0.75rem,0.9vw,0.95rem)] opacity-85 leading-relaxed">
                 Расскажите нам о ваших бизнес-целях. Мы подготовим индивидуальную
                 стратегию продвижения и сделаем расчет стоимости под ваши
                 требования.
               </p>
             </div>
-            <div className="flex justify-between items-center pt-4">
+            <div className="flex justify-between items-center mt-auto pt-4">
               <span className="font-sans font-bold uppercase tracking-wider text-[clamp(0.75rem,0.9vw,0.9rem)]">
                 Обсудить проект
               </span>
