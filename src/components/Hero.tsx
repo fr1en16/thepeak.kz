@@ -10,7 +10,7 @@ import SphereChart from "./SphereChart";
 export default function Hero() {
   return (
     <section className="col-span-12 grid grid-cols-12 gap-[var(--grid-gap)] pt-[clamp(5rem,7vw,7rem)] pb-[clamp(1.5rem,3vw,3.5rem)] relative min-h-screen w-full">
-      
+
       {/* 1. Full-Bleed Fluid Video Background (Layered at bottom, breaks out of grid margins) */}
       <div className="absolute top-0 left-0 w-[calc(100%+2*var(--page-margin))] h-full overflow-hidden -ml-[var(--page-margin)]">
         <video
@@ -33,12 +33,12 @@ export default function Hero() {
 
       {/* 2. Left Column: Headline and CTA - spans columns 1-6 (ends at 50% line) */}
       <div className="col-span-12 lg:col-span-6 flex flex-col justify-center items-start text-left relative self-center">
-        <h1 className="font-headline font-black text-white text-[clamp(1.15rem,3.2vw,2.88rem)] leading-[1.1] tracking-[-0.02em] uppercase mb-[clamp(1rem,2vw,2rem)]">
+        <h1 className="font-headline font-black text-white text-[clamp(1.15rem,3.2vw,4rem)] leading-[1.1] tracking-[-0.02em] uppercase mb-[clamp(1.2rem,3vw,4rem)]">
           <span className="block md:whitespace-nowrap lg:whitespace-nowrap">Маркетинг,</span>
           <span className="block md:whitespace-nowrap lg:whitespace-nowrap">который работает от идеи</span>
           <span className="block md:whitespace-nowrap lg:whitespace-nowrap">до готового результата</span>
         </h1>
-        
+
         <p className="font-sans font-medium text-white/80 text-[clamp(0.875rem,1.2vw,1.25rem)] leading-relaxed mb-[clamp(1.5rem,3vw,2.5rem)]">
           Приходите к нам с задачей «сделать не как у всех». Мы создаём маркетинг, который становится референсом для других.
         </p>
@@ -61,7 +61,7 @@ export default function Hero() {
       <div className="col-span-12 grid grid-cols-12 gap-[var(--grid-gap)] mt-auto relative">
 
 
-        
+
         {/* Card 1: 83% Retention Ring Chart - spans 4 columns */}
         <div className="col-span-12 md:col-span-6 lg:col-span-4 group relative flex flex-row items-center gap-4 bg-white/10 backdrop-blur-md border border-white/10 p-[clamp(1rem,1.5vw,1.75rem)] rounded-none hover:bg-white/15 transition-all duration-300 min-h-[clamp(8rem,10vw,12rem)] shadow-sm">
           {/* 3D Canvas Box */}
