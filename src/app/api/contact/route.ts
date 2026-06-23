@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Helper function to escape special characters for Telegram MarkdownV2
-function escapeMarkdownV2(text: string): string {
-  // First escape backslashes, then other markdown special characters
+// Helper function to escape HTML special characters for Telegram HTML mode
+function escapeHtml(text: string): string {
   return text
-    .replace(/\\/g, "\\\\")
-    .replace(/[_*[\]()~`>#+\-=|{}.!]/g, "\\$&");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 export async function POST(request: NextRequest) {
@@ -38,21 +38,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const escapedName = escapeMarkdownV2(name.trim());
-    const escapedPhone = escapeMarkdownV2(phone.trim());
-    const escapedComment = comment && typeof comment === "string" && comment.trim()
-      ? escapeMarkdownV2(comment.trim())
+    const safeName = escapeHtml(name.trim());
+    const safePhone = escapeHtml(phone.trim());
+    const safeComment = comment && typeof comment === "string" && comment.trim()
+      ? escapeHtml(comment.trim())
       : "Не указан";
-    const escapedSource = source && typeof source === "string" && source.trim()
-      ? escapeMarkdownV2(source.trim())
+    const safeSource = source && typeof source === "string" && source.trim()
+      ? escapeHtml(source.trim())
       : "Не указан";
 
     const text = [
-      "⚡️ *Новая заявка с сайта*",
-      `👤 *Имя:* ${escapedName}`,
-      `📞 *Телефон:* ${escapedPhone}`,
-      `💬 *Проект:* ${escapedComment}`,
-      `📍 *Источник:* ${escapedSource}`
+      "⚡️ <b>Новая заявка с сайта</b>",
+      `👤 <b>Имя:</b> ${safeName}`,
+      `📞 <b>Телефон:</b> ${safePhone}`,
+      `💬 <b>Проект:</b> ${safeComment}`,
+      `📍 <b>Источник:</b> ${safeSource}`
     ].join("\n");
 
     const url = `https://api.telegram.org/bot${token}/sendMessage`;
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         chat_id: chatId,
         text: text,
-        parse_mode: "MarkdownV2",
+        parse_mode: "HTML",
       }),
     });
 

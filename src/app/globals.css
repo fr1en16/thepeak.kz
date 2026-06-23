@@ -2,7 +2,24 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Bento grid span overrides — Tailwind v4 dynamic classes fix */
+.col-span-1 { grid-column: span 1 / span 1; }
+.col-span-2 { grid-column: span 2 / span 2; }
+.row-span-1 { grid-row: span 1 / span 1; }
+.row-span-2 { grid-row: span 2 / span 2; }
+
+@media (min-width: 640px) {
+  .sm\:col-span-2 { grid-column: span 2 / span 2; }
+}
+@media (min-width: 1024px) {
+  .lg\:col-span-1 { grid-column: span 1 / span 1; }
+  .lg\:col-span-2 { grid-column: span 2 / span 2; }
+  .lg\:row-span-1 { grid-row: span 1 / span 1; }
+  .lg\:row-span-2 { grid-row: span 2 / span 2; }
+}
+
 @custom-variant dark (&:is(.dark *));
+
 
 @theme {
   --color-brand-red: #FD4B32;
@@ -149,7 +166,7 @@ html {
 /* Apply difference blending globally to all headlines, text paragraphs, links, and custom blend elements, excluding no-invert class */
 h1:not(.no-invert), h2:not(.no-invert), h3:not(.no-invert), h4:not(.no-invert), h5:not(.no-invert), h6:not(.no-invert), p:not(.no-invert), nav a:not(.no-invert), a[href^="tel:"]:not(.no-invert), .inverttext {
   mix-blend-mode: difference !important;
-  isolation: isolate !important;
+  isolation: auto !important;
   color: #ffffff !important;
 }
 

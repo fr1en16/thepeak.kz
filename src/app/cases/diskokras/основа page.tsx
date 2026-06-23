@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
+import HorizontalMediaGallery from "@/components/ui/bento-gallery";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,39 +19,14 @@ import {
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
 
-// ─── Reels Data ────────────────────────────────────────────────────────────────
-const diskokrasReels = [
-  { name: "Вирусные Reels", role: "2.4M просмотров", src: "https://www.instagram.com/p/DZfWSb9oQXr/embed" },
-  { name: "Зеркальный блеск", role: "Полировка кузова", src: "https://www.instagram.com/p/DTz2TOajWS-/embed" },
-  { name: "Стиль и эстетика", role: "Процесс детейлинга", src: "https://www.instagram.com/p/DRUDlTzjeQT/embed" },
-  { name: "Покраска дисков", role: "Satin Black", src: "https://www.instagram.com/p/DQoqwVhiCQV/embed" },
-  { name: "Керамика 9H", role: "Защитный слой", src: "https://www.instagram.com/p/DPdaihLiBRX/embed" },
-  { name: "Салон автомобиля", role: "Детализация", src: "https://www.instagram.com/p/DOsG35vjfLX/embed" },
-  { name: "Атмосфера бренда", role: "Смыслы и вайб", src: "https://www.instagram.com/p/DYtdfQuoQsh/embed" },
-];
-
-// ─── Metrics Data ──────────────────────────────────────────────────────────────
-const metrics = [
-  {
-    value: "2024",
-    label: "Ноябрь — старт масштабной работы с проектом",
-    index: "01",
-  },
-  {
-    value: "100%",
-    label: "Полностью выстроили SMM‑направление с нуля",
-    index: "02",
-  },
-  {
-    value: "Reels",
-    label: "Запуск органического роста через смыслы и алгоритмы",
-    index: "03",
-  },
-  {
-    value: "Бренд",
-    label: "Переход от страницы автосервиса к сильному комьюнити",
-    index: "04",
-  },
+// ─── Gallery Data ──────────────────────────────────────────────────────────────
+const diskokrasGallery = [
+  { name: "Покраска дисков", role: "Satin Black", src: "/cases/diskokras/vozdukh.mp4", aspect: "4/5" },
+  { name: "Зеркальный блеск", role: "Полировка", src: "/cases/diskokras/vozdukh.mp4", aspect: "9/16" },
+  { name: "Стиль кузова", role: "Carbon Fiber", src: "/cases/diskokras/vozdukh.mp4", aspect: "4/5" },
+  { name: "Керамика 9H", role: "Защитный слой", src: "/cases/diskokras/vozdukh.mp4", aspect: "9/16" },
+  { name: "Салон автомобиля", role: "Детализация", src: "/cases/diskokras/vozdukh.mp4", aspect: "4/5" },
+  { name: "Вирусные Reels", role: "2.4M просмотров", src: "/cases/diskokras/vozdukh.mp4", aspect: "9/16" },
 ];
 
 // ─── Content Blocks ────────────────────────────────────────────────────────────
@@ -61,7 +37,7 @@ const contentBlocks = [
   },
   {
     chapter: "02 / Реализация",
-    text: "Постробили весь проект вокруг личного бренда владельца: его знаний, подачи, отношения к машинам и людям. Именно это стало фундаментом всего визуала, контента и коммуникации. Мы полностью выстроили SMM‑направление: от позиционирования и атмосферы аккаунта до форматов Reels, подачи, смыслов и визуального стиля.",
+    text: "Построили весь проект вокруг личного бренда владельца: его знаний, подачи, отношения к машинам и людям. Именно это стало фундаментом всего визуала, контента и коммуникации. Мы полностью выстроили SMM‑направление: от позиционирования и атмосферы аккаунта до форматов Reels, подачи, смыслов и визуального стиля.",
   },
   {
     chapter: "03 / Результат",
@@ -108,6 +84,7 @@ function ContactInfoDark({
           <Icon className="h-5 w-5" />
         </a>
         <div className="relative flex items-center h-12 w-48 overflow-hidden">
+          {/* Display Phone Number */}
           <span
             className={cn(
               "font-sans font-bold text-sm text-white uppercase tracking-wider transition-all duration-300 absolute left-0 whitespace-nowrap no-invert",
@@ -117,6 +94,7 @@ function ContactInfoDark({
             {value}
           </span>
 
+          {/* Hover Icons Container (Telegram & WhatsApp only) */}
           <div
             className={cn(
               "flex items-center gap-3 transition-all duration-300 absolute left-0",
@@ -125,6 +103,7 @@ function ContactInfoDark({
                 : "opacity-0 scale-95 pointer-events-none"
             )}
           >
+            {/* Telegram Link */}
             <a
               href="https://t.me/+77000868608"
               target="_blank"
@@ -135,6 +114,7 @@ function ContactInfoDark({
               <IconBrandTelegram className="w-5 h-5" stroke={1.2} />
             </a>
 
+            {/* WhatsApp Link */}
             <a
               href="https://wa.me/77000868608"
               target="_blank"
@@ -162,20 +142,59 @@ function ContactInfoDark({
   );
 }
 
-// ─── Main Page Component ───────────────────────────────────────────────────────
+// ─── Component ─────────────────────────────────────────────────────────────────
 export default function DiskokrasCasePage() {
   const [scrollY, setScrollY] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
-    contact: "+7",
+    contact: "",
     contactMethod: "WhatsApp",
     message: "",
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (!formData.name.trim() || !formData.contact.trim()) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+
+    try {
+      const commentText = formData.message.trim()
+        ? `${formData.message.trim()}\n\n[Способ связи: ${formData.contactMethod}]`
+        : `[Способ связи: ${formData.contactMethod}]`;
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          phone: formData.contact.trim(),
+          comment: commentText,
+          source: "Кейс Diskokras (Хотите такие же результаты и контент?)",
+        }),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setFormData({
+          name: "",
+          contact: "",
+          contactMethod: "WhatsApp",
+          message: "",
+        });
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error("Failed to submit form:", err);
+      setStatus("error");
+    }
   };
 
   useEffect(() => {
@@ -186,31 +205,46 @@ export default function DiskokrasCasePage() {
 
   return (
     <>
+      {/* ── Global nav (sits above, inherits site styles) ── */}
       <Navigation />
 
+      {/* ══════════════════════════════════════════════════════
+          DARK WRAPPER — full dark theme isolated from swiss-grid
+          ══════════════════════════════════════════════════════ */}
       <div
         className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)]"
         style={{ backgroundColor: "#060606", color: "#ffffff" }}
       >
+
         {/* ── HERO ─────────────────────────────────────────── */}
         <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
+
+          {/* Background Cover Image (Desktop) */}
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
-            style={{ backgroundImage: "url('/cases/diskokras.webp')" }}
+            style={{
+              backgroundImage: "url('/cases/diskokras/diskokras.png')",
+            }}
           />
 
+          {/* Background Cover Image (Mobile) */}
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
-            style={{ backgroundImage: "url('/cases/diskokras_m.webp')" }}
+            style={{
+              backgroundImage: "url('/cases/diskokras/diskokras_m.webp')",
+            }}
           />
 
+          {/* Gradient Overlay for Text Readability */}
           <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#060606] via-[#060606]/40 to-[#060606]/85" />
 
+          {/* Grain overlay */}
           <div
             className="pointer-events-none absolute inset-0 z-0"
             style={{ ...GRAIN_STYLE, opacity: 0.13 }}
           />
 
+          {/* Back link */}
           <div className="relative z-10 px-[var(--page-margin)] pt-40">
             <Link
               href="/#cases"
@@ -221,8 +255,11 @@ export default function DiskokrasCasePage() {
             </Link>
           </div>
 
+          {/* Hero headline */}
           <div className="relative z-10 px-[var(--page-margin)] pt-16 pb-20 md:pb-28">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-8 items-end">
+
+              {/* Left: eyebrow + title */}
               <div className="lg:col-span-8 space-y-6">
                 <h1
                   className="no-invert font-sans font-semibold text-white leading-[0.9] tracking-tight"
@@ -232,6 +269,7 @@ export default function DiskokrasCasePage() {
                 </h1>
               </div>
 
+              {/* Right: description + meta */}
               <div className="lg:col-span-4 space-y-8">
                 <p
                   className="no-invert font-sans text-white/60 leading-relaxed"
@@ -240,6 +278,7 @@ export default function DiskokrasCasePage() {
                   {formatTypography("Построение полноценного автомобильного бренда со своей эстетикой, подачей и комьюнити вокруг личного бренда.")}
                 </p>
 
+                {/* Meta grid */}
                 <div className="grid grid-cols-3 gap-px border border-white/10">
                   {[
                     { label: "Старт", value: "Ноябрь 2024" },
@@ -261,6 +300,7 @@ export default function DiskokrasCasePage() {
                   ))}
                 </div>
 
+                {/* CTA */}
                 <a
                   href="https://instagram.com/diskokras.kz"
                   target="_blank"
@@ -274,6 +314,7 @@ export default function DiskokrasCasePage() {
               </div>
             </div>
 
+            {/* Bottom rule */}
             <div className="mt-16 flex items-center gap-4">
               <div className="h-px flex-1 bg-white/10" />
               <span className="no-invert text-[10px] font-sans text-white/20 uppercase tracking-[0.3em]">
@@ -283,66 +324,37 @@ export default function DiskokrasCasePage() {
           </div>
         </section>
 
-        {/* ── METRICS GRID (Hidden as per original) ─────────── */}
-        <section className="relative border-b border-white/10 hidden">
-          <div
-            className="pointer-events-none absolute inset-0 z-0"
-            style={{ ...GRAIN_STYLE, opacity: 0.08 }}
-          />
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-            {metrics.map(({ value, label, index }) => (
-              <div
-                key={index}
-                className="relative p-8 md:p-10 border-r border-b border-white/10 last:border-r-0 sm:[&:nth-child(2)]:border-r-0 lg:[&:nth-child(2)]:border-r lg:[&:nth-child(4)]:border-r-0 flex flex-col justify-between gap-10 group overflow-hidden"
-                style={{ minHeight: "240px", transition: "background 0.4s ease" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-              >
-                <span className="no-invert font-sans text-[10px] text-white/20 uppercase tracking-[0.3em]">
-                  {index}
-                </span>
-                <div>
-                  <div
-                    className="no-invert font-sans font-semibold text-white leading-none tracking-tight"
-                    style={{ fontSize: "clamp(2.8rem, 5vw, 5.5rem)" }}
-                  >
-                    {value}
-                  </div>
-                  <p
-                    className="no-invert font-sans text-white/40 mt-4 leading-snug"
-                    style={{ fontSize: "clamp(0.75rem, 1vw, 0.9rem)" }}
-                  >
-                    {formatTypography(label)}
-                  </p>
-                </div>
-                <div
-                  className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500"
-                  style={{ backgroundColor: "#FD4B32" }}
-                />
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── MAIN CONTENT Blocks ───────────────────────────── */}
+        {/* ── MAIN CONTENT — Asymmetric Swiss blocks ───────── */}
         {contentBlocks.map(({ chapter, text }, idx) => (
           <section
             key={chapter}
             className="relative border-b border-white/10"
-            style={{ background: idx % 2 === 1 ? "rgba(255,255,255,0.02)" : "transparent" }}
+            style={{
+              background:
+                idx % 2 === 1
+                  ? "rgba(255,255,255,0.02)"
+                  : "transparent",
+            }}
           >
             <div
               className="pointer-events-none absolute inset-0 z-0"
               style={{ ...GRAIN_STYLE, opacity: 0.06 }}
             />
+
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-px px-[var(--page-margin)] py-20 md:py-28">
+
+              {/* Left: chapter label (≈25%) */}
               <div className="lg:col-span-3 flex flex-col justify-between gap-6 mb-8 lg:mb-0">
                 <div>
-                  <span className="no-invert font-sans text-[10px] uppercase tracking-[0.3em] text-white/25 block mb-3">
+                  <span
+                    className="no-invert font-sans text-[10px] uppercase tracking-[0.3em] text-white/25 block mb-3"
+                  >
                     {chapter}
                   </span>
                   <div className="h-px w-10 bg-white/15" />
                 </div>
+
+                {/* Decorative index number */}
                 <div
                   className="no-invert font-sans font-semibold text-white/05 select-none"
                   style={{ fontSize: "clamp(5rem, 8vw, 9rem)", lineHeight: 1 }}
@@ -351,6 +363,8 @@ export default function DiskokrasCasePage() {
                   {String(idx + 1).padStart(2, "0")}
                 </div>
               </div>
+
+              {/* Right: content (≈75%) */}
               <div className="lg:col-span-9 lg:pl-16">
                 <p
                   className="no-invert font-sans text-white/85 leading-[1.6]"
@@ -363,47 +377,26 @@ export default function DiskokrasCasePage() {
           </section>
         ))}
 
-        {/* ── REELS GRID GALLERY ────────────────────────────── */}
-        <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {diskokrasReels.map((item, index) => (
-              <div
-                key={index}
-                className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
-              >
-                {/* Окно-маска. Строгие пропорции 9/16. */}
-                <div className="relative w-full aspect-[9/16] bg-zinc-900 overflow-hidden">
-                  <iframe
-                    src={item.src}
-                    className="absolute -left-[1px] -top-[54px] w-[calc(100%+2px)] h-[calc(100%+56px)] border-0 rounded-none max-w-none"
-                    scrolling="no"
-                    allow="encrypted-media"
-                    title={item.name}
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Технический подвал */}
-                <div className="p-4 border-t border-white/5 bg-black/40 z-10 relative">
-                  <p className="no-invert font-sans font-medium text-xs text-white uppercase tracking-wider mb-0.5">
-                    {item.name}
-                  </p>
-                  <p className="no-invert font-mono text-[10px] text-white/40 uppercase tracking-widest">
-                    {item.role}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* ── VIDEO GALLERY ─────────────────────────────────── */}
+        <section className="relative border-b border-white/10">
+          <HorizontalMediaGallery
+            items={diskokrasGallery}
+            className="w-full"
+          />
         </section>
 
         {/* ── CONTACT FORM SECTION ─────────────────────────── */}
-        <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 md:py-28" id="contacts">
+        <section
+          className="relative border-b border-white/10 px-[var(--page-margin)] py-20 md:py-28"
+          id="contacts"
+        >
           <div
             className="pointer-events-none absolute inset-0 z-0"
             style={{ ...GRAIN_STYLE, opacity: 0.08 }}
           />
-          <div className="bg-[#0c0c0c] border border-white/10 relative flex flex-col md:grid h-full w-full md:grid-cols-2 lg:grid-cols-3 rounded-none z-10">
+          <div
+            className="bg-[#0c0c0c] border border-white/10 relative flex flex-col md:grid h-full w-full md:grid-cols-2 lg:grid-cols-3 rounded-none z-10"
+          >
             <IconPlus className="absolute -top-3 -left-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
             <IconPlus className="absolute -top-3 -right-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
             <IconPlus className="absolute -bottom-3 -left-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
@@ -426,17 +419,19 @@ export default function DiskokrasCasePage() {
                 </div>
               </div>
             </div>
-            <div className="bg-white/[0.02] flex h-full w-full items-start border-t border-white/10 p-6 md:py-12 md:px-8 md:col-span-1 md:border-t-0 md:border-l md:border-white/10 rounded-none">
-              {submitted ? (
+            <div
+              className="bg-white/[0.02] flex h-full w-full items-start border-t border-white/10 p-6 md:py-12 md:px-8 md:col-span-1 md:border-t-0 md:border-l md:border-white/10 rounded-none"
+            >
+              {status === "success" ? (
                 <div className="w-full text-center py-10 space-y-4">
-                  <div className="w-12 h-12 bg-[#FD4B32] text-white flex items-center justify-center mx-auto rounded-none no-invert">
-                    <IconSend className="w-5 h-5" stroke={1.2} />
+                  <div className="w-12 h-12 bg-white text-black flex items-center justify-center mx-auto rounded-none no-invert">
+                    <IconSend className="w-5 h-5" stroke={1.5} />
                   </div>
-                  <h3 className="no-invert font-headline font-semibold text-white text-base leading-[0.9]">
-                    {formatTypography("Спасибо за заявку!")}
+                  <h3 className="no-invert font-headline font-semibold text-white text-base leading-[1.2]">
+                    {formatTypography("Заявка отправлена")}
                   </h3>
                   <p className="no-invert font-sans font-medium text-white/60 text-sm">
-                    {formatTypography("Мы свяжемся с вами в течение ближайшего времени.")}
+                    {formatTypography("Мы свяжемся с вами в ближайшее время.")}
                   </p>
                 </div>
               ) : (
@@ -448,10 +443,11 @@ export default function DiskokrasCasePage() {
                     <input
                       type="text"
                       required
+                      disabled={status === "loading"}
                       placeholder="Иван Иванов"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-white/20"
+                      className="no-invert w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
@@ -463,6 +459,8 @@ export default function DiskokrasCasePage() {
                       value={formData.contact}
                       onChange={(val) => setFormData({ ...formData, contact: val })}
                       theme="dark"
+                      variant="box"
+                      required
                     />
                   </div>
 
@@ -477,10 +475,11 @@ export default function DiskokrasCasePage() {
                           <button
                             key={method}
                             type="button"
+                            disabled={status === "loading"}
                             onClick={() => setFormData({ ...formData, contactMethod: method })}
-                            className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-colors duration-200 border cursor-pointer rounded-none ${isActive
+                            className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-all duration-200 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${isActive
                               ? "bg-white text-black border-white"
-                              : "bg-transparent text-white/50 border-white/20 hover:bg-white/5"
+                              : "bg-transparent text-white/50 border-white/20 hover:bg-white/5 hover:text-white"
                               }`}
                           >
                             {formatTypography(method)}
@@ -496,24 +495,33 @@ export default function DiskokrasCasePage() {
                     </label>
                     <textarea
                       rows={3}
+                      disabled={status === "loading"}
                       placeholder="Расскажите о задачах и целях проекта..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-white/20"
+                      className="no-invert w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 resize-none rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
-                  <Button01
+                  {status === "error" && (
+                    <p className="text-red-500 font-sans text-xs font-semibold">
+                      Произошла ошибка при отправке заявки. Пожалуйста, свяжитесь с нами напрямую или попробуйте ещё раз.
+                    </p>
+                  )}
+
+                  <button
                     type="submit"
-                    text="Отправить заявку"
-                    variant="dark"
-                    className="w-full justify-between"
-                  />
+                    disabled={status === "loading"}
+                    className="w-full flex items-center justify-center bg-white text-black font-medium py-3.5 tracking-wider uppercase text-xs transition-opacity duration-200 cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100"
+                  >
+                    {status === "loading" ? "Отправка..." : "Отправить заявку"}
+                  </button>
                 </form>
               )}
             </div>
           </div>
         </section>
+
       </div>
     </>
   );

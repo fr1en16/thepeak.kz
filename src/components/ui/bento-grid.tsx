@@ -22,35 +22,32 @@ export const BentoGrid = ({
   );
 };
 
-export const BentoCard = ({
-  className,
+// Inner visual content of the card (no grid-span classes here)
+function CardInner({
   background,
   logo,
   type,
   text,
-  href,
-  tiltFactor = 12,
-  perspective = 1000,
-  transitionDuration = 0.2,
-  hoverScale = 1.03,
-  glareEffect = true,
-  glareIntensity = 0.4,
-  glareSize = 70,
+  tiltFactor,
+  perspective,
+  transitionDuration,
+  hoverScale,
+  glareEffect,
+  glareIntensity,
+  glareSize,
 }: {
-  className?: string;
   background: ReactNode;
   logo: ReactNode;
   type: string;
   text: string;
-  href?: string;
-  tiltFactor?: number;
-  perspective?: number;
-  transitionDuration?: number;
-  hoverScale?: number;
-  glareEffect?: boolean;
-  glareIntensity?: number;
-  glareSize?: number;
-}) => {
+  tiltFactor: number;
+  perspective: number;
+  transitionDuration: number;
+  hoverScale: number;
+  glareEffect: boolean;
+  glareIntensity: number;
+  glareSize: number;
+}) {
   const [isHovered, setIsHovered] = useState(false);
   const [tiltValues, setTiltValues] = useState({ x: 0, y: 0 });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -79,13 +76,10 @@ export const BentoCard = ({
   const glareX = mousePosition.x / 2 + 50;
   const glareY = mousePosition.y / 2 + 50;
 
-  const cardContent = (
+  return (
     <motion.div
       ref={cardRef}
-      className={cn(
-        "group relative w-full h-full select-none cursor-pointer",
-        className
-      )}
+      className="group relative w-full h-full select-none cursor-pointer"
       style={{
         perspective: `${perspective}px`,
         transformStyle: "preserve-3d",
@@ -148,14 +142,66 @@ export const BentoCard = ({
       </motion.div>
     </motion.div>
   );
+}
+
+export const BentoCard = ({
+  className,
+  background,
+  logo,
+  type,
+  text,
+  href,
+  tiltFactor = 12,
+  perspective = 1000,
+  transitionDuration = 0.2,
+  hoverScale = 1.03,
+  glareEffect = true,
+  glareIntensity = 0.4,
+  glareSize = 70,
+}: {
+  className?: string;
+  background: ReactNode;
+  logo: ReactNode;
+  type: string;
+  text: string;
+  href?: string;
+  tiltFactor?: number;
+  perspective?: number;
+  transitionDuration?: number;
+  hoverScale?: number;
+  glareEffect?: boolean;
+  glareIntensity?: number;
+  glareSize?: number;
+}) => {
+  const inner = (
+    <CardInner
+      background={background}
+      logo={logo}
+      type={type}
+      text={text}
+      tiltFactor={tiltFactor}
+      perspective={perspective}
+      transitionDuration={transitionDuration}
+      hoverScale={hoverScale}
+      glareEffect={glareEffect}
+      glareIntensity={glareIntensity}
+      glareSize={glareSize}
+    />
+  );
 
   if (href) {
+    // className with col-span/row-span MUST be on the direct grid child (Link → <a>)
     return (
-      <Link href={href} className="block w-full h-full">
-        {cardContent}
+      <Link href={href} className={cn("block w-full h-full", className)}>
+        {inner}
       </Link>
     );
   }
 
-  return cardContent;
+  // No href: wrap in a div so className grid spans apply to the direct grid child
+  return (
+    <div className={cn("w-full h-full", className)}>
+      {inner}
+    </div>
+  );
 };
