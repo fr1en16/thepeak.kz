@@ -18,38 +18,36 @@ import {
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
 
-// ─── Sensata Reels Data (8 items) ─────────────────────────────────────────────
-const sensataReels = [
-  { name: "Обзор проекта", role: "Архитектура", src: "https://www.instagram.com/p/DUsvHZGiOs7/embed" },
-  { name: "Динамика строительства", role: "Процесс", src: "https://www.instagram.com/p/DT2uze3iIBv/embed" },
-  { name: "Эстетика комплекса", role: "Лайфстайл", src: "https://www.instagram.com/p/DSm3RA0iErr/embed" },
-  { name: "Внимание к деталям", role: "Интерьеры", src: "https://www.instagram.com/p/DSKg0HECMcO/embed" },
-  { name: "Аэросъемка локации", role: "Масштаб", src: "https://www.instagram.com/p/DR1jwDvCEDb/embed" },
-  { name: "Атмосфера района", role: "Вечерний вайб", src: "https://www.instagram.com/p/DUpSV74iPd7/embed" },
-  { name: "Презентация планировок", role: "Пространство", src: "https://www.instagram.com/p/DTdCYT-iCkL/embed" },
-  { name: "Премиальный визуал", role: "Концепция", src: "https://www.instagram.com/p/DW872iMCC96/embed" },
+// ─── ARK detailing Reels Data (6 items) ───────────────────────────────────────
+const arkReels = [
+  { src: "https://www.instagram.com/reel/DZb2D_WsZLM/embed" },
+  { src: "https://www.instagram.com/reel/DX6paMcMHy3/embed" },
+  { src: "https://www.instagram.com/reel/DXJfl-RRk1m/embed" },
+  { src: "https://www.instagram.com/reel/DWQXp7ajDBm/embed" },
+  { src: "https://www.instagram.com/reel/DVyH930DNBM/embed" },
+  { src: "https://www.instagram.com/reel/DVtneESjPJc/embed" },
 ];
 
 // ─── Metrics Data (Hidden by default in layout) ──────────────────────────────
 const metrics = [
   {
     value: "2025",
-    label: "Масштабный видеопродакшн для объектов застройщика",
+    label: "Регулярный выпуск вовлекающего видеоконтента",
     index: "01",
   },
   {
     value: "100%",
-    label: "Передача архитектурной эстетики и премиальности",
+    label: "Передача динамики и экспертности бренда",
     index: "02",
   },
   {
     value: "Reels",
-    label: "Регулярный выпуск вовлекающего видеоконтента",
+    label: "Органический охват целевой аудитории автовладельцев",
     index: "03",
   },
   {
     value: "Статус",
-    label: "Формирование имиджа технологичного девелопера",
+    label: "Формирование доверия к бренду",
     index: "04",
   },
 ];
@@ -148,7 +146,7 @@ function ContactInfoDark({
 }
 
 // ─── Main Page Component ───────────────────────────────────────────────────────
-export default function SensataCasePage() {
+export default function ArkDetailingCasePage() {
   const [scrollY, setScrollY] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
@@ -181,12 +179,12 @@ export default function SensataCasePage() {
         <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
-            style={{ backgroundImage: "url('/cases/sensata/sensata.webp')" }}
+            style={{ backgroundImage: "url('/cases/ark/hero.webp')" }}
           />
 
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
-            style={{ backgroundImage: "url('/cases/sensata/sensata_m.webp')" }}
+            style={{ backgroundImage: "url('/cases/ark/hero_m.webp')" }}
           />
 
           <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#060606] via-[#060606]/40 to-[#060606]/85" />
@@ -210,26 +208,19 @@ export default function SensataCasePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-8 gap-y-8 items-end">
               <div className="lg:col-span-8 space-y-6">
                 <h1
-                  className="no-invert font-sans font-semibold text-white leading-[0.9] tracking-tight"
-                  style={{ fontSize: "clamp(3rem, 9vw, 9rem)" }}
+                  className="no-invert font-sans font-semibold text-white leading-[0.9] tracking-tight uppercase"
+                  style={{ fontSize: "clamp(3rem, 7.5vw, 7.5rem)" }}
                 >
-                  Sensata
+                  ARK detailing
                 </h1>
               </div>
 
               <div className="lg:col-span-4 space-y-8">
-                <p
-                  className="no-invert font-sans text-white/60 leading-relaxed"
-                  style={{ fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)" }}
-                >
-                  {formatTypography("Комплексный видеопродакшн для крупного застройщика. Трансляция масштаба архитектуры, динамики строительства и премиальной эстетики жизни.")}
-                </p>
-
                 <div className="grid grid-cols-3 gap-px border border-white/10">
                   {[
                     { label: "Старт", value: "2025" },
-                    { label: "Услуга", value: "Продакшн" },
-                    { label: "Направление", value: "Застройщик" },
+                    { label: "Услуга", value: "SMM" },
+                    { label: "Направление", value: "Детейлинг" },
                   ].map(({ label, value }) => (
                     <div
                       key={label}
@@ -247,10 +238,10 @@ export default function SensataCasePage() {
                 </div>
 
                 <a
-                  href="https://www.instagram.com/sensata_almaty/"
+                  href="https://www.instagram.com/ark_detailing_alm/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="no-invert inline-flex items-center gap-3 border border-white/20 text-white text-xs uppercase tracking-[0.2em] font-sans px-6 py-4 hover:border-white/60 hover:bg-white/5 transition-all duration-300 group w-full justify-between"
+                  className="no-invert inline-flex items-center gap-3 border border-white/20 text-white text-xs uppercase tracking-[0.2em]"
                   style={{ borderRadius: 0 }}
                 >
                   {formatTypography("Смотреть профиль")}
@@ -312,7 +303,7 @@ export default function SensataCasePage() {
         {/* ── REELS GRID GALLERY ────────────────────────────── */}
         <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {sensataReels.map((item, index) => (
+            {arkReels.map((item, index) => (
               <div
                 key={index}
                 className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
@@ -324,19 +315,9 @@ export default function SensataCasePage() {
                     className="absolute -left-[1px] -top-[54px] w-[calc(100%+2px)] h-[calc(100%+56px)] border-0 rounded-none max-w-none"
                     scrolling="no"
                     allow="encrypted-media"
-                    title={item.name}
+                    title={`ARK detailing Reel ${index + 1}`}
                     loading="lazy"
                   />
-                </div>
-
-                {/* Технический подвал */}
-                <div className="p-4 border-t border-white/5 bg-black/40 z-10 relative">
-                  <p className="no-invert font-sans font-medium text-xs text-white uppercase tracking-wider mb-0.5">
-                    {item.name}
-                  </p>
-                  <p className="no-invert font-mono text-[10px] text-white/40 uppercase tracking-widest">
-                    {item.role}
-                  </p>
                 </div>
               </div>
             ))}
@@ -368,7 +349,7 @@ export default function SensataCasePage() {
                 <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap gap-x-8 gap-y-4 pt-6 border-t border-white/10 mt-auto">
                   <ContactInfoDark icon={IconPhone} value="+7 700 086 8608" />
                   <ContactInfoDark icon={IconMail} value="marketing@thepeak.kz" />
-                  <ContactInfoDark icon={IconMapPin} value="Алматы, Казахстан" />
+                  <ContactInfoDark icon={IconMapPin} value="Костанай, Казахстан" />
                 </div>
               </div>
             </div>

@@ -129,8 +129,6 @@ export default function Navigation() {
         </div>
       </div>
 
-
-
       {/* ── Mobile Fullscreen Overlay Menu ── */}
       <div
         className={cn(
@@ -153,10 +151,12 @@ export default function Navigation() {
               key={item.label}
               href={item.href}
               onClick={handleNavClick}
-              className="font-headline font-black text-brand-gray text-[clamp(3rem,14vw,6rem)] uppercase leading-[0.85] hover:text-brand-orange transition-colors duration-200"
+              className="text-brand-gray hover:text-brand-orange transition-colors duration-200"
               style={{ transitionDelay: mobileOpen ? `${i * 60}ms` : "0ms" }}
             >
-              {item.label}
+              <h1 className="font-sans font-black text-[clamp(3rem,14vw,6rem)] leading-[0.85]">
+                {item.label}
+              </h1>
             </Link>
           ))}
         </nav>

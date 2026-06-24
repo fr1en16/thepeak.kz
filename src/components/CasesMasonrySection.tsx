@@ -33,7 +33,7 @@ const renderBrandLogo = (logo: string) => {
   const logoPath = getLogoPath(logo);
   const parts = logo.split(" / ");
   const displayName = parts[parts.length - 1]; // take "DODO PIZZA" from "HIGHTOWER / DODO PIZZA"
-  
+
   if (logoPath) {
     return (
       <img
@@ -43,7 +43,7 @@ const renderBrandLogo = (logo: string) => {
       />
     );
   }
-  
+
   return (
     <span className="font-sans font-extrabold text-[12px] tracking-wider text-white uppercase leading-none select-none">
       {displayName}
@@ -59,7 +59,7 @@ export default function CasesMasonrySection() {
       text: "Построили дерзкий street food-бренд в Instagram и TikTok: viral-контент, офлайн-активации и механики, которые давали х2 рост продаж за два дня.",
       image: "/cases/gippo.webp",
       className: "col-span-1 lg:col-span-1 lg:row-span-2",
-      href: "#contacts",
+      href: "/cases/gippo",
     },
     {
       logo: "HIGHTOWER / DODO PIZZA",
@@ -74,7 +74,7 @@ export default function CasesMasonrySection() {
       type: "продакшн",
       text: "Рыба плавает в воде, ест других рыб и иногда попадает на крючок. Некоторые рыбы большие, некоторые маленькие. Рыба — это рыба.",
       className: "col-span-1 lg:col-span-1 lg:row-span-1",
-      href: "#contacts",
+      href: "/cases/sensata",
     },
     {
       logo: "Diskokras",
@@ -96,7 +96,7 @@ export default function CasesMasonrySection() {
       type: "smm",
       text: "Выстроили современную коммуникацию для одного из крупнейших брендов в нише: Instagram, TikTok, YouTube, дизайн для дрифт-команды и х2 рост охватов каждый месяц.",
       className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
-      href: "#contacts",
+      href: "/cases/lukoil",
     },
     {
       logo: "compass",
