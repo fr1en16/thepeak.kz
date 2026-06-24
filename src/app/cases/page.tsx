@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
-import { BentoGrid } from "@/components/ui/bento-grid";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import {
-  IconPlus,
   IconPhone,
   IconMail,
   IconMapPin,
@@ -27,120 +25,23 @@ interface BentoCaseItem {
   href: string;
 }
 
-// ─── Маппинг папок строго по скриншоту локального окружения ──────────────────
 const allCasesData: BentoCaseItem[] = [
-  {
-    name: "Puma Kazakhstan",
-    type: "SMM / Ритейл",
-    image: "/cases/puma/hero.webp",
-    className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-2",
-    href: "/cases/puma",
-  },
-  {
-    name: "Gippo",
-    type: "SMM / Фаст-фуд",
-    image: "/cases/gippo/hero.webp",
-    className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
-    href: "/cases/gippo",
-  },
-  {
-    name: "Lukoil Lubricants",
-    type: "SMM / Производство",
-    image: "/cases/lukoil/hero.webp",
-    className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
-    href: "/cases/lukoil",
-  },
-  {
-    name: "Sensata",
-    type: "Видеопродакшн",
-    image: "/cases/sensata/sensata.webp",
-    className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
-    href: "/cases/sensata",
-  },
-  {
-    name: "Bazis A",
-    type: "Видеопродакшн",
-    image: "/cases/bazisa/hero.webp",
-    className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-1",
-    href: "/cases/bazisa",
-  },
-  {
-    name: "Velmar",
-    type: "SMM",
-    image: "/cases/velmar/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/velmar",
-  },
-  {
-    name: "Рис",
-    type: "SMM / Ресторан",
-    image: "/cases/ris/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/ris",
-  },
-  {
-    name: "Raccoon Tyres",
-    type: "SMM / Автосервис",
-    image: "/cases/racoon/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/racoon",
-  },
-  {
-    name: "ONmacabim",
-    type: "Стратегия & SMM",
-    image: "/cases/onmacabim/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/onmacabim",
-  },
-  {
-    name: "Mind of Body",
-    type: "SMM / Фитнес",
-    image: "/cases/mindofbody/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/mindofbody",
-  },
-  {
-    name: "Diskokras",
-    type: "SMM / Личный бренд",
-    image: "/cases/diskokras/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/diskokras",
-  },
-  {
-    name: "Cadillac",
-    type: "SMM / Продажа авто",
-    image: "/cases/cadillac/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/cadillac",
-  },
-  {
-    name: "Bossxo",
-    type: "SMM / Продажа мебели",
-    image: "/cases/bossxo/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/bossxo",
-  },
-  {
-    name: "Blink map",
-    type: "SMM / IT-бизнес",
-    image: "/cases/blink/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/blink",
-  },
-  {
-    name: "Avtopilot",
-    type: "SMM / Автосервис",
-    image: "/cases/avtopilot/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/avtopilot",
-  },
-  {
-    name: "ARK detailing",
-    type: "SMM / Детейлинг",
-    image: "/cases/ark/hero.webp",
-    className: "col-span-1 lg:col-span-1 lg:row-span-1",
-    href: "/cases/ark",
-  },
+  { name: "Puma Kazakhstan", type: "SMM / Ритейл", image: "/cases/puma.webp", className: "col-span-1", href: "/cases/puma" },
+  { name: "Gippo", type: "SMM / Фаст-фуд", image: "/cases/gippo.webp", className: "col-span-1", href: "/cases/gippo" },
+  { name: "Lukoil Lubricants", type: "SMM / Производство", image: "/cases/lukoil.mp4", className: "col-span-1", href: "/cases/lukoil" },
+  { name: "Sensata", type: "Видеопродакшн", image: "/cases/sensata.webp", className: "col-span-1", href: "/cases/sensata" },
+  { name: "Bazis A", type: "Видеопродакшн", image: "/cases/bazisa.webp", className: "col-span-1", href: "/cases/bazisa" },
+  { name: "Velmar", type: "SMM", image: "/cases/velmar.webp", className: "col-span-1", href: "/cases/velmar" },
+  { name: "Рис", type: "SMM / Ресторан", image: "/cases/ris.webp", className: "col-span-1", href: "/cases/ris" },
+  { name: "Raccoon Tyres", type: "SMM / Автосервис", image: "/cases/racoon.webp", className: "col-span-1", href: "/cases/racoon" },
+  { name: "ONmacabim", type: "Стратегия & SMM", image: "/cases/onmacabim.webp", className: "col-span-1", href: "/cases/onmacabim" },
+  { name: "Mind of Body", type: "SMM / Фитнес", image: "/cases/mindofbody.webp", className: "col-span-1", href: "/cases/mindofbody" },
+  { name: "Diskokras", type: "SMM / Личный бренд", image: "/cases/diskokras.webp", className: "col-span-1", href: "/cases/diskokras" },
+  { name: "Cadillac", type: "SMM / Продажа авто", image: "/cases/cadillac.webp", className: "col-span-1", href: "/cases/cadillac" },
+  { name: "Bossxo", type: "SMM / Продажа мебели", image: "/cases/bossxo.webp", className: "col-span-1", href: "/cases/bossxo" },
+  { name: "Blink map", type: "SMM / IT-бизнес", image: "/cases/blink.webp", className: "col-span-1", href: "/cases/blink" },
+  { name: "Avtopilot", type: "SMM / Автосервис", image: "/cases/avtopilot.webp", className: "col-span-1", href: "/cases/avtopilot" },
+  { name: "ARK detailing", type: "SMM / Детейлинг", image: "/cases/ark.webp", className: "col-span-1", href: "/cases/ark" },
 ];
 
 const GRAIN_STYLE: React.CSSProperties = {
@@ -149,327 +50,236 @@ const GRAIN_STYLE: React.CSSProperties = {
   backgroundSize: "180px 180px",
 };
 
-// ─── Contact Info Dark Component ─────────────────────────────────────────────
-interface ContactInfoDarkProps {
-  icon: React.ComponentType<{ className?: string }>;
-  value: string;
-  className?: string;
-}
+// Интерактивный 3D-tilt эффект с добавлением perspective
+const TiltWrapper = ({ children }: { children: React.ReactNode }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-function ContactInfoDark({ icon: Icon, value, className, ...props }: ContactInfoDarkProps) {
-  return (
-    <div className={cn("flex items-center gap-4 py-3 rounded-none", className)} {...props}>
-      <div className="bg-white/5 p-3 rounded-none flex items-center justify-center flex-shrink-0 text-[#FD4B32] border border-white/10">
-        <Icon className="h-5 w-5" />
-      </div>
-      <div>
-        <p className="font-sans font-bold text-sm text-white uppercase tracking-wider no-invert">{value}</p>
-      </div>
-    </div>
-  );
-}
+  const rotateX = useTransform(y, [-0.5, 0.5], [10, -10]);
+  const rotateY = useTransform(x, [-0.5, 0.5], [-10, 10]);
 
-// ─── Локальный оберточный компонент для интерактивного 3D Тилта ───────────────
-function TiltWrapper({ children }: { children: React.ReactNode }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [tiltValues, setTiltValues] = useState({ x: 0, y: 0 });
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLDivElement>(null);
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    x.set(mouseX / width);
+    y.set(mouseY / height);
+  };
 
-  const tiltFactor = 12;
-  const perspective = 1000;
-  const transitionDuration = 0.15;
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (!cardRef.current || !isHovered) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 100;
-      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 100;
-      setMousePosition({ x, y });
-      const tiltX = -(y / 50) * tiltFactor;
-      const tiltY = (x / 50) * tiltFactor;
-      setTiltValues({ x: tiltX, y: tiltY });
-    },
-    [isHovered]
-  );
-
-  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
-    setTiltValues({ x: 0, y: 0 });
-  }, []);
-
-  const glareX = mousePosition.x / 2 + 50;
-  const glareY = mousePosition.y / 2 + 50;
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
     <motion.div
-      ref={cardRef}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        perspective: `${perspective}px`,
-        transformStyle: "preserve-3d",
-      }}
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+        perspective: 1000
+      }}
+      className="w-full h-full transition-all duration-200 ease-out will-change-transform"
     >
-      <motion.div
-        className="w-full h-full bg-zinc-950"
-        style={{
-          position: "absolute",
-          borderRadius: 0,
-          overflow: "hidden",
-          transformStyle: "preserve-3d",
-        }}
-        animate={{
-          rotateX: tiltValues.x,
-          rotateY: tiltValues.y,
-        }}
-        transition={{ duration: transitionDuration, ease: "easeOut" }}
-      >
-        {children}
-
-        <motion.div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 2,
-            background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%)`,
-            pointerEvents: "none",
-          }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: transitionDuration }}
-        />
-      </motion.div>
+      {children}
     </motion.div>
   );
-}
+};
+
+const ContactInfoDark = () => (
+  <div className="space-y-8 font-sans">
+    <div>
+      <h3 className="text-xs uppercase tracking-widest text-white/40 font-mono mb-3">Контакты</h3>
+      <a href="tel:+77000000000" className="flex items-center gap-3 text-white hover:text-[#FD4B32] transition-colors text-lg font-medium">
+        <IconPhone size={18} className="text-white/40" />
+        <span>+7 (700) 000-00-00</span>
+      </a>
+    </div>
+    <div>
+      <h3 className="text-xs uppercase tracking-widest text-white/40 font-mono mb-3">Email</h3>
+      <a href="mailto:hello@altis.agency" className="flex items-center gap-3 text-white hover:text-[#FD4B32] transition-colors text-lg font-medium">
+        <IconMail size={18} className="text-white/40" />
+        <span>hello@altis.agency</span>
+      </a>
+    </div>
+    <div>
+      <h3 className="text-xs uppercase tracking-widest text-white/40 font-mono mb-3">Локация</h3>
+      <div className="flex items-center gap-3 text-white text-lg font-medium">
+        <IconMapPin size={18} className="text-white/40" />
+        <span>Костанай, Казахстан</span>
+      </div>
+    </div>
+  </div>
+);
 
 export default function CasesCatalogPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    contact: "+7",
-    contactMethod: "WhatsApp",
-    message: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-  };
+    setIsSubmitting(true);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setIsSubmitting(false);
+    setName("");
+    setPhone("");
+    setEmail("");
+  }, []);
 
   return (
     <>
       <Navigation />
+      <div className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] min-h-screen relative overflow-hidden" style={{ backgroundColor: "#060606", color: "#ffffff" }}>
+        {/* Шумовой слой */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.025] z-50" style={GRAIN_STYLE} />
 
-      <div
-        className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] min-h-screen"
-        style={{ backgroundColor: "#060606", color: "#ffffff" }}
-      >
-        {/* ── HEADER ───────────────────────────────────────── */}
-        <section className="relative pt-40 pb-16 border-b border-white/10 px-[var(--page-margin)]">
-          <div
-            className="pointer-events-none absolute inset-0 z-0"
-            style={{ ...GRAIN_STYLE, opacity: 0.05 }}
-          />
-          <div className="relative z-10 space-y-6 max-w-4xl">
-            <Link
-              href="/"
-              className="no-invert inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors duration-300 font-sans text-xs uppercase tracking-[0.2em]"
-            >
-              <ArrowLeft className="w-3 h-3" />
-              {formatTypography("Главная")}
-            </Link>
-            <h1
-              className="no-invert font-sans font-semibold text-white leading-[0.95] tracking-tight uppercase"
-              style={{ fontSize: "clamp(2.5rem, 6vw, 6rem)" }}
-            >
-              Все кейсы
-            </h1>
-            <p className="no-invert font-sans text-white/60 text-sm sm:text-base max-w-2xl leading-relaxed">
-              {formatTypography("Реализованные проекты для лидеров рынка. От комплексных SMM-стратегий до масштабного видеопроизводства.")}
-            </p>
-          </div>
-        </section>
+        {/* HEADER */}
+        <header className="px-[var(--page-margin)] pt-24 pb-12 border-b border-white/10 relative z-10">
+          <Link href="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-xs uppercase tracking-widest font-mono mb-8 group">
+            <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
+            Назад на главную
+          </Link>
+          <h1 className="text-5xl md:text-7xl font-sans font-bold tracking-tighter uppercase mb-4">
+            {formatTypography("Кейсы")}
+          </h1>
+          <p className="text-white/60 font-mono text-xs uppercase tracking-widest max-w-xl">
+            Проекты, разработанные нашей командой: от комплексного SMM до масштабного видеопроизводства.
+          </p>
+        </header>
 
-        {/* ── BENTO GRID SECTION ───────────────────────────── */}
-        <section className="relative px-[var(--page-margin)] py-16 bg-[#060606] border-b border-white/10">
+        {/* СЕТКА ПРОЕКТОВ */}
+        <section className="relative px-[var(--page-margin)] py-16 bg-[#060606] border-b border-white/10 z-10">
           <div className="w-full">
-            <BentoGrid className="auto-rows-[240px] md:auto-rows-[280px] gap-x-6 gap-y-12">
-              {allCasesData.map((item, index) => (
-                <Link
-                  href={item.href}
-                  key={index}
-                  className={cn(
-                    "group relative flex flex-col justify-between rounded-none bg-transparent transition-all duration-300",
-                    item.className
-                  )}
-                >
-                  {/* Окно медиа-контента */}
-                  <div className="relative w-full flex-grow overflow-hidden bg-transparent rounded-none">
-                    <TiltWrapper>
-                      {item.video ? (
-                        <video
-                          src={item.video}
-                          poster={item.image}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="w-full h-full object-cover opacity-70 transition-all duration-700 ease-out group-hover:scale-102 group-hover:opacity-90"
-                        />
-                      ) : item.image ? (
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full h-full object-cover opacity-70 transition-all duration-700 ease-out group-hover:scale-102 group-hover:opacity-90"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-zinc-950" />
-                      )}
-                    </TiltWrapper>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
+              {allCasesData.map((item, index) => {
+                // Проверяем, является ли строка в image ссылкой на mp4-видео
+                const isImageMp4 = item.image?.toLowerCase().endsWith(".mp4");
 
-                  {/* Надписи под карточкой */}
-                  <div className="pt-4 pb-1 bg-transparent z-10 relative flex items-baseline justify-between gap-4">
-                    <h3 className="no-invert font-sans font-bold text-sm sm:text-base text-white uppercase tracking-wider transition-colors duration-300 group-hover:text-[#FD4B32] whitespace-nowrap">
-                      {item.name}
-                    </h3>
-                    <p className="no-invert font-mono text-[10px] sm:text-[11px] text-white/40 uppercase tracking-widest font-medium whitespace-nowrap text-right">
-                      {item.type}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </BentoGrid>
+                return (
+                  <Link
+                    href={item.href}
+                    key={index}
+                    className="group relative flex flex-col rounded-none bg-transparent transition-all duration-300"
+                  >
+                    {/* Контейнер с жестким соотношением 16:9 (aspect-video) */}
+                    <div className="relative w-full aspect-video overflow-hidden bg-neutral-900 rounded-none border border-white/5">
+                      <TiltWrapper>
+                        {item.video ? (
+                          <video
+                            src={item.video}
+                            poster={item.image}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover opacity-70 transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-100"
+                          />
+                        ) : isImageMp4 ? (
+                          <video
+                            src={item.image}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-cover opacity-70 transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-100"
+                          />
+                        ) : (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover opacity-70 transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-100"
+                            loading="lazy"
+                          />
+                        )}
+                      </TiltWrapper>
+                    </div>
+
+                    {/* Подпись карточки (Разделитель убран) */}
+                    <div className="pt-4 pb-1 z-10 relative flex items-baseline justify-between gap-4">
+                      <h3 className="font-sans font-bold text-sm text-white uppercase tracking-wider group-hover:text-[#FD4B32] transition-colors truncate">
+                        {item.name}
+                      </h3>
+                      <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest font-medium shrink-0 text-right">
+                        {item.type}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </section>
 
-        {/* ── CONTACT FORM SECTION ─────────────────────────── */}
-        <section className="relative px-[var(--page-margin)] py-20 md:py-28" id="contacts">
-          <div
-            className="pointer-events-none absolute inset-0 z-0"
-            style={{ ...GRAIN_STYLE, opacity: 0.08 }}
-          />
-          <div className="bg-[#0c0c0c] border border-white/10 relative flex flex-col md:grid h-full w-full md:grid-cols-2 lg:grid-cols-3 rounded-none z-10">
-            <IconPlus className="absolute -top-3 -left-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
-            <IconPlus className="absolute -top-3 -right-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
-            <IconPlus className="absolute -bottom-3 -left-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
-            <IconPlus className="absolute -right-3 -bottom-3 h-6 w-6 text-[#FD4B32] select-none no-invert" stroke={1.2} />
+        {/* CONTACT FORM */}
+        <section className="px-[var(--page-margin)] py-24 bg-[#0a0a0a] relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-5 space-y-8">
+            <h2 className="text-4xl font-sans font-bold tracking-tighter uppercase">
+              {formatTypography("Обсудить проект")}
+            </h2>
+            <p className="text-white/60 font-mono text-xs uppercase tracking-widest max-w-md leading-relaxed">
+              Заполните форму, и мы свяжемся с вами в течение рабочего дня для детального разбора вашей задачи.
+            </p>
+            <div className="pt-4">
+              <ContactInfoDark />
+            </div>
+          </div>
 
-            <div className="flex flex-col justify-between lg:col-span-2 h-full">
-              <div className="relative h-full flex flex-col justify-between px-5 py-8 md:p-12 gap-8">
-                <div className="space-y-6">
-                  {/* Новый кастомный заголовок под общую страницу каталога */}
-                  <h2 className="no-invert font-headline font-semibold text-white tracking-wide text-[clamp(1.4rem,2.2vw,2.5rem)] leading-[1.0] max-w-xl">
-                    {formatTypography("Начнем работу\u00a0над вашим проектом?")}
-                  </h2>
-                  <p className="no-invert description-text text-white/60 max-w-xl leading-relaxed text-sm sm:text-base">
-                    {formatTypography("Если вы\u00a0хотите обсудить проект или\u00a0у\u00a0вас есть вопросы по\u00a0нашим услугам, пожалуйста, заполните форму. Мы\u00a0ответим вам в\u00a0течение 1\u00a0рабочего дня.")}
-                  </p>
+          <div className="lg:col-span-7">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Ваше имя</label>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="ИВАН"
+                    className="w-full bg-transparent border-b border-white/10 py-3 text-sm text-white focus:outline-none focus:border-white tracking-wide rounded-none font-sans uppercase transition-colors"
+                  />
                 </div>
-                <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap gap-x-8 gap-y-4 pt-6 border-t border-white/10 mt-auto">
-                  <ContactInfoDark icon={IconPhone} value="+7 700 086 8608" />
-                  <ContactInfoDark icon={IconMail} value="marketing@thepeak.kz" />
-                  <ContactInfoDark icon={IconMapPin} value="Алматы, Казахстан" />
+                <div className="space-y-2">
+                  <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="EMAIL@EXAMPLE.COM"
+                    className="w-full bg-transparent border-b border-white/10 py-3 text-sm text-white focus:outline-none focus:border-white tracking-wide rounded-none font-sans uppercase transition-colors"
+                  />
                 </div>
               </div>
-            </div>
-            <div className="bg-white/[0.02] flex h-full w-full items-start border-t border-white/10 p-6 md:py-12 md:px-8 md:col-span-1 md:border-t-0 md:border-l md:border-white/10 rounded-none">
-              {submitted ? (
-                <div className="w-full text-center py-10 space-y-4">
-                  <div className="w-12 h-12 bg-[#FD4B32] text-white flex items-center justify-center mx-auto rounded-none no-invert">
-                    <IconSend className="w-5 h-5" stroke={1.2} />
-                  </div>
-                  <h3 className="no-invert font-headline font-semibold text-white text-base leading-[0.9]">
-                    {formatTypography("Спасибо за заявку!")}
-                  </h3>
-                  <p className="no-invert font-sans font-medium text-white/60 text-sm">
-                    {formatTypography("Мы свяжемся с вами в течение ближайшего времени.")}
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="w-full space-y-8">
-                  <div className="space-y-1.5">
-                    <label className="no-invert font-sans text-xs font-extrabold text-white/50 uppercase tracking-widest block">
-                      Ваше имя
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Иван Иванов"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-white/20"
-                    />
-                  </div>
 
-                  <div className="space-y-1.5">
-                    <label className="no-invert font-sans text-xs font-extrabold text-white/50 uppercase tracking-widest block">
-                      Контакты (Телефон)
-                    </label>
-                    <PhoneInput
-                      value={formData.contact}
-                      onChange={(val) => setFormData({ ...formData, contact: val })}
-                      theme="dark"
-                    />
-                  </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-white/40">Телефон</label>
+                <PhoneInput
+                  value={phone}
+                  onChange={setPhone}
+                  className="w-full bg-transparent border-b border-white/10 py-1 text-sm text-white focus:outline-none focus:border-white tracking-wide rounded-none"
+                />
+              </div>
 
-                  <div className="space-y-1.5">
-                    <label className="no-invert font-sans text-xs font-extrabold text-white/50 uppercase tracking-widest block">
-                      Где с вами связаться?
-                    </label>
-                    <div className="flex flex-wrap gap-2 w-fit">
-                      {["WhatsApp", "Telegram", "Звонок"].map((method) => {
-                        const isActive = formData.contactMethod === method;
-                        return (
-                          <button
-                            key={method}
-                            type="button"
-                            onClick={() => setFormData({ ...formData, contactMethod: method })}
-                            className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-colors duration-200 border cursor-pointer rounded-none ${isActive
-                              ? "bg-white text-black border-white"
-                              : "bg-transparent text-white/50 border-white/20 hover:bg-white/5"
-                              }`}
-                          >
-                            {formatTypography(method)}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="no-invert font-sans text-xs font-extrabold text-white/50 uppercase tracking-widest block">
-                      О вашем проекте
-                    </label>
-                    <textarea
-                      rows={3}
-                      placeholder="Расскажите о задачах и целях проекта..."
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-white/20"
-                    />
-                  </div>
-
-                  <Button01
-                    type="submit"
-                    text="Отправить заявку"
-                    variant="dark"
-                    className="w-full justify-between"
-                  />
-                </form>
-              )}
-            </div>
+              <div className="pt-4">
+                <Button01
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={cn(
+                    "w-full md:w-auto px-8 py-4 bg-white text-black font-sans font-bold text-xs uppercase tracking-widest rounded-none transition-all duration-300 flex items-center justify-center gap-2 hover:bg-[#FD4B32] hover:text-white disabled:opacity-50"
+                  )}
+                >
+                  {isSubmitting ? "Отправка..." : "Отправить заявку"}
+                  <IconSend size={14} />
+                </Button01>
+              </div>
+            </form>
           </div>
         </section>
       </div>
