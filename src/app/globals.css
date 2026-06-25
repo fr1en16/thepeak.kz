@@ -311,16 +311,6 @@ h1:not(.no-invert), h2:not(.no-invert), h3:not(.no-invert), h4:not(.no-invert), 
   }
 }
 
-@media (max-width: 767px), (pointer: coarse) {
-  #hero-alternative h1:not(.no-invert), #hero-alternative h2:not(.no-invert), #hero-alternative h3:not(.no-invert), #hero-alternative h4:not(.no-invert), #hero-alternative h5:not(.no-invert), #hero-alternative h6:not(.no-invert), #hero-alternative p:not(.no-invert), #hero-alternative .inverttext {
-    mix-blend-mode: normal !important;
-    color: #ffffff !important;
-    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.28);
-    transform: none;
-    -webkit-transform: none;
-  }
-}
-
 /* Global Typography overrides: headings at 110% line-height, paragraphs at 110% line-height */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.1 !important;
