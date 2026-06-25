@@ -2,7 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { IconBrandTelegram, IconBrandWhatsapp, IconPhone, IconMenu2, IconX } from "@tabler/icons-react";
+import {
+  IconBrandTelegram,
+  IconBrandWhatsapp,
+  IconPhone,
+  IconMenu2,
+  IconX,
+} from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { CONTACTS } from "@/config/contacts";
 
@@ -13,12 +19,14 @@ export default function Navigation() {
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   const menuItems = [
     { label: "услуги", href: "/#services" },
-    { label: "кейсы", href: "/#cases" },
+    { label: "кейсы", href: "/cases" },
     { label: "контакты", href: "/#contacts" },
   ];
 
@@ -28,7 +36,11 @@ export default function Navigation() {
     <>
       {/* ── Mobile Header Bar: logo + burger aligned on one line ── */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-[1000] h-[52px] flex items-center justify-between px-[var(--page-margin)] mix-blend-difference pointer-events-none">
-        <Link href="/" aria-label="ThePeak Home" className="pointer-events-auto">
+        <Link
+          href="/"
+          aria-label="ThePeak Home"
+          className="pointer-events-auto"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 68 20"
@@ -49,13 +61,21 @@ export default function Navigation() {
           onClick={() => setMobileOpen((v) => !v)}
           aria-label={mobileOpen ? "Закрыть меню" : "Открыть меню"}
         >
-          {mobileOpen ? <IconX className="w-6 h-6" stroke={1.5} /> : <IconMenu2 className="w-6 h-6" stroke={1.5} />}
+          {mobileOpen ? (
+            <IconX className="w-6 h-6" stroke={1.5} />
+          ) : (
+            <IconMenu2 className="w-6 h-6" stroke={1.5} />
+          )}
         </button>
       </div>
       {/* ── Desktop Header (blend layer) ── */}
       <header className="fixed top-0 left-0 w-full z-[990] pt-2.5 pb-2.5 swiss-grid items-center mix-blend-difference pointer-events-none">
         {/* Logo */}
-        <Link href="/" aria-label="ThePeak Home" className="hidden md:flex md:col-span-3 items-center pointer-events-auto">
+        <Link
+          href="/"
+          aria-label="ThePeak Home"
+          className="hidden md:flex md:col-span-3 items-center pointer-events-auto"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 68 20"
@@ -91,9 +111,13 @@ export default function Navigation() {
             href={CONTACTS.phone.tel}
             className={cn(
               "font-sans text-[clamp(0.8rem,1vw,0.95rem)] font-bold uppercase tracking-[0.05em] text-white hover:text-brand-gray transition-all duration-300 absolute right-0 whitespace-nowrap cursor-pointer pointer-events-auto",
-              isHovered ? "opacity-0 scale-95 pointer-events-none" : "opacity-100 scale-100"
+              isHovered
+                ? "opacity-0 scale-95 pointer-events-none"
+                : "opacity-100 scale-100",
             )}
-          >{CONTACTS.phone.display}</a>
+          >
+            {CONTACTS.phone.display}
+          </a>
         </div>
       </header>
 
@@ -111,16 +135,32 @@ export default function Navigation() {
                 "flex items-center gap-3 transition-all duration-300 absolute right-0",
                 isHovered
                   ? "opacity-100 scale-100 pointer-events-auto"
-                  : "opacity-0 scale-95 pointer-events-none"
+                  : "opacity-0 scale-95 pointer-events-none",
               )}
             >
-              <a href={CONTACTS.telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
+              <a
+                href={CONTACTS.telegramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Telegram"
+                className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer"
+              >
                 <IconBrandTelegram className="w-5 h-5" stroke={1.2} />
               </a>
-              <a href={CONTACTS.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
+              <a
+                href={CONTACTS.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer"
+              >
                 <IconBrandWhatsapp className="w-5 h-5" stroke={1.2} />
               </a>
-              <a href={CONTACTS.phone.tel} aria-label="Direct Call" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
+              <a
+                href={CONTACTS.phone.tel}
+                aria-label="Direct Call"
+                className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer"
+              >
                 <IconPhone className="w-5 h-5" stroke={1.2} />
               </a>
             </div>
@@ -132,7 +172,9 @@ export default function Navigation() {
       <div
         className={cn(
           "md:hidden fixed inset-0 z-[999] flex flex-col justify-between transition-all duration-500",
-          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          mobileOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none",
         )}
         style={{
           background: "rgba(232, 239, 242, 0.97)",
@@ -162,12 +204,29 @@ export default function Navigation() {
 
         {/* Bottom: contacts + socials */}
         <div className="px-[var(--page-margin)] pb-8 flex flex-col gap-4 border-t border-brand-gray/15 pt-6">
-          <a href={CONTACTS.phone.tel} className="no-invert font-sans font-bold text-brand-gray text-lg tracking-wider uppercase">{CONTACTS.phone.display}</a>
+          <a
+            href={CONTACTS.phone.tel}
+            className="no-invert font-sans font-bold text-brand-gray text-lg tracking-wider uppercase"
+          >
+            {CONTACTS.phone.display}
+          </a>
           <div className="flex gap-3">
-            <a href={CONTACTS.telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="no-invert p-3 bg-white border border-brand-gray/15 text-brand-gray hover:bg-brand-orange hover:text-white transition-colors duration-200 rounded-none flex items-center justify-center">
+            <a
+              href={CONTACTS.telegramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Telegram"
+              className="no-invert p-3 bg-white border border-brand-gray/15 text-brand-gray hover:bg-brand-orange hover:text-white transition-colors duration-200 rounded-none flex items-center justify-center"
+            >
               <IconBrandTelegram className="w-5 h-5" stroke={1.2} />
             </a>
-            <a href={CONTACTS.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="no-invert p-3 bg-white border border-brand-gray/15 text-brand-gray hover:bg-brand-orange hover:text-white transition-colors duration-200 rounded-none flex items-center justify-center">
+            <a
+              href={CONTACTS.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="no-invert p-3 bg-white border border-brand-gray/15 text-brand-gray hover:bg-brand-orange hover:text-white transition-colors duration-200 rounded-none flex items-center justify-center"
+            >
               <IconBrandWhatsapp className="w-5 h-5" stroke={1.2} />
             </a>
           </div>
