@@ -14,7 +14,7 @@ export const allCasesData: CaseItem[] = [
   {
     name: "Sensata",
     type: "продакшн",
-    text: "Визуальный контент для жилого комплекса: архитектурные ракурсы, динамичные ролики и материалы, которые повышают доверие к бренду.",
+    text: "Визуальный контент для застройщика: архитектурные ракурсы, динамичные ролики и материалы, которые повышают доверие к бренду.",
     image: "/cases/sensata.webp",
     className: "col-span-1 lg:col-span-2 lg:row-span-2",
     href: "/cases/sensata",
@@ -54,7 +54,7 @@ export const allCasesData: CaseItem[] = [
   {
     name: "Bazis A",
     type: "продакшн",
-    text: "Видео и digital-контент для девелопера: показали масштаб проектов, детали продукта и атмосферу жилой среды.",
+    text: "Видео и digital-контент для застрощика: показали масштаб проектов, детали продукта и атмосферу жилой среды.",
     image: "/cases/bazis a.mp4",
     className: "col-span-1 lg:col-span-1 lg:row-span-1",
     href: "/cases/bazisa",
@@ -74,7 +74,7 @@ export const allCasesData: CaseItem[] = [
   {
     name: "Raccoon Tyres",
     type: "smm",
-    text: "Продвижение шинного сервиса через понятный контент, экспертные форматы и визуальную подачу, которая помогает выбирать услугу.",
+    text: "Продвижение автосервиса через понятный контент, экспертные форматы и визуальную подачу, которая помогает выбирать услугу.",
     image: "/cases/raccoon.mp4",
     className: "col-span-1 lg:col-span-1 lg:row-span-1",
     href: "/cases/racoon",
@@ -134,7 +134,7 @@ export const allCasesData: CaseItem[] = [
   {
     name: "Double Coffee",
     type: "smm",
-    text: "SMM для кофейни: регулярный Reels-контент, живая подача продукта и коммуникация, которая работает на посещаемость.",
+    text: "SMM для ресторана: регулярный Reels-контент, живая подача продукта и коммуникация, которая работает на посещаемость.",
     image: "/cases/double coffee.webp",
     className: "col-span-1 lg:col-span-1 lg:row-span-1",
     href: "/cases/double-coffee",
