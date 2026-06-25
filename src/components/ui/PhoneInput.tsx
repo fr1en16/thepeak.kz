@@ -111,10 +111,20 @@ export default function PhoneInput({ value, onChange, theme = "light", required 
   // 3. Phone local formatter (excludes prefix from the input box)
   const formatLocalPhone = (rawVal: string, country: Country) => {
     let clean = rawVal.replace(/\D/g, "");
+    const getNationalDigitLimit = (code: string) => {
+      if (code === "KZ" || code === "RU" || code === "US" || code === "DE" || code === "GB") return 10;
+      if (code === "BY" || code === "UA" || code === "UZ" || code === "KG" || code === "FR") return 9;
+      return 20;
+    };
     
-    // Strip dial code if user explicitly typed it
+    // Strip dial code only when the user typed/pasted a full international number.
+    // A single leading 7 is a valid first local digit for Kazakhstan numbers.
     const dialCodeNoPlus = country.prefix.replace("+", "");
-    if (dialCodeNoPlus && clean.startsWith(dialCodeNoPlus)) {
+    const hasExplicitCountryCode =
+      rawVal.trim().startsWith("+") ||
+      (clean.length > getNationalDigitLimit(country.code) && clean.startsWith(dialCodeNoPlus));
+
+    if (dialCodeNoPlus && hasExplicitCountryCode) {
       clean = clean.substring(dialCodeNoPlus.length);
     }
     
