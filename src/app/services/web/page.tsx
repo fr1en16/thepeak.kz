@@ -251,7 +251,7 @@ export default function SitesPage() {
                 <div className="swiss-grid items-start">
                     <div className="col-span-12 lg:col-span-5 mb-10 lg:mb-0 pr-0 lg:pr-8">
                         <span className="no-invert font-mono text-[10px] tracking-[0.25em] text-[#FD4B32] uppercase font-bold block mb-6">
-              /// Форматы
+                            {"/// Форматы"}
                         </span>
                         <h2 className="no-invert font-headline font-bold text-white text-[clamp(2rem,3.5vw,3.2rem)] leading-[1.0] tracking-tight">
                             {formatTypography("Какой формат сайта решит вашу задачу?")}

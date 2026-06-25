@@ -30,9 +30,10 @@ interface PhoneInputProps {
   theme?: "light" | "dark";
   required?: boolean;
   variant?: "bottom" | "box";
+  disabled?: boolean;
 }
 
-export default function PhoneInput({ value, onChange, theme = "light", required = true, variant = "bottom" }: PhoneInputProps) {
+export default function PhoneInput({ value, onChange, theme = "light", required = true, variant = "bottom", disabled = false }: PhoneInputProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<Country>(countries[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -277,13 +278,14 @@ export default function PhoneInput({ value, onChange, theme = "light", required 
                 ? "border-white/20 focus-within:border-[#FD4B32]"
                 : "border-brand-gray/30 focus-within:border-brand-red"
             }`
-      }`}
+      } ${disabled ? "opacity-50 pointer-events-none" : ""}`}
     >
       {/* Country Selector Button */}
       <button
         type="button"
+        disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-1.5 px-2 py-1 select-none cursor-pointer text-sm font-sans ${
+        className={`flex items-center gap-1.5 px-2 py-1 select-none cursor-pointer text-sm font-sans disabled:cursor-not-allowed ${
           isDark ? "text-white hover:bg-white/5" : "text-brand-gray hover:bg-black/5"
         }`}
       >
@@ -299,10 +301,11 @@ export default function PhoneInput({ value, onChange, theme = "light", required 
       <input
         type="text"
         required={required}
+        disabled={disabled}
         value={localValue}
         onChange={handleInputChange}
         placeholder={getPlaceholder(selectedCountry.code)}
-        className={`flex-grow bg-transparent text-sm font-sans px-2.5 py-1 outline-none rounded-none border-none ${
+        className={`flex-grow bg-transparent text-sm font-sans px-2.5 py-1 outline-none rounded-none border-none disabled:cursor-not-allowed ${
           isDark ? "text-white placeholder-white/20" : "text-brand-gray placeholder-brand-gray/30"
         }`}
       />
@@ -318,8 +321,9 @@ export default function PhoneInput({ value, onChange, theme = "light", required 
             <button
               key={country.code}
               type="button"
+              disabled={disabled}
               onClick={() => handleCountrySelect(country)}
-              className={`flex items-center gap-3 w-full text-left px-4 py-2.5 text-xs font-sans transition-colors cursor-pointer ${
+              className={`flex items-center gap-3 w-full text-left px-4 py-2.5 text-xs font-sans transition-colors cursor-pointer disabled:cursor-not-allowed ${
                 isDark ? "hover:bg-white/5" : "hover:bg-brand-light-gray"
               }`}
             >

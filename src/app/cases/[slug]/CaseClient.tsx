@@ -24,10 +24,52 @@ const GRAIN_STYLE: React.CSSProperties = {
     backgroundSize: "180px 180px",
 };
 
+const CASE_HERO_MEDIA: Record<string, { src: string; type: "image" | "video" }> = {
+    ark: { src: "/cases/ark.mp4", type: "video" },
+    avtopilot: { src: "/cases/avtopilot.mp4", type: "video" },
+    bazisa: { src: "/cases/bazis a.mp4", type: "video" },
+    blink: { src: "/cases/blink.webp", type: "image" },
+    bossxo: { src: "/cases/bossxo.webp", type: "image" },
+    cadillac: { src: "/cases/cadillac.webp", type: "image" },
+    diskokras: { src: "/cases/diskokras/diskokras.webp", type: "image" },
+    gippo: { src: "/cases/Gippo.webp", type: "image" },
+    lukoil: { src: "/cases/lukoil.mp4", type: "video" },
+    mindofbody: { src: "/cases/mob.webp", type: "image" },
+    onmacabim: { src: "/cases/onmacabim.webp", type: "image" },
+    puma: { src: "/cases/puma.webp", type: "image" },
+    racoon: { src: "/cases/raccoon.mp4", type: "video" },
+    ris: { src: "/cases/ris.mp4", type: "video" },
+    sensata: { src: "/cases/sensata.webp", type: "image" },
+    velmar: { src: "/cases/Velmar.webp", type: "image" },
+};
+
 interface ContactInfoDarkProps {
     icon: React.ComponentType<{ className?: string }>;
     value: string;
     className?: string;
+}
+
+interface CaseContentBlock {
+    chapter?: string;
+    text: string;
+}
+
+interface CaseReel {
+    src: string;
+    name?: string;
+    role?: string;
+}
+
+interface CaseData {
+    title?: string;
+    name?: string;
+    year?: string;
+    service?: string;
+    industry?: string;
+    hero_desc?: string;
+    insta_url?: string;
+    contentBlocks?: CaseContentBlock[];
+    reels?: CaseReel[];
 }
 
 function ContactInfoDark({
@@ -107,8 +149,10 @@ function ContactInfoDark({
     );
 }
 
-export default function CaseClient({ data, slug }: { data: any; slug: string }) {
+export default function CaseClient({ data, slug }: { data: CaseData; slug: string }) {
     const [scrollY, setScrollY] = useState(0);
+    const caseTitle = data.title || data.name || slug;
+    const heroMedia = CASE_HERO_MEDIA[slug];
     const [formData, setFormData] = useState({
         name: "",
         contact: "+7",
@@ -116,10 +160,46 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
         message: "",
     });
     const [submitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
+        if (!formData.name.trim() || !formData.contact.trim()) {
+            setSubmitError("Заполните имя и контактный телефон.");
+            return;
+        }
+
+        setIsSubmitting(true);
+        setSubmitError("");
+
+        try {
+            const commentText = formData.message.trim()
+                ? `${formData.message.trim()}\n\n[Способ связи: ${formData.contactMethod}]`
+                : `[Способ связи: ${formData.contactMethod}]`;
+
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: formData.name.trim(),
+                    phone: formData.contact.trim(),
+                    comment: commentText,
+                    source: `Страница кейса: ${caseTitle}`,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Contact request failed");
+            }
+
+            setSubmitted(true);
+        } catch (error) {
+            console.error("Failed to submit case form:", error);
+            setSubmitError("Не удалось отправить заявку. Попробуйте ещё раз или свяжитесь с нами напрямую.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     useEffect(() => {
@@ -139,16 +219,21 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                 {/* ── HERO ─────────────────────────────────────────── */}
                 <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
 
-                    {/* ТА САМАЯ АВТО-ГЕНЕРАЦИЯ ПУТЕЙ */}
-                    <div
-                        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
-                        style={{ backgroundImage: `url('/cases/${slug}/${slug}.webp')` }}
-                    />
-
-                    <div
-                        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
-                        style={{ backgroundImage: `url('/cases/${slug}/${slug}_m.webp')` }}
-                    />
+                    {heroMedia?.type === "video" ? (
+                        <video
+                            src={heroMedia.src}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="absolute inset-0 z-0 h-full w-full object-cover opacity-35"
+                        />
+                    ) : (
+                        <div
+                            className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35"
+                            style={{ backgroundImage: heroMedia ? `url('${heroMedia.src}')` : undefined }}
+                        />
+                    )}
 
                     <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#060606] via-[#060606]/40 to-[#060606]/85" />
 
@@ -174,7 +259,7 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                                     className="no-invert font-sans font-semibold text-white leading-[0.9] tracking-tight"
                                     style={{ fontSize: "clamp(3rem, 9vw, 9rem)" }}
                                 >
-                                    {data.name}
+                                    {caseTitle}
                                 </h1>
                             </div>
 
@@ -183,7 +268,7 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                                     className="no-invert font-sans text-white/60 leading-relaxed"
                                     style={{ fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)" }}
                                 >
-                                    {formatTypography(data.hero_desc)}
+                                    {formatTypography(data.hero_desc || "")}
                                 </p>
 
                                 <div className="grid grid-cols-3 gap-px border border-white/10">
@@ -219,14 +304,14 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                         <div className="mt-16 flex items-center gap-4">
                             <div className="h-px flex-1 bg-white/10" />
                             <span className="no-invert text-[10px] font-sans text-white/20 uppercase tracking-[0.3em]">
-                                {formatTypography(data.year)}
+                                {formatTypography(data.year || "")}
                             </span>
                         </div>
                     </div>
                 </section>
 
                 {/* ── MAIN CONTENT Blocks ───────────────────────────── */}
-                {data.contentBlocks && data.contentBlocks.map((block: any, idx: number) => (
+                {data.contentBlocks && data.contentBlocks.map((block, idx) => (
                     <section
                         key={idx}
                         className="relative border-b border-white/10"
@@ -268,7 +353,7 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                 {data.reels && data.reels.length > 0 && (
                     <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            {data.reels.map((item: any, index: number) => (
+                            {data.reels.map((item, index) => (
                                 <div
                                     key={index}
                                     className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
@@ -349,10 +434,11 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                                         <input
                                             type="text"
                                             required
+                                            disabled={isSubmitting}
                                             placeholder="Иван Иванов"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-white/20"
+                                            className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 rounded-none placeholder-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
                                         />
                                     </div>
 
@@ -364,6 +450,7 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                                             value={formData.contact}
                                             onChange={(val) => setFormData({ ...formData, contact: val })}
                                             theme="dark"
+                                            disabled={isSubmitting}
                                         />
                                     </div>
 
@@ -378,8 +465,9 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                                                     <button
                                                         key={method}
                                                         type="button"
+                                                        disabled={isSubmitting}
                                                         onClick={() => setFormData({ ...formData, contactMethod: method })}
-                                                        className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-colors duration-200 border cursor-pointer rounded-none ${isActive
+                                                        className={`no-invert py-1.5 px-3 text-center font-sans text-[10px] uppercase tracking-wider font-bold transition-colors duration-200 border cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${isActive
                                                                 ? "bg-white text-black border-white"
                                                                 : "bg-transparent text-white/50 border-white/20 hover:bg-white/5"
                                                             }`}
@@ -397,16 +485,24 @@ export default function CaseClient({ data, slug }: { data: any; slug: string }) 
                                         </label>
                                         <textarea
                                             rows={3}
+                                            disabled={isSubmitting}
                                             placeholder="Расскажите о задачах и целях проекта..."
                                             value={formData.message}
                                             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                            className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-white/20"
+                                            className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
                                         />
                                     </div>
 
+                                    {submitError && (
+                                        <p className="no-invert text-[#FD4B32] font-sans text-xs font-semibold leading-relaxed">
+                                            {formatTypography(submitError)}
+                                        </p>
+                                    )}
+
                                     <Button01
                                         type="submit"
-                                        text="Отправить заявку"
+                                        disabled={isSubmitting}
+                                        text={isSubmitting ? "Отправка..." : "Отправить заявку"}
                                         variant="dark"
                                         className="w-full justify-between"
                                     />

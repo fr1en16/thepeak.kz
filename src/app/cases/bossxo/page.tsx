@@ -155,10 +155,47 @@ export default function DoubleCoffeeCasePage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (isSubmitting) return;
+    if (!formData.name.trim() || !formData.contact.trim()) {
+      setSubmitError("Заполните имя и контактный телефон.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const commentText = formData.message.trim()
+        ? `${formData.message.trim()}\n\n[Способ связи: ${formData.contactMethod}]`
+        : `[Способ связи: ${formData.contactMethod}]`;
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          phone: formData.contact.trim(),
+          comment: commentText,
+          source: `Страница кейса: ${document.title}`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Contact request failed");
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Failed to submit case form:", error);
+      setSubmitError("Не удалось отправить заявку. Попробуйте ещё раз или свяжитесь с нами напрямую.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -179,12 +216,12 @@ export default function DoubleCoffeeCasePage() {
         <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
-            style={{ backgroundImage: "url('/cases/doublecoffee/hero.webp')" }}
+            style={{ backgroundImage: "url('/cases/bossxo.webp')" }}
           />
 
           <div
             className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
-            style={{ backgroundImage: "url('/cases/doublecoffee/hero_m.webp')" }}
+            style={{ backgroundImage: "url('/cases/bossxo.webp')" }}
           />
 
           <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#060606] via-[#060606]/40 to-[#060606]/85" />
@@ -430,9 +467,20 @@ export default function DoubleCoffeeCasePage() {
                     />
                   </div>
 
-                  <Button01
+                  {submitError && (
+
+                    <p className="no-invert text-[#FD4B32] font-sans text-xs font-semibold leading-relaxed">
+
+                      {formatTypography(submitError)}
+
+                    </p>
+
+                  )}
+
+                                      <Button01
                     type="submit"
-                    text="Отправить заявку"
+                    disabled={isSubmitting}
+                    text={isSubmitting ? "Отправка..." : "Отправить заявку"}
                     variant="dark"
                     className="w-full justify-between"
                   />
