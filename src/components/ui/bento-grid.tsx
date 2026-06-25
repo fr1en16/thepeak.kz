@@ -13,7 +13,7 @@ export const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid w-full auto-rows-[280px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3",
+        "grid w-full auto-rows-[280px] grid-flow-dense grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3",
         className
       )}
     >
@@ -91,7 +91,7 @@ function CardInner({
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        className="absolute inset-0 w-full h-full overflow-hidden border border-brand-gray/10 bg-black rounded-none"
+        className="absolute inset-0 w-full h-full overflow-hidden bg-black rounded-none"
         style={{
           transformStyle: "preserve-3d",
         }}

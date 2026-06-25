@@ -232,7 +232,7 @@ export default function LukoilCasePage() {
 
                     <div className="relative z-10 px-[var(--page-margin)] pt-40">
                         <Link
-                            href="/#cases"
+                            href="/cases"
                             className="no-invert inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors duration-300 font-sans text-xs uppercase tracking-[0.2em]"
                         >
                             <ArrowLeft className="w-3 h-3" />
