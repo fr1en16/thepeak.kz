@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import GridGuide from "@/components/GridGuide";
 import SmoothScroll from "@/components/SmoothScroll";
+import PageTransition from "@/components/PageTransition";
 
 const interDisplay = localFont({
   src: [
@@ -32,12 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`${interDisplay.variable} h-full antialiased`}>
+    <html lang="ru" className={`${interDisplay.variable} h-full antialiased`} data-scroll-behavior="smooth">
       <body className="relative min-h-screen antialiased font-sans text-[#434343] bg-white selection:bg-[#FD4B32] selection:text-white overflow-x-hidden">
         <SmoothScroll />
-        <main className="swiss-grid gap-y-0">
+        <PageTransition>
           {children}
-        </main>
+        </PageTransition>
         <GridGuide />
       </body>
     </html>

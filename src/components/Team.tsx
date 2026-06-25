@@ -46,14 +46,14 @@ export default function Team() {
         {/* Left Column: Philosophical/Intro Text - matches service card width (33.33% on lg, 25% on xl) */}
         <div className="col-span-12 lg:col-span-4 xl:col-span-3 text-left pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] pt-0 lg:pr-[var(--grid-gap)] border-solid border-brand-gray/25 border-b lg:border-b-0 lg:border-r self-stretch flex flex-col">
           <div className="max-w-[95%] flex flex-col justify-between flex-grow gap-8 pt-[3rem] md:pt-[var(--page-margin)]">
-            <h2 className="font-headline font-semibold text-brand-gray text-[clamp(1.4rem,2.56vw,1.6rem)] leading-[1.0] select-none">
+            <h2 className="no-invert font-headline font-semibold text-brand-gray text-[clamp(1.4rem,2.56vw,1.6rem)] leading-[1.0] select-none">
               {"Каждое"} <br />
               {"направление ThePeak"} <br />
               {"возглавляет специалист"} <br />
               {"с\u00a0практическим опытом"} <br />
               {"в\u00a0своей области"}
             </h2>
-            <p className="description-text text-brand-gray/80">
+            <p className="no-invert description-text text-brand-gray/80">
               {"Вы работаете не\u00a0просто с\u00a0безликими подрядчиками, а\u00a0с\u00a0людьми, которые принимают ключевые решения, глубоко погружаются в\u00a0ваш бизнес и\u00a0несут личную ответственность за\u00a0конечный результат."}
             </p>
           </div>
@@ -79,16 +79,16 @@ export default function Team() {
                 </div>
 
                 {/* Top Badge: Role */}
-                <div className="absolute top-3 left-3 right-3 z-10 text-white mix-blend-difference font-sans text-[clamp(0.75rem,0.7vw,0.75rem)] font-bold uppercase tracking-wider leading-tight">
+                <div className="no-invert absolute top-3 left-3 right-3 z-10 text-white font-sans text-[clamp(0.75rem,0.7vw,0.75rem)] font-bold uppercase tracking-wider leading-tight">
                   {formatTypography(member.role)}
                 </div>
 
                 {/* Bottom Info Block */}
-                <div className="mt-auto px-3 pb-3 z-10 text-white mix-blend-difference flex flex-col items-start gap-2 w-full">
-                  <h3 className="font-headline font-semibold text-[clamp(1rem,1.34vw,1.2rem)] tracking-wide mix-blend-difference leading-[1.1] w-full">
+                <div className="no-invert mt-auto px-3 pb-3 z-10 text-white flex flex-col items-start gap-2 w-full">
+                  <h3 className="no-invert font-headline font-semibold text-[clamp(1rem,1.34vw,1.2rem)] tracking-wide leading-[1.1] w-full">
                     {formatTypography(member.name)}
                   </h3>
-                  <p className="font-sans !text-[0.8rem] md:!text-[clamp(0.8rem,0.85vw,0.85rem)] leading-[1.2] font-medium mix-blend-difference text-white w-full">
+                  <p className="no-invert font-sans !text-[0.8rem] md:!text-[clamp(0.8rem,0.85vw,0.85rem)] leading-[1.2] font-medium text-white w-full">
                     {formatTypography(member.description)}
                   </p>
                 </div>

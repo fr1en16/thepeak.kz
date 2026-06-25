@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
+import CaseVideoGallery from "@/components/CaseVideoGallery";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,17 +19,6 @@ import {
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
 
-// ─── Sensata Reels Data (8 items) ─────────────────────────────────────────────
-const sensataReels = [
-  { name: "Обзор проекта", role: "Архитектура", src: "https://www.instagram.com/p/DUsvHZGiOs7/embed" },
-  { name: "Динамика строительства", role: "Процесс", src: "https://www.instagram.com/p/DT2uze3iIBv/embed" },
-  { name: "Эстетика комплекса", role: "Лайфстайл", src: "https://www.instagram.com/p/DSm3RA0iErr/embed" },
-  { name: "Внимание к деталям", role: "Интерьеры", src: "https://www.instagram.com/p/DSKg0HECMcO/embed" },
-  { name: "Аэросъемка локации", role: "Масштаб", src: "https://www.instagram.com/p/DR1jwDvCEDb/embed" },
-  { name: "Атмосфера района", role: "Вечерний вайб", src: "https://www.instagram.com/p/DUpSV74iPd7/embed" },
-  { name: "Презентация планировок", role: "Пространство", src: "https://www.instagram.com/p/DTdCYT-iCkL/embed" },
-  { name: "Премиальный визуал", role: "Концепция", src: "https://www.instagram.com/p/DW872iMCC96/embed" },
-];
 
 // ─── Metrics Data (Hidden by default in layout) ──────────────────────────────
 const metrics = [
@@ -273,7 +263,7 @@ export default function SensataCasePage() {
                       className="p-4 border border-white/10"
                       style={{ background: "rgba(255,255,255,0.03)" }}
                     >
-                      <p className="no-invert font-sans text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">
+                      <p className="no-invert case-meta-label font-sans text-white/30 uppercase mb-1">
                         {label}
                       </p>
                       <p className="no-invert font-sans text-white text-sm font-semibold">
@@ -346,41 +336,10 @@ export default function SensataCasePage() {
           </div>
         </section>
 
-        {/* ── REELS GRID GALLERY ────────────────────────────── */}
-        <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {sensataReels.map((item, index) => (
-              <div
-                key={index}
-                className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
-              >
-                {/* Окно-маска. Строгие пропорции 9/16. */}
-                <div className="relative w-full aspect-[9/16] bg-zinc-900 overflow-hidden">
-                  <iframe
-                    src={item.src}
-                    className="absolute -left-[1px] -top-[54px] w-[calc(100%+2px)] h-[calc(100%+56px)] border-0 rounded-none max-w-none"
-                    scrolling="no"
-                    allow="encrypted-media"
-                    title={item.name}
-                    loading="lazy"
-                  />
-                </div>
+                {/* ── REELS GRID GALLERY ────────────────────────────── */}
+                <CaseVideoGallery slug="sensata" />
 
-                {/* Технический подвал */}
-                <div className="p-4 border-t border-white/5 bg-black/40 z-10 relative">
-                  <p className="no-invert font-sans font-medium text-xs text-white uppercase tracking-wider mb-0.5">
-                    {item.name}
-                  </p>
-                  <p className="no-invert font-mono text-[10px] text-white/40 uppercase tracking-widest">
-                    {item.role}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── CONTACT FORM SECTION ─────────────────────────── */}
+                {/* ── CONTACT FORM SECTION ─────────────────────────── */}
         <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 md:py-28" id="contacts">
           <div
             className="pointer-events-none absolute inset-0 z-0"

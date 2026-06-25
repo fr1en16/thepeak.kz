@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
+import CaseVideoGallery from "@/components/CaseVideoGallery";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -32,6 +33,7 @@ const CASE_HERO_MEDIA: Record<string, { src: string; type: "image" | "video" }> 
     bossxo: { src: "/cases/bossxo.webp", type: "image" },
     cadillac: { src: "/cases/cadillac.webp", type: "image" },
     diskokras: { src: "/cases/diskokras/diskokras.webp", type: "image" },
+    "double-coffee": { src: "/cases/bossxo.webp", type: "image" },
     gippo: { src: "/cases/Gippo.webp", type: "image" },
     lukoil: { src: "/cases/lukoil.mp4", type: "video" },
     mindofbody: { src: "/cases/mob.webp", type: "image" },
@@ -54,12 +56,6 @@ interface CaseContentBlock {
     text: string;
 }
 
-interface CaseReel {
-    src: string;
-    name?: string;
-    role?: string;
-}
-
 interface CaseData {
     title?: string;
     name?: string;
@@ -69,7 +65,6 @@ interface CaseData {
     hero_desc?: string;
     insta_url?: string;
     contentBlocks?: CaseContentBlock[];
-    reels?: CaseReel[];
 }
 
 function ContactInfoDark({
@@ -273,15 +268,15 @@ export default function CaseClient({ data, slug }: { data: CaseData; slug: strin
 
                                 <div className="grid grid-cols-3 gap-px border border-white/10">
                                     <div className="p-4 border border-white/10" style={{ background: "rgba(255,255,255,0.03)" }}>
-                                        <p className="no-invert font-sans text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">Старт</p>
+                                        <p className="no-invert case-meta-label font-sans text-white/30 uppercase mb-1">Старт</p>
                                         <p className="no-invert font-sans text-white text-sm font-semibold">{data.year}</p>
                                     </div>
                                     <div className="p-4 border border-white/10" style={{ background: "rgba(255,255,255,0.03)" }}>
-                                        <p className="no-invert font-sans text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">Услуга</p>
+                                        <p className="no-invert case-meta-label font-sans text-white/30 uppercase mb-1">Услуга</p>
                                         <p className="no-invert font-sans text-white text-sm font-semibold">{data.service}</p>
                                     </div>
                                     <div className="p-4 border border-white/10" style={{ background: "rgba(255,255,255,0.03)" }}>
-                                        <p className="no-invert font-sans text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">Направление</p>
+                                        <p className="no-invert case-meta-label font-sans text-white/30 uppercase mb-1">Направление</p>
                                         <p className="no-invert font-sans text-white text-sm font-semibold">{data.industry}</p>
                                     </div>
                                 </div>
@@ -350,38 +345,7 @@ export default function CaseClient({ data, slug }: { data: CaseData; slug: strin
                 ))}
 
                 {/* ── REELS GRID GALLERY ────────────────────────────── */}
-                {data.reels && data.reels.length > 0 && (
-                    <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                            {data.reels.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
-                                >
-                                    <div className="relative w-full aspect-[9/16] bg-zinc-900 overflow-hidden">
-                                        <iframe
-                                            src={item.src}
-                                            className="absolute -left-[1px] -top-[54px] w-[calc(100%+2px)] h-[calc(100%+56px)] border-0 rounded-none max-w-none"
-                                            scrolling="no"
-                                            allow="encrypted-media"
-                                            title={item.name}
-                                            loading="lazy"
-                                        />
-                                    </div>
-
-                                    <div className="p-4 border-t border-white/5 bg-black/40 z-10 relative">
-                                        <p className="no-invert font-sans font-medium text-xs text-white uppercase tracking-wider mb-0.5">
-                                            {item.name}
-                                        </p>
-                                        <p className="no-invert font-mono text-[10px] text-white/40 uppercase tracking-widest">
-                                            {item.role}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-                )}
+                <CaseVideoGallery slug={slug} />
 
                 {/* ── CONTACT FORM SECTION ─────────────────────────── */}
                 <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 md:py-28" id="contacts">

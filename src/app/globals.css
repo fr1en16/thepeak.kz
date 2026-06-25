@@ -6,17 +6,51 @@
 .col-span-1 { grid-column: span 1 / span 1; }
 .col-span-2 { grid-column: span 2 / span 2; }
 .col-span-12 { grid-column: span 12 / span 12; }
+.col-start-1 { grid-column-start: 1; }
 .row-span-1 { grid-row: span 1 / span 1; }
 .row-span-2 { grid-row: span 2 / span 2; }
 
 @media (min-width: 640px) {
   .sm\:col-span-2 { grid-column: span 2 / span 2; }
 }
+@media (min-width: 768px) {
+  .md\:col-span-3 { grid-column: span 3 / span 3; }
+  .md\:col-span-4 { grid-column: span 4 / span 4; }
+  .md\:col-span-5 { grid-column: span 5 / span 5; }
+  .md\:col-span-6 { grid-column: span 6 / span 6; }
+  .md\:col-span-9 { grid-column: span 9 / span 9; }
+  .md\:col-start-4 { grid-column-start: 4; }
+  .md\:col-start-7 { grid-column-start: 7; }
+}
 @media (min-width: 1024px) {
   .lg\:col-span-1 { grid-column: span 1 / span 1; }
   .lg\:col-span-2 { grid-column: span 2 / span 2; }
+  .lg\:col-span-3 { grid-column: span 3 / span 3; }
+  .lg\:col-span-4 { grid-column: span 4 / span 4; }
+  .lg\:col-span-5 { grid-column: span 5 / span 5; }
+  .lg\:col-span-6 { grid-column: span 6 / span 6; }
+  .lg\:col-span-7 { grid-column: span 7 / span 7; }
+  .lg\:col-span-8 { grid-column: span 8 / span 8; }
+  .lg\:col-span-9 { grid-column: span 9 / span 9; }
+  .lg\:col-span-10 { grid-column: span 10 / span 10; }
+  .lg\:col-span-12 { grid-column: span 12 / span 12; }
+  .lg\:col-start-3 { grid-column-start: 3; }
+  .lg\:col-start-4 { grid-column-start: 4; }
+  .lg\:col-start-5 { grid-column-start: 5; }
+  .lg\:col-start-7 { grid-column-start: 7; }
+  .lg\:col-start-10 { grid-column-start: 10; }
   .lg\:row-span-1 { grid-row: span 1 / span 1; }
   .lg\:row-span-2 { grid-row: span 2 / span 2; }
+}
+@media (min-width: 1280px) {
+  .xl\:col-span-3 { grid-column: span 3 / span 3; }
+  .xl\:col-span-4 { grid-column: span 4 / span 4; }
+  .xl\:col-span-5 { grid-column: span 5 / span 5; }
+  .xl\:col-span-6 { grid-column: span 6 / span 6; }
+  .xl\:col-span-7 { grid-column: span 7 / span 7; }
+  .xl\:col-span-8 { grid-column: span 8 / span 8; }
+  .xl\:col-span-9 { grid-column: span 9 / span 9; }
+  .xl\:col-start-4 { grid-column-start: 4; }
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -36,6 +70,7 @@
   --grid-columns: 12;
   --page-margin: clamp(1rem, 3vw, 4rem); 
   --grid-gap: clamp(0.5rem, 1vw, 1.5rem); 
+  --page-transition-duration: 760ms;
   --background: oklch(1 0 0); 
   --foreground: oklch(0.145 0 0); 
   --card: oklch(1 0 0); 
@@ -80,6 +115,62 @@
 
 main.swiss-grid {
   row-gap: 0 !important;
+}
+
+.page-transition-current {
+  position: relative;
+  z-index: 1;
+}
+
+.page-transition-previous {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.page-transition-fallback-enter {
+  animation: peak-page-reveal var(--page-transition-duration) cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+::view-transition-group(root) {
+  animation-duration: var(--page-transition-duration);
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+::view-transition-old(root) {
+  animation: peak-page-hold var(--page-transition-duration) cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: peak-page-reveal var(--page-transition-duration) cubic-bezier(0.76, 0, 0.24, 1) both;
+  z-index: 2;
+}
+
+@keyframes peak-page-hold {
+  from,
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes peak-page-reveal {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }
 
 /* Smooth Scrolling utilities */
@@ -215,6 +306,13 @@ p,
   font-size: clamp(1rem, 1vw, 1.1rem) !important;
   line-height: 1.1 !important;
   letter-spacing: -0.4px !important;
+}
+
+.case-meta-label {
+  font-size: 0.5rem !important;
+  line-height: 1 !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 600 !important;
 }
 
 /* uc-ripple animation for Team leader card */

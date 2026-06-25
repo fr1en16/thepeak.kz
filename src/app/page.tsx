@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <Navigation />
       <HeroDuplicate />
-      <div className="block md:hidden">
+      <div className="col-span-12 block w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] md:hidden">
         <StatsBlock />
       </div>
       <ServicesAnimate />

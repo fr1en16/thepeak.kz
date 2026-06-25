@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
+import CaseVideoGallery from "@/components/CaseVideoGallery";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,15 +19,6 @@ import {
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
 
-// ─── Blink map Reels Data (6 unique videos, photo post filtered out) ──────────
-const blinkMapReels = [
-  { src: "https://www.instagram.com/reel/DNOYosnIbNg/embed" },
-  { src: "https://www.instagram.com/reel/DNf454JIH5u/embed" },
-  { src: "https://www.instagram.com/reel/DNm03plIVKB/embed" },
-  { src: "https://www.instagram.com/reel/DNnHpH5o51d/embed" },
-  { src: "https://www.instagram.com/reel/DNuOkuv0J1e/embed" },
-  { src: "https://www.instagram.com/reel/DN8qH80iMvU/embed" },
-];
 
 // ─── Metrics Data (Hidden by default in layout) ──────────────────────────────
 const metrics = [
@@ -264,7 +256,7 @@ export default function BlinkMapCasePage() {
                       className="p-4 border border-white/10"
                       style={{ background: "rgba(255,255,255,0.03)" }}
                     >
-                      <p className="no-invert font-sans text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">
+                      <p className="no-invert case-meta-label font-sans text-white/30 uppercase mb-1">
                         {label}
                       </p>
                       <p className="no-invert font-sans text-white text-sm font-semibold">
@@ -337,31 +329,10 @@ export default function BlinkMapCasePage() {
           </div>
         </section>
 
-        {/* ── REELS GRID GALLERY ────────────────────────────── */}
-        <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {blinkMapReels.map((item, index) => (
-              <div
-                key={index}
-                className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
-              >
-                {/* Окно-маска. Строгие пропорции 9/16. */}
-                <div className="relative w-full aspect-[9/16] bg-zinc-900 overflow-hidden">
-                  <iframe
-                    src={item.src}
-                    className="absolute -left-[1px] -top-[54px] w-[calc(100%+2px)] h-[calc(100%+56px)] border-0 rounded-none max-w-none"
-                    scrolling="no"
-                    allow="encrypted-media"
-                    title={`Blink map Reel ${index + 1}`}
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+                {/* ── REELS GRID GALLERY ────────────────────────────── */}
+                <CaseVideoGallery slug="blink" />
 
-        {/* ── CONTACT FORM SECTION ─────────────────────────── */}
+                {/* ── CONTACT FORM SECTION ─────────────────────────── */}
         <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 md:py-28" id="contacts">
           <div
             className="pointer-events-none absolute inset-0 z-0"

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
+import CaseVideoGallery from "@/components/CaseVideoGallery";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,14 +19,6 @@ import {
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
 
-// ─── Gippo Reels Data (5 unique videos, duplicates and photos filtered out) ────
-const gippoReels = [
-    { src: "https://www.instagram.com/reel/DUlDVLpDATv/embed" },
-    { src: "https://www.instagram.com/reel/DTrrVfLgnvF/embed" },
-    { src: "https://www.instagram.com/reel/DSZ_eeijG3k/embed" },
-    { src: "https://www.instagram.com/reel/DSPb7tojI1X/embed" },
-    { src: "https://www.instagram.com/reel/DOso37sjCfM/embed" },
-];
 
 // ─── Metrics Data (Hidden by default in layout) ──────────────────────────────
 const metrics = [
@@ -263,7 +256,7 @@ export default function GippoCasePage() {
                                             className="p-4 border border-white/10"
                                             style={{ background: "rgba(255,255,255,0.03)" }}
                                         >
-                                            <p className="no-invert font-sans text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1">
+                                            <p className="no-invert case-meta-label font-sans text-white/30 uppercase mb-1">
                                                 {label}
                                             </p>
                                             <p className="no-invert font-sans text-white text-sm font-semibold">
@@ -337,28 +330,7 @@ export default function GippoCasePage() {
                 </section>
 
                 {/* ── REELS GRID GALLERY ────────────────────────────── */}
-                <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {gippoReels.map((item, index) => (
-                            <div
-                                key={index}
-                                className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden flex flex-col justify-between"
-                            >
-                                {/* Окно-маска. Строгие пропорции 9/16. */}
-                                <div className="relative w-full aspect-[9/16] bg-zinc-900 overflow-hidden">
-                                    <iframe
-                                        src={item.src}
-                                        className="absolute -left-[1px] -top-[54px] w-[calc(100%+2px)] h-[calc(100%+56px)] border-0 rounded-none max-w-none"
-                                        scrolling="no"
-                                        allow="encrypted-media"
-                                        title={`Gippo Reel ${index + 1}`}
-                                        loading="lazy"
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                <CaseVideoGallery slug="gippo" />
 
                 {/* ── CONTACT FORM SECTION ─────────────────────────── */}
                 <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 md:py-28" id="contacts">
