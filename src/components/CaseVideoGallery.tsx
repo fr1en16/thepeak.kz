@@ -303,6 +303,17 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                                 >
                                     <source src={item.src} type={getMimeType(item.src)} />
                                 </video>
+                                {!videoStates[item.src]?.hasStarted && (
+                                    <div className="pointer-events-none absolute inset-0 z-20 grid place-items-center md:hidden">
+                                        <span className="grid h-14 w-14 place-items-center rounded-full bg-white/90 text-black shadow-[0_14px_34px_rgba(0,0,0,0.3)] backdrop-blur">
+                                            <Play
+                                                className="h-6 w-6 translate-x-0.5"
+                                                fill="currentColor"
+                                                strokeWidth={2.2}
+                                            />
+                                        </span>
+                                    </div>
+                                )}
                                 {videoStates[item.src]?.hasStarted && (
                                     <>
                                         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-black/80 via-black/35 to-transparent opacity-100 transition-opacity duration-300 group-hover:opacity-100" />

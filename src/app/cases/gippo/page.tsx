@@ -211,12 +211,12 @@ export default function GippoCasePage() {
                 <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
                     <div
                         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 hidden md:block"
-                        style={{ backgroundImage: "url('/cases/Gippo.webp')" }}
+                        style={{ backgroundImage: "url('/cases/gippo.webp')" }}
                     />
 
                     <div
                         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-35 block md:hidden"
-                        style={{ backgroundImage: "url('/cases/Gippo.webp')" }}
+                        style={{ backgroundImage: "url('/cases/gippo.webp')" }}
                     />
 
                     <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#060606] via-[#060606]/40 to-[#060606]/85" />

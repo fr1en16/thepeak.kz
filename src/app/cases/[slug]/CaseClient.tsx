@@ -36,7 +36,7 @@ const CASE_HERO_MEDIA: Record<string, { src: string; type: "image" | "video" }> 
     cadillac: { src: "/cases/cadillac.webp", type: "image" },
     diskokras: { src: "/cases/diskokras/diskokras.webp", type: "image" },
     "double-coffee": { src: "/cases/bossxo.webp", type: "image" },
-    gippo: { src: "/cases/Gippo.webp", type: "image" },
+    gippo: { src: "/cases/gippo.webp", type: "image" },
     lukoil: { src: "/cases/lukoil.mp4", type: "video" },
     mindofbody: { src: "/cases/mob.webp", type: "image" },
     onmacabim: { src: "/cases/onmacabim.webp", type: "image" },

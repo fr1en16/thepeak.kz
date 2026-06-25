@@ -4,6 +4,7 @@ import "./globals.css";
 import GridGuide from "@/components/GridGuide";
 import SmoothScroll from "@/components/SmoothScroll";
 import PageTransition from "@/components/PageTransition";
+import HeroVideoPreload from "@/components/HeroVideoPreload";
 
 const interDisplay = localFont({
   src: [
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${interDisplay.variable} h-full antialiased`} data-scroll-behavior="smooth">
       <body className="relative min-h-screen antialiased font-sans text-[#434343] bg-white selection:bg-[#FD4B32] selection:text-white overflow-x-hidden">
+        <HeroVideoPreload />
         <SmoothScroll />
         <PageTransition>
           {children}

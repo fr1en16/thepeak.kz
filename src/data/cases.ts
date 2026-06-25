@@ -35,7 +35,7 @@ export const allCasesData: CaseItem[] = [
     name: "Gippo",
     type: "smm, таргет",
     text: "Построили дерзкий street food-бренд в Instagram и TikTok: viral-контент, офлайн-активации и механики роста продаж.",
-    image: "/cases/Gippo.webp",
+    image: "/cases/gippo.webp",
     className: "col-span-1 lg:col-span-1 lg:row-span-2",
     href: "/cases/gippo",
     services: ["SMM", "Таргет", "Контент"],
