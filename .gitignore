@@ -20,6 +20,9 @@
 # production
 /build
 
+# local case media backups
+/public/cases/
+
 # misc
 .DS_Store
 *.pem
