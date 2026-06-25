@@ -80,16 +80,19 @@ export async function POST(request: NextRequest) {
 
     const { contactMethod, project } = parseComment(comment);
     const phoneHref = normalizePhoneHref(phone);
+    const sourceText = source && typeof source === "string" ? source.trim() : "Не указан";
     const safeName = escapeHtml(name.trim());
     const safePhone = escapeHtml(phone.trim());
     const safePhoneHref = escapeHtml(phoneHref);
     const safeContactMethod = escapeHtml(formatContactMethod(contactMethod));
     const safeProject = escapeHtml(project);
+    const safeSource = escapeHtml(sourceText);
 
     const text = [
       safeName,
       `<a href="tel:${safePhoneHref}">${safePhone}</a>`,
       safeContactMethod,
+      `Источник: ${safeSource}`,
       "",
       safeProject
     ].join("\n");
@@ -120,7 +123,7 @@ export async function POST(request: NextRequest) {
       `Телефон: ${phone.trim()}`,
       `Способ связи: ${formatContactMethod(contactMethod)}`,
       `Комментарий: ${project}`,
-      `Источник: ${source && typeof source === "string" ? source.trim() : "Не указан"}`
+      `Источник: ${sourceText}`
     ].join("\n");
 
     const trelloPromise = fetch(trelloUrl.toString(), {

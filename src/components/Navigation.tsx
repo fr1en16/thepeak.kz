@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { IconBrandTelegram, IconBrandWhatsapp, IconPhone, IconMenu2, IconX } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
+import { CONTACTS } from "@/config/contacts";
 
 export default function Navigation() {
   const [isHovered, setIsHovered] = useState(false);
@@ -87,14 +88,12 @@ export default function Navigation() {
         {/* Desktop Phone */}
         <div className="hidden md:flex col-start-10 col-span-3 justify-end items-center relative select-none">
           <a
-            href="tel:+77000868608"
+            href={CONTACTS.phone.tel}
             className={cn(
               "font-sans text-[clamp(0.8rem,1vw,0.95rem)] font-bold uppercase tracking-[0.05em] text-white hover:text-brand-gray transition-all duration-300 absolute right-0 whitespace-nowrap cursor-pointer pointer-events-auto",
               isHovered ? "opacity-0 scale-95 pointer-events-none" : "opacity-100 scale-100"
             )}
-          >
-            +7 700 086 8608
-          </a>
+          >{CONTACTS.phone.display}</a>
         </div>
       </header>
 
@@ -115,13 +114,13 @@ export default function Navigation() {
                   : "opacity-0 scale-95 pointer-events-none"
               )}
             >
-              <a href="https://t.me/+77000868608" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
+              <a href={CONTACTS.telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
                 <IconBrandTelegram className="w-5 h-5" stroke={1.2} />
               </a>
-              <a href="https://wa.me/77000868608" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
+              <a href={CONTACTS.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
                 <IconBrandWhatsapp className="w-5 h-5" stroke={1.2} />
               </a>
-              <a href="tel:+77000868608" aria-label="Direct Call" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
+              <a href={CONTACTS.phone.tel} aria-label="Direct Call" className="no-invert p-2 bg-brand-light-gray hover:bg-brand-red text-brand-gray hover:text-white transition-colors duration-200 border border-brand-gray/10 rounded-none flex items-center justify-center cursor-pointer">
                 <IconPhone className="w-5 h-5" stroke={1.2} />
               </a>
             </div>
@@ -163,14 +162,12 @@ export default function Navigation() {
 
         {/* Bottom: contacts + socials */}
         <div className="px-[var(--page-margin)] pb-8 flex flex-col gap-4 border-t border-brand-gray/15 pt-6">
-          <a href="tel:+77000868608" className="no-invert font-sans font-bold text-brand-gray text-lg tracking-wider uppercase">
-            +7 700 086 8608
-          </a>
+          <a href={CONTACTS.phone.tel} className="no-invert font-sans font-bold text-brand-gray text-lg tracking-wider uppercase">{CONTACTS.phone.display}</a>
           <div className="flex gap-3">
-            <a href="https://t.me/+77000868608" target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="no-invert p-3 bg-white border border-brand-gray/15 text-brand-gray hover:bg-brand-orange hover:text-white transition-colors duration-200 rounded-none flex items-center justify-center">
+            <a href={CONTACTS.telegramUrl} target="_blank" rel="noopener noreferrer" aria-label="Telegram" className="no-invert p-3 bg-white border border-brand-gray/15 text-brand-gray hover:bg-brand-orange hover:text-white transition-colors duration-200 rounded-none flex items-center justify-center">
               <IconBrandTelegram className="w-5 h-5" stroke={1.2} />
             </a>
-            <a href="https://wa.me/77000868608" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="no-invert p-3 bg-white border border-brand-gray/15 text-brand-gray hover:bg-brand-orange hover:text-white transition-colors duration-200 rounded-none flex items-center justify-center">
+            <a href={CONTACTS.whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="no-invert p-3 bg-white border border-brand-gray/15 text-brand-gray hover:bg-brand-orange hover:text-white transition-colors duration-200 rounded-none flex items-center justify-center">
               <IconBrandWhatsapp className="w-5 h-5" stroke={1.2} />
             </a>
           </div>

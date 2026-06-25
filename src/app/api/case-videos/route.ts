@@ -1,9 +1,9 @@
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 import { NextRequest } from "next/server";
+import { caseMediaManifest } from "@/data/case-media-manifest";
 
 const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"]);
-const VIDEO_EXTENSIONS = new Set([".mp4", ".webm", ".mov", ".m4v"]);
 const CLOUDINARY_CASES_FOLDER = "cases";
 const CLOUDINARY_VIDEO_TRANSFORMATION = "q_auto:best";
 
@@ -14,6 +14,7 @@ interface CaseMediaItem {
     height?: number;
     src: string;
     name: string;
+    posterSrc?: string;
     type: "image" | "video";
     width?: number;
 }
@@ -53,10 +54,6 @@ function getMediaType(fileName: string): CaseMediaItem["type"] | null {
         return "image";
     }
 
-    if (VIDEO_EXTENSIONS.has(extension)) {
-        return "video";
-    }
-
     return null;
 }
 
@@ -79,6 +76,17 @@ function getCloudinaryVideoName(resource: CloudinaryResource, folderPrefix: stri
 
 function getHighQualityCloudinaryVideoSrc(src: string) {
     return src.replace("/video/upload/", `/video/upload/${CLOUDINARY_VIDEO_TRANSFORMATION}/`);
+}
+
+function getCloudinaryVideoPosterSrc(src: string) {
+    const [baseSrc, query = ""] = src.split("?");
+    const sourceWithoutExtension = baseSrc.replace(/\.[a-z0-9]+$/i, "");
+    const posterSrc = sourceWithoutExtension.replace(
+        /\/video\/upload\/(?:[^/]+\/)?(v\d+\/)/,
+        "/video/upload/so_0.1,q_auto:good,f_jpg/$1",
+    );
+
+    return `${posterSrc}.jpg${query ? `?${query}` : ""}`;
 }
 
 async function getCloudinaryVideos(slug: string): Promise<CaseMediaItem[] | null> {
@@ -126,13 +134,18 @@ async function getCloudinaryVideos(slug: string): Promise<CaseMediaItem[] | null
                 const nestedPath = resource.public_id.slice(folderPrefix.length);
                 return nestedPath.length > 0 && !nestedPath.includes("/");
             })
-            .map((resource) => ({
-                height: resource.height,
-                src: getHighQualityCloudinaryVideoSrc(resource.secure_url),
-                name: getCloudinaryVideoName(resource, folderPrefix),
-                type: "video" as const,
-                width: resource.width,
-            }))
+            .map((resource) => {
+                const src = getHighQualityCloudinaryVideoSrc(resource.secure_url);
+
+                return {
+                    height: resource.height,
+                    src,
+                    name: getCloudinaryVideoName(resource, folderPrefix),
+                    posterSrc: getCloudinaryVideoPosterSrc(src),
+                    type: "video" as const,
+                    width: resource.width,
+                };
+            })
             .sort((a, b) => a.name.localeCompare(b.name, "ru"));
     } catch {
         return null;
@@ -171,6 +184,13 @@ async function getLocalMedia(slug: string, allowedTypes: Set<CaseMediaItem["type
     }
 }
 
+function getManifestMedia(slug: string, allowedTypes: Set<CaseMediaItem["type"]>): CaseMediaItem[] {
+    return (caseMediaManifest[slug] || [])
+        .filter((item) => allowedTypes.has(item.type))
+        .map((item) => ({ ...item }))
+        .sort((a, b) => a.name.localeCompare(b.name, "ru"));
+}
+
 export async function GET(request: NextRequest) {
     const slug = request.nextUrl.searchParams.get("slug")?.trim();
 
@@ -179,6 +199,7 @@ export async function GET(request: NextRequest) {
     }
 
     const cloudinaryVideos = await getCloudinaryVideos(slug);
+    const fallbackVideos = getManifestMedia(slug, new Set(["video"]));
 
     if (cloudinaryVideos && cloudinaryVideos.length > 0) {
         const localImages = await getLocalMedia(slug, new Set(["image"]));
@@ -187,6 +208,13 @@ export async function GET(request: NextRequest) {
         return Response.json({ media, videos: media.filter((item) => item.type === "video") });
     }
 
-    const media = await getLocalMedia(slug, new Set(["image", "video"]));
+    if (fallbackVideos.length > 0) {
+        const localImages = await getLocalMedia(slug, new Set(["image"]));
+        const media = [...fallbackVideos, ...localImages].sort((a, b) => a.name.localeCompare(b.name, "ru"));
+
+        return Response.json({ media, videos: media.filter((item) => item.type === "video") });
+    }
+
+    const media = await getLocalMedia(slug, new Set(["image"]));
     return Response.json({ media, videos: media.filter((item) => item.type === "video") });
 }

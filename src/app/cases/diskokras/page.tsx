@@ -7,6 +7,7 @@ import CaseVideoGallery from "@/components/CaseVideoGallery";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CONTACTS } from "@/config/contacts";
 import {
   IconPlus,
   IconPhone,
@@ -18,6 +19,7 @@ import {
 } from "@tabler/icons-react";
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
+import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 
 // ─── Metrics Data ──────────────────────────────────────────────────────────────
@@ -81,7 +83,7 @@ function ContactInfoDark({
   ...props
 }: ContactInfoDarkProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const isPhone = value === "+7 700 086 8608";
+  const isPhone = value === CONTACTS.phone.display;
 
   if (isPhone) {
     return (
@@ -92,8 +94,8 @@ function ContactInfoDark({
         {...props}
       >
         <a
-          href="tel:+77000868608"
-          aria-label="Call +7 700 086 8608"
+          href={CONTACTS.phone.tel}
+          aria-label={CONTACTS.phone.ariaLabel}
           className="bg-white/5 p-3 rounded-none flex items-center justify-center flex-shrink-0 text-[#FD4B32] hover:text-white hover:bg-[#FD4B32] transition-colors duration-200 border border-white/10 cursor-pointer no-invert"
         >
           <Icon className="h-5 w-5" />
@@ -117,7 +119,7 @@ function ContactInfoDark({
             )}
           >
             <a
-              href="https://t.me/+77000868608"
+              href={CONTACTS.telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Telegram"
@@ -127,7 +129,7 @@ function ContactInfoDark({
             </a>
 
             <a
-              href="https://wa.me/77000868608"
+              href={CONTACTS.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -161,6 +163,7 @@ export default function DiskokrasCasePage() {
     contact: "+7",
     contactMethod: "WhatsApp",
     message: "",
+          privacyConsent: true,
   });
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -169,8 +172,8 @@ export default function DiskokrasCasePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
-    if (!formData.name.trim() || !formData.contact.trim()) {
-      setSubmitError("Заполните имя и контактный телефон.");
+    if (!formData.name.trim() || !formData.contact.trim() || !formData.privacyConsent) {
+      setSubmitError("Заполните имя, контактный телефон и согласие с политикой конфиденциальности.");
       return;
     }
 
@@ -417,9 +420,9 @@ export default function DiskokrasCasePage() {
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap gap-x-8 gap-y-4 pt-6 border-t border-white/10 mt-auto">
-                  <ContactInfoDark icon={IconPhone} value="+7 700 086 8608" />
-                  <ContactInfoDark icon={IconMail} value="marketing@thepeak.kz" />
-                  <ContactInfoDark icon={IconMapPin} value="Алматы, Казахстан" />
+                  <ContactInfoDark icon={IconPhone} value={CONTACTS.phone.display} />
+                  <ContactInfoDark icon={IconMail} value={CONTACTS.email} />
+                  <ContactInfoDark icon={IconMapPin} value={CONTACTS.address} />
                 </div>
               </div>
             </div>
@@ -499,6 +502,13 @@ export default function DiskokrasCasePage() {
                       className="no-invert w-full font-sans text-sm text-white bg-transparent border-b border-white/20 focus:border-[#FD4B32] py-2.5 outline-none transition-colors duration-200 resize-none rounded-none placeholder-white/20"
                     />
                   </div>
+
+                  <PrivacyConsentCheckbox
+                    checked={formData.privacyConsent}
+                    onCheckedChange={(checked) => setFormData({ ...formData, privacyConsent: checked })}
+                    disabled={isSubmitting}
+                    variant="dark"
+                  />
 
                   {submitError && (
 

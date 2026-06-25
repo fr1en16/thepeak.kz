@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { CONTACTS } from "@/config/contacts";
 import {
   IconPlus,
   IconPhone,
@@ -14,6 +15,7 @@ import {
 } from "@tabler/icons-react";
 import { formatTypography } from "@/utils/typography";
 import PhoneInput from "@/components/ui/PhoneInput";
+import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 type ContactInfoProps = React.ComponentProps<"div"> & {
   icon: React.ComponentType<{ className?: string }>;
@@ -86,7 +88,7 @@ function ContactInfo({
   ...props
 }: ContactInfoProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const isPhone = value === "+7 700 086 8608";
+  const isPhone = value === CONTACTS.phone.display;
 
   if (isPhone) {
     return (
@@ -97,8 +99,8 @@ function ContactInfo({
         {...props}
       >
         <a
-          href="tel:+77000868608"
-          aria-label="Call +7 700 086 8608"
+          href={CONTACTS.phone.tel}
+          aria-label={CONTACTS.phone.ariaLabel}
           className="bg-brand-light-gray p-3 rounded-none flex items-center justify-center flex-shrink-0 text-brand-red hover:text-white hover:bg-brand-red transition-colors duration-200 border border-brand-gray/10 cursor-pointer no-invert"
         >
           <Icon className="h-5 w-5" />
@@ -125,7 +127,7 @@ function ContactInfo({
           >
             {/* Telegram Link */}
             <a
-              href="https://t.me/+77000868608"
+              href={CONTACTS.telegramUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Telegram"
@@ -136,7 +138,7 @@ function ContactInfo({
 
             {/* WhatsApp Link */}
             <a
-              href="https://wa.me/77000868608"
+              href={CONTACTS.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -168,12 +170,13 @@ export default function ContactSection() {
     contact: "",
     contactMethod: "WhatsApp",
     message: "",
+          privacyConsent: true,
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name.trim() || !formData.contact.trim()) {
+    if (!formData.name.trim() || !formData.contact.trim() || !formData.privacyConsent) {
       setStatus("error");
       return;
     }
@@ -205,6 +208,7 @@ export default function ContactSection() {
           contact: "",
           contactMethod: "WhatsApp",
           message: "",
+          privacyConsent: true,
         });
       } else {
         setStatus("error");
@@ -218,15 +222,15 @@ export default function ContactSection() {
   const contactData: ContactInfoProps[] = [
     {
       icon: IconPhone,
-      value: "+7 700 086 8608",
+      value: CONTACTS.phone.display,
     },
     {
       icon: IconMail,
-      value: "marketing@thepeak.kz",
+      value: CONTACTS.email,
     },
     {
       icon: IconMapPin,
-      value: "Алматы, Казахстан",
+      value: CONTACTS.address,
     },
   ];
 
@@ -320,6 +324,13 @@ export default function ContactSection() {
                 className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-200 resize-none rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
+
+            <PrivacyConsentCheckbox
+              checked={formData.privacyConsent}
+              onCheckedChange={(checked) => setFormData({ ...formData, privacyConsent: checked })}
+              disabled={status === "loading"}
+              variant="dark"
+            />
 
             {status === "error" && (
               <p className="text-red-500 font-sans text-xs font-semibold">

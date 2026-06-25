@@ -20,8 +20,11 @@
 # production
 /build
 
-# local case media backups
-/public/cases/
+# local case video backups
+/public/cases/**/*.mp4
+/public/cases/**/*.webm
+/public/cases/**/*.mov
+/public/cases/**/*.m4v
 
 # misc
 .DS_Store

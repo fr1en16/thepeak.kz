@@ -5,6 +5,7 @@ import { useAnimate } from "framer-motion";
 import { MorphingText } from "@/components/ui/liquid-text";
 import { formatTypography } from "@/utils/typography";
 import PhoneInput from "@/components/ui/PhoneInput";
+import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 
 interface ServiceItem {
   title: string;
@@ -220,6 +221,7 @@ export default function ServicesAnimate() {
     contact: "",
     contactMethod: "WhatsApp",
     message: "",
+          privacyConsent: true,
   });
   const [modalStatus, setModalStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -232,7 +234,7 @@ export default function ServicesAnimate() {
 
   const handleModalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedService || !modalForm.name.trim() || !modalForm.contact.trim()) {
+    if (!selectedService || !modalForm.name.trim() || !modalForm.contact.trim() || !modalForm.privacyConsent) {
       setModalStatus("error");
       return;
     }
@@ -264,6 +266,7 @@ export default function ServicesAnimate() {
           contact: "",
           contactMethod: "WhatsApp",
           message: "",
+          privacyConsent: true,
         });
         setTimeout(() => {
           setSelectedService(null);
@@ -317,6 +320,7 @@ export default function ServicesAnimate() {
                   contact: "",
                   contactMethod: "WhatsApp",
                   message: "",
+          privacyConsent: true,
                 });
                 setModalStatus("idle");
               }}
@@ -457,6 +461,13 @@ export default function ServicesAnimate() {
                       className="w-full font-sans text-sm text-white bg-white/5 border border-white/10 focus:border-white/30 px-4 py-3 outline-none transition-colors duration-400 resize-none rounded-none placeholder-neutral-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
+
+                  <PrivacyConsentCheckbox
+                    checked={modalForm.privacyConsent}
+                    onCheckedChange={(checked) => setModalForm({ ...modalForm, privacyConsent: checked })}
+                    disabled={modalStatus === "loading"}
+                    variant="dark"
+                  />
 
                   {modalStatus === "error" && (
                     <p className="text-red-500 font-sans text-xs font-semibold">

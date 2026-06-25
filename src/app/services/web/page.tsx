@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { CONTACTS } from "@/config/contacts";
 import { formatTypography } from "@/utils/typography";
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
+import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
 import {
     IconTarget,
     IconChartInfographic,
@@ -45,7 +47,7 @@ function ContactInfoDark({
     ...props
 }: ContactInfoDarkProps) {
     const [isHovered, setIsHovered] = useState(false);
-    const isPhone = value === "+7 700 086 8608";
+    const isPhone = value === CONTACTS.phone.display;
 
     if (isPhone) {
         return (
@@ -56,8 +58,8 @@ function ContactInfoDark({
                 {...props}
             >
                 <a
-                    href="tel:+77000868608"
-                    aria-label="Call +7 700 086 8608"
+                    href={CONTACTS.phone.tel}
+                    aria-label={CONTACTS.phone.ariaLabel}
                     className="bg-white/5 p-3 rounded-none flex items-center justify-center flex-shrink-0 text-[#FD4B32] hover:text-white hover:bg-[#FD4B32] transition-colors duration-200 border border-white/10 cursor-pointer no-invert"
                 >
                     <Icon className="h-5 w-5" />
@@ -81,7 +83,7 @@ function ContactInfoDark({
                         )}
                     >
                         <a
-                            href="https://t.me/+77000868608"
+                            href={CONTACTS.telegramUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Telegram"
@@ -91,7 +93,7 @@ function ContactInfoDark({
                         </a>
 
                         <a
-                            href="https://wa.me/77000868608"
+                            href={CONTACTS.whatsappUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="WhatsApp"
@@ -124,6 +126,7 @@ export default function SitesPage() {
         contact: "",
         contactMethod: "WhatsApp",
         message: "",
+          privacyConsent: true,
     });
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -136,7 +139,7 @@ export default function SitesPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.name.trim() || !formData.contact.trim()) {
+        if (!formData.name.trim() || !formData.contact.trim() || !formData.privacyConsent) {
             setStatus("error");
             return;
         }
@@ -161,7 +164,7 @@ export default function SitesPage() {
 
             if (response.ok) {
                 setStatus("success");
-                setFormData({ name: "", contact: "", contactMethod: "WhatsApp", message: "" });
+                setFormData({ name: "", contact: "", contactMethod: "WhatsApp", message: "", privacyConsent: true });
             } else {
                 setStatus("error");
             }
@@ -382,9 +385,9 @@ export default function SitesPage() {
                                     </p>
                                 </div>
                                 <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap gap-x-8 gap-y-4 pt-6 border-t border-white/10 mt-auto">
-                                    <ContactInfoDark icon={IconPhone} value="+7 700 086 8608" />
-                                    <ContactInfoDark icon={IconMail} value="marketing@thepeak.kz" />
-                                    <ContactInfoDark icon={IconMapPin} value="Алматы, Казахстан" />
+                                    <ContactInfoDark icon={IconPhone} value={CONTACTS.phone.display} />
+                                    <ContactInfoDark icon={IconMail} value={CONTACTS.email} />
+                                    <ContactInfoDark icon={IconMapPin} value={CONTACTS.address} />
                                 </div>
                             </div>
                         </div>
@@ -470,7 +473,14 @@ export default function SitesPage() {
                                         />
                                     </div>
 
-                                    {status === "error" && (
+                                    <PrivacyConsentCheckbox
+              checked={formData.privacyConsent}
+              onCheckedChange={(checked) => setFormData({ ...formData, privacyConsent: checked })}
+              disabled={status === "loading"}
+              variant="dark"
+            />
+
+            {status === "error" && (
                                         <p className="text-red-500 font-sans text-xs font-semibold">
                                             Произошла ошибка при отправке. Пожалуйста, попробуйте ещё раз.
                                         </p>
