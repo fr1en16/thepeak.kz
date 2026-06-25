@@ -1,7 +1,8 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
+import type Lenis from "lenis";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 type PendingTransition = {
@@ -16,6 +17,12 @@ type ViewTransitionDocument = Document & {
     finished: Promise<void>;
   };
 };
+
+declare global {
+  interface Window {
+    peakLenis?: Lenis;
+  }
+}
 
 type PageTransitionProps = {
   children: React.ReactNode;
@@ -32,11 +39,16 @@ const jumpToRouteStart = (hash: string) => {
 
   if (hash) {
     const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    target?.scrollIntoView({ block: "start" });
+    if (target) {
+      window.peakLenis?.scrollTo(target, { immediate: true, force: true, lock: true });
+      target.scrollIntoView({ block: "start" });
+    }
   } else {
+    window.peakLenis?.scrollTo(0, { immediate: true, force: true, lock: true });
     window.scrollTo(0, 0);
   }
 
+  window.peakLenis?.resize();
   html.style.scrollBehavior = previousScrollBehavior;
 };
 
@@ -51,11 +63,16 @@ export default function PageTransition({ children }: PageTransitionProps) {
   const [previousChildren, setPreviousChildren] = useState<React.ReactNode>(null);
   const [previousScrollY, setPreviousScrollY] = useState(0);
   const [isFallbackEntering, setIsFallbackEntering] = useState(false);
+  const [isInitialHomeEntering, setIsInitialHomeEntering] = useState(() => pathname === "/");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const pending = pendingTransition.current;
 
     if (!pending || pending.pathname !== pathname) {
+      if (previousPathname.current !== pathname) {
+        jumpToRouteStart(window.location.hash);
+      }
+
       return;
     }
 
@@ -66,9 +83,29 @@ export default function PageTransition({ children }: PageTransitionProps) {
   }, [pathname]);
 
   useEffect(() => {
+    window.history.scrollRestoration = "manual";
+
+    return () => {
+      window.history.scrollRestoration = "auto";
+    };
+  }, []);
+
+  useEffect(() => {
     supportsNativeViewTransition.current =
       typeof (document as ViewTransitionDocument).startViewTransition === "function";
   }, []);
+
+  useEffect(() => {
+    if (!isInitialHomeEntering) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsInitialHomeEntering(false);
+    }, 700);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [isInitialHomeEntering]);
 
   useEffect(() => {
     if (previousPathname.current === pathname) {
@@ -159,8 +196,11 @@ export default function PageTransition({ children }: PageTransitionProps) {
     };
   }, [router]);
 
+  const currentChildren = supportsNativeViewTransition.current ? children : renderedChildren;
+
   return (
     <>
+      {isInitialHomeEntering && <div className="page-transition-initial-bg" aria-hidden="true" />}
       {previousChildren && (
         <main
           className="swiss-grid gap-y-0 page-transition-previous"
@@ -170,8 +210,15 @@ export default function PageTransition({ children }: PageTransitionProps) {
           {previousChildren}
         </main>
       )}
-      <main className={`swiss-grid gap-y-0 page-transition-current${isFallbackEntering ? " page-transition-fallback-enter" : ""}`}>
-        {renderedChildren}
+      <main
+        className={`swiss-grid gap-y-0 page-transition-current${isFallbackEntering ? " page-transition-fallback-enter" : ""}${isInitialHomeEntering ? " page-transition-initial-home" : ""}`}
+        onAnimationEnd={(event) => {
+          if (event.currentTarget === event.target && isInitialHomeEntering) {
+            setIsInitialHomeEntering(false);
+          }
+        }}
+      >
+        {currentChildren}
       </main>
     </>
   );

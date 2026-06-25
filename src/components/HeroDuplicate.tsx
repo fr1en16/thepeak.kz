@@ -12,44 +12,31 @@ export default function HeroDuplicate() {
 
   return (
     <section className="col-span-12 relative w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] overflow-hidden h-screen md:h-auto md:min-h-screen flex flex-col justify-between pt-[60px] md:pt-[clamp(4rem,8vw,6rem)] pb-0 border-b border-brand-gray/10 select-none" id="hero-alternative">
-      {/* 1. Background Video — mobile */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden block md:hidden">
+      {/* 1. Background Video */}
+      <div className="hero-video-shell absolute top-0 left-0 w-full h-full overflow-hidden">
         <video
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
+          poster="/bg-mobile-poster.jpg"
           className="w-full h-full object-cover"
         >
           <source
-            src="/bg m.webm"
-            type="video/webm"
-          />
-          <source
-            src="/bg m.mp4"
+            src="/bg-mobile-fast.mp4"
             type="video/mp4"
+            media="(max-width: 767px)"
           />
-        </video>
-      </div>
-
-      {/* 1. Background Video — desktop */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden hidden md:block">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover"
-        >
           <source
             src="/bg.webm"
             type="video/webm"
+            media="(min-width: 768px)"
           />
           <source
             src="/bg.mp4"
             type="video/mp4"
+            media="(min-width: 768px)"
           />
         </video>
       </div>
@@ -93,9 +80,11 @@ export default function HeroDuplicate() {
       <div className="w-full relative flex flex-col mt-auto">
         {/* Background card container inside the same stacking context */}
         <div
-          className="absolute inset-0 w-full z-0 border-t border-brand-gray/10 pointer-events-none"
+          className="hero-bottom-backdrop absolute inset-0 w-full z-0 border-t border-brand-gray/10 pointer-events-none"
           style={{
-            backgroundColor: "rgba(232, 239, 242, 0.85)",
+            backgroundColor: "var(--hero-bottom-bg)",
+            backdropFilter: "blur(var(--hero-bottom-blur))",
+            WebkitBackdropFilter: "blur(var(--hero-bottom-blur))",
           }}
         />
 
