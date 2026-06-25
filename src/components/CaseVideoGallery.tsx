@@ -225,14 +225,14 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                     Смотреть
                 </div>
             )}
-            <div className="columns-1 gap-6 sm:columns-2 md:columns-3 lg:columns-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                 {mediaItems.map((item, index) => (
                     <div
                         key={`${item.src}-${index}`}
                         ref={(node) => {
                             cardRefs.current[item.src] = node;
                         }}
-                        className="mb-6 w-full break-inside-avoid bg-zinc-950 border border-white/5 rounded-none overflow-hidden"
+                        className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden"
                     >
                         {item.type === "image" ? (
                             <img

@@ -102,7 +102,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
 
     const timeoutId = window.setTimeout(() => {
       setIsInitialHomeEntering(false);
-    }, 700);
+    }, 1400);
 
     return () => window.clearTimeout(timeoutId);
   }, [isInitialHomeEntering]);
@@ -128,7 +128,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
     const timeoutId = window.setTimeout(() => {
       setPreviousChildren(null);
       setIsFallbackEntering(false);
-    }, 820);
+    }, 1640);
 
     return () => window.clearTimeout(timeoutId);
   }, [children, pathname, renderedChildren]);
