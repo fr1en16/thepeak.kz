@@ -225,7 +225,7 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                     Смотреть
                 </div>
             )}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
                 {mediaItems.map((item, index) => (
                     <div
                         key={`${item.src}-${index}`}
