@@ -1,4 +1,9 @@
-import InfiniteGallery from "@/components/ui/3d-gallery-photography"
+import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import InfiniteGallery from "@/components/ui/3d-gallery-photography";
+import { absoluteUrl, createSeoMetadata, getBreadcrumbJsonLd, pageSeo } from "@/lib/seo";
+
+export const metadata: Metadata = createSeoMetadata(pageSeo.gallery);
 
 export default function GalleryPage() {
   const sampleImages = [
@@ -38,6 +43,26 @@ export default function GalleryPage() {
 
   return (
     <div className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] min-h-screen relative bg-black">
+      <JsonLd
+        data={[
+          getBreadcrumbJsonLd([
+            { name: "Главная", path: "/" },
+            { name: "Галерея", path: "/gallery" },
+          ]),
+          {
+            "@context": "https://schema.org",
+            "@type": "ImageGallery",
+            "@id": absoluteUrl("/gallery#gallery"),
+            name: "Галерея ThePeak",
+            description: pageSeo.gallery.description,
+            url: absoluteUrl("/gallery"),
+            inLanguage: "ru-KZ",
+            creator: {
+              "@id": absoluteUrl("/#organization"),
+            },
+          },
+        ]}
+      />
       <InfiniteGallery
         images={sampleImages}
         speed={1.2}

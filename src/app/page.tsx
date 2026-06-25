@@ -1,29 +1,26 @@
-"use client";
+import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import HomeClient from "./home-client";
+import { createSeoMetadata, getBreadcrumbJsonLd, getServiceJsonLd, pageSeo } from "@/lib/seo";
 
-import Navigation from "@/components/Navigation";
-import HeroDuplicate from "@/components/HeroDuplicate";
-import ServicesAnimate from "@/components/ServicesAnimate";
-import WorkStages from "@/components/WorkStages";
-import CasesMasonrySection from "@/components/CasesMasonrySection";
-import ClientLogosBlock from "@/components/ClientLogosBlock";
-import Team from "@/components/Team";
-import ContactSection from "@/components/ContactSection";
-import StatsBlock from "@/components/StatsBlock";
+export const metadata: Metadata = createSeoMetadata(pageSeo.home);
 
 export default function Home() {
   return (
     <>
-      <Navigation />
-      <HeroDuplicate />
-      <div className="col-span-12 block w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] md:hidden">
-        <StatsBlock />
-      </div>
-      <ServicesAnimate />
-      <WorkStages />
-      <CasesMasonrySection />
-      <ClientLogosBlock />
-      <Team />
-      <ContactSection />
+      <JsonLd
+        data={[
+          getBreadcrumbJsonLd([{ name: "Главная", path: "/" }]),
+          getServiceJsonLd({
+            name: "Маркетинговое агентство в\u00a0Казахстане",
+            description:
+              "Комплексный маркетинг, SMM, digital-стратегия, брендинг, разработка сайтов и\u00a0продакшн для бизнеса в\u00a0Казахстане, Алматы и\u00a0Астане.",
+            path: "/",
+            serviceType: "Маркетинг полного цикла",
+          }),
+        ]}
+      />
+      <HomeClient />
     </>
   );
 }

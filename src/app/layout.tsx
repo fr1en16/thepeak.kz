@@ -6,6 +6,8 @@ import GridGuide from "@/components/GridGuide";
 import SmoothScroll from "@/components/SmoothScroll";
 import PageTransition from "@/components/PageTransition";
 import HeroVideoPreload from "@/components/HeroVideoPreload";
+import JsonLd from "@/components/JsonLd";
+import { getOrganizationJsonLd, getWebsiteJsonLd, pageSeo, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const interDisplay = localFont({
   src: [
@@ -22,8 +24,28 @@ const interDisplay = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "ThePeak – Маркетинг от идеи до готового результата",
-  description: "Креативное агентство ThePeak. Создаем маркетинг, который становится референсом для других. Разработка стратегий, сайтов, брендинга и 3D-графики.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: pageSeo.home.title,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: pageSeo.home.description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: pageSeo.home.title,
+    description: pageSeo.home.description,
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    locale: "ru_KZ",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: pageSeo.home.title,
+    description: pageSeo.home.description,
+  },
   icons: {
     icon: "https://static.tildacdn.pro/tild3334-3763-4662-a232-663137633465/favicon.svg",
   },
@@ -37,6 +59,7 @@ export default function RootLayout({
   return (
     <html lang="ru" className={`${interDisplay.variable} h-full antialiased`} data-scroll-behavior="smooth">
       <body className="relative min-h-screen antialiased font-sans text-[#434343] bg-white selection:bg-[#FD4B32] selection:text-white overflow-x-hidden">
+        <JsonLd data={[getOrganizationJsonLd(), getWebsiteJsonLd()]} />
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)

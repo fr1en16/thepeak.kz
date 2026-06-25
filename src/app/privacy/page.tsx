@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import JsonLd from "@/components/JsonLd";
+import { createSeoMetadata, getBreadcrumbJsonLd, pageSeo } from "@/lib/seo";
 import { formatTypography } from "@/utils/typography";
 
-export const metadata: Metadata = {
-  title: "Политика конфиденциальности – ThePeak",
-  description:
-    "Политика конфиденциальности сайта ThePeak. Правила сбора, хранения и обработки персональных данных пользователей.",
-};
+export const metadata: Metadata = createSeoMetadata(pageSeo.privacy);
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white">
+      <JsonLd
+        data={getBreadcrumbJsonLd([
+          { name: "Главная", path: "/" },
+          { name: "Политика конфиденциальности", path: "/privacy" },
+        ])}
+      />
       {/* Header */}
       <header className="border-b border-brand-gray/10 px-[var(--page-margin)] py-5">
         <Link
