@@ -26,21 +26,21 @@ interface BentoCaseItem {
 }
 
 const allCasesData: BentoCaseItem[] = [
+  { name: "Sensata", type: "Видеопродакшн", image: "/cases/sensata.webp", className: "col-span-1", href: "/cases/sensata" },
   { name: "Puma Kazakhstan", type: "SMM / Ритейл", image: "/cases/puma.webp", className: "col-span-1", href: "/cases/puma" },
   { name: "Gippo", type: "SMM / Фаст-фуд", image: "/cases/gippo.webp", className: "col-span-1", href: "/cases/gippo" },
   { name: "Lukoil Lubricants", type: "SMM / Производство", image: "/cases/lukoil.mp4", className: "col-span-1", href: "/cases/lukoil" },
-  { name: "Sensata", type: "Видеопродакшн", image: "/cases/sensata.webp", className: "col-span-1", href: "/cases/sensata" },
-  { name: "Bazis A", type: "Видеопродакшн", image: "/cases/bazisa.webp", className: "col-span-1", href: "/cases/bazisa" },
-  { name: "Velmar", type: "SMM", image: "/cases/velmar.webp", className: "col-span-1", href: "/cases/velmar" },
-  { name: "Рис", type: "SMM / Ресторан", image: "/cases/ris.webp", className: "col-span-1", href: "/cases/ris" },
-  { name: "Raccoon Tyres", type: "SMM / Автосервис", image: "/cases/racoon.webp", className: "col-span-1", href: "/cases/racoon" },
+  { name: "Bazis A", type: "Видеопродакшн", image: "/cases/bazis a.mp4", className: "col-span-1", href: "/cases/bazisa" },
+  { name: "Velmar", type: "SMM", image: "/cases/velmar.mp4", className: "col-span-1", href: "/cases/velmar" },
+  { name: "Raccoon Tyres", type: "SMM / Автосервис", image: "/cases/raccoon.mp4", className: "col-span-1", href: "/cases/racoon" },
   { name: "ONmacabim", type: "Стратегия & SMM", image: "/cases/onmacabim.webp", className: "col-span-1", href: "/cases/onmacabim" },
-  { name: "Mind of Body", type: "SMM / Фитнес", image: "/cases/mindofbody.webp", className: "col-span-1", href: "/cases/mindofbody" },
+  { name: "Mind of Body", type: "SMM / Фитнес", image: "/cases/mob.webp", className: "col-span-1", href: "/cases/mindofbody" },
   { name: "Diskokras", type: "SMM / Личный бренд", image: "/cases/diskokras.webp", className: "col-span-1", href: "/cases/diskokras" },
+  { name: "Рис", type: "SMM / Ресторан", image: "/cases/ris.mp4", className: "col-span-1", href: "/cases/ris" },
   { name: "Cadillac", type: "SMM / Продажа авто", image: "/cases/cadillac.webp", className: "col-span-1", href: "/cases/cadillac" },
   { name: "Bossxo", type: "SMM / Продажа мебели", image: "/cases/bossxo.webp", className: "col-span-1", href: "/cases/bossxo" },
   { name: "Blink map", type: "SMM / IT-бизнес", image: "/cases/blink.webp", className: "col-span-1", href: "/cases/blink" },
-  { name: "Avtopilot", type: "SMM / Автосервис", image: "/cases/avtopilot.webp", className: "col-span-1", href: "/cases/avtopilot" },
+  { name: "Avtopilot", type: "SMM / Автосервис", image: "/cases/avtopilot.mp4", className: "col-span-1", href: "/cases/avtopilot" },
   { name: "ARK detailing", type: "SMM / Детейлинг", image: "/cases/ark.webp", className: "col-span-1", href: "/cases/ark" },
 ];
 
@@ -179,7 +179,7 @@ export default function CasesCatalogPage() {
                             loop
                             muted
                             playsInline
-                            className="w-full h-full object-cover opacity-70 transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-100"
+                            className="w-full h-full object-cover opacity-100 transition-all duration-700 ease-out group-hover:scale-105"
                           />
                         ) : isImageMp4 ? (
                           <video
@@ -188,20 +188,20 @@ export default function CasesCatalogPage() {
                             loop
                             muted
                             playsInline
-                            className="w-full h-full object-cover opacity-70 transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-100"
+                            className="w-full h-full object-cover opacity-100 transition-all duration-700 ease-out group-hover:scale-105"
                           />
                         ) : (
                           <img
                             src={item.image}
                             alt={item.name}
-                            className="w-full h-full object-cover opacity-70 transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-100"
+                            className="w-full h-full object-cover opacity-100 transition-all duration-700 ease-out group-hover:scale-105"
                             loading="lazy"
                           />
                         )}
                       </TiltWrapper>
                     </div>
 
-                    {/* Подпись карточки (Разделитель убран) */}
+                    {/* Подпись карточки */}
                     <div className="pt-4 pb-1 z-10 relative flex items-baseline justify-between gap-4">
                       <h3 className="font-sans font-bold text-sm text-white uppercase tracking-wider group-hover:text-[#FD4B32] transition-colors truncate">
                         {item.name}
