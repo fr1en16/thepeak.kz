@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import CaseVideoGallery from "@/components/CaseVideoGallery";
+import CaseDescriptionColumns from "@/components/CaseDescriptionColumns";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -44,6 +45,13 @@ const metrics = [
         label: "Формирование доверия к бренду",
         index: "04",
     },
+];
+
+const caseDescription = [
+    "ГИППО — один из самых ярких и смелых street food-проектов, с которыми мы работаем. Ушли от обычной подачи “бургеры и акции” и начали строить дерзкий, эмоциональный и цепляющий street food-бренд.",
+    "Мы полностью развивали Instagram и TikTok проекта: Reels, viral-контент, storytelling, прогревы, визуальную подачу, съемки и весь tone of voice бренда. Весь контент строился вокруг продукта. Мы показывали вкус, эмоцию, желание купить здесь и сейчас, но делали это через атмосферу, тренды, юмор и динамику, а не через стандартную рекламу.",
+    "Также внутри проекта мы разрабатывали маркетинговые акции и офферы, которые давали реальные результаты в продажах. Некоторые механики приносили х2 рост продаж буквально за два дня за счет правильной подачи, viral-эффекта и попадания в аудиторию.",
+    "Помимо digital, мы создавали и оффлайн-активности для усиления узнаваемости бренда. Одним из самых ярких проектов стал конкурс «Лицо бренда», где участие принимали дети. Победители становились настоящими лицами ГИППО — весь месяц их фотографии размещались на баннерах бренда, превращая обычную акцию в большой городской инфоповод.",
 ];
 
 // ─── Grain SVG as data URL ─────────────────────────────────────────────────────
@@ -331,6 +339,8 @@ export default function GippoCasePage() {
                         ))}
                     </div>
                 </section>
+
+                <CaseDescriptionColumns paragraphs={caseDescription} />
 
                 {/* ── REELS GRID GALLERY ────────────────────────────── */}
                 <CaseVideoGallery slug="gippo" />

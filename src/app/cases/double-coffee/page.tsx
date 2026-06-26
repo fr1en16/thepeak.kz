@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import CaseVideoGallery from "@/components/CaseVideoGallery";
+import CaseDescriptionColumns from "@/components/CaseDescriptionColumns";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -44,6 +45,13 @@ const metrics = [
     label: "Формирование доверия к бренду",
     index: "04",
   },
+];
+
+const caseDescription = [
+  "Double Coffee — проект кофейни-ресторана, в который мы зашли с задачей полностью изменить восприятие бренда в digital. С самого начала было важно вытащить то, что уже существовало внутри проекта, но почти не транслировалось в Instagram: премиальность, атмосферу и настоящий вкус еды.",
+  "Показали Double Coffee как место, где хочется проводить время: завтракать утром, встречаться днем, ужинать вечером и просто быть внутри этой атмосферы города.",
+  "Большой акцент сделали на визуале и Reels. Через контент начали раскрывать эстетику подачи, детали интерьера, настроение гостей, работу команды и саму жизнь внутри ресторана.",
+  "Для нас было важно уйти от ощущения просто кофейни и показать Double Coffee как полноценный городской ресторан с европейским вайбом, вкусной кухней и своей атмосферой. Именно через это бренд начал восприниматься дороже, глубже и вкуснее даже через экран.",
 ];
 
 // ─── Grain SVG as data URL ─────────────────────────────────────────────────────
@@ -331,6 +339,8 @@ export default function DoubleCoffeeCasePage() {
             ))}
           </div>
         </section>
+
+        <CaseDescriptionColumns paragraphs={caseDescription} />
 
                 {/* ── REELS GRID GALLERY ────────────────────────────── */}
                 <CaseVideoGallery slug="double-coffee" />

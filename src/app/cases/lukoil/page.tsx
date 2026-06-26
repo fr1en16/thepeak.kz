@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import CaseVideoGallery from "@/components/CaseVideoGallery";
+import CaseDescriptionColumns from "@/components/CaseDescriptionColumns";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -44,6 +45,13 @@ const metrics = [
         label: "Формирование доверия к бренду",
         index: "04",
     },
+];
+
+const caseDescription = [
+    "Проект с Лукойл Лубрикантс Центральная Азия — это работа с одним из самых крупных и узнаваемых брендов в своей сфере, где для нас было важно сохранить силу и статус компании, но при этом сделать коммуникацию современной, живой и визуально сильной.",
+    "Мы ведем Instagram, TikTok и YouTube бренда, выстраивая контент сразу в нескольких направлениях: от имиджевой и продуктовой коммуникации до медийного и lifestyle-контента вокруг автоспорта и автомобильной культуры.",
+    "Также в рамках проекта мы занимались разработкой дизайна для дрифт-команды Genesis Racing Team. Мы продолжаем работать с брендом по сей день, постоянно развивая проект и усиливая его присутствие в digital.",
+    "Каждый месяц растут охваты, вовлеченность, качество контента и сама медийность бренда. Проект масштабируется, а результаты кратно усиливаются, фактически выходя на х2 рост практически каждый месяц. Для нас этот проект про умение соединить корпоративный масштаб бренда с современным визуальным языком и медийностью.",
 ];
 
 // ─── Grain SVG as data URL ─────────────────────────────────────────────────────
@@ -330,6 +338,8 @@ export default function LukoilCasePage() {
                         ))}
                     </div>
                 </section>
+
+                <CaseDescriptionColumns paragraphs={caseDescription} />
 
                 {/* ── REELS GRID GALLERY ────────────────────────────── */}
                 <CaseVideoGallery slug="lukoil" />

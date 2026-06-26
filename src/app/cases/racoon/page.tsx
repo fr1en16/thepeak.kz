@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import CaseVideoGallery from "@/components/CaseVideoGallery";
+import CaseDescriptionColumns from "@/components/CaseDescriptionColumns";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -44,6 +45,13 @@ const metrics = [
         label: "Формирование доверия к автосервису",
         index: "04",
     },
+];
+
+const caseDescription = [
+    "Raccoon Tyres — проект по продаже дисков и шин, с которым мы начали работать, когда их Instagram выглядел скорее как OLX или Avito: просто каталог товаров. Мы пришли, чтобы дать проекту жизнь, стиль и вкус.",
+    "Полностью переработали визуальную подачу аккаунта, сделали его современным, цельным и эстетичным. Ушли от ощущения доски объявлений.",
+    "Особый акцент сделали на Reels: через видео начали показывать не только товар, а эмоцию, стиль, культуру автомобилей и сам вайб проекта.",
+    "Также мы вытащили личный бренд владельца и его партнера. Показали людей, которые стоят за компанией, их энергетику, подход и отношение к своему делу. Именно это добавило проекту доверия и сделало бренд живым.",
 ];
 
 // ─── Grain SVG as data URL ─────────────────────────────────────────────────────
@@ -330,6 +338,8 @@ export default function RaccoonTyresCasePage() {
                         ))}
                     </div>
                 </section>
+
+                <CaseDescriptionColumns paragraphs={caseDescription} />
 
                 {/* ── REELS GRID GALLERY ────────────────────────────── */}
                 <CaseVideoGallery slug="racoon" />

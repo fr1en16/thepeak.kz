@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import CaseVideoGallery from "@/components/CaseVideoGallery";
+import CaseDescriptionColumns from "@/components/CaseDescriptionColumns";
 import { formatTypography } from "@/utils/typography";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -46,20 +47,11 @@ const metrics = [
   },
 ];
 
-// ─── Content Blocks ────────────────────────────────────────────────────────────
-const contentBlocks = [
-  {
-    chapter: "01 / Концепция",
-    text: "Мы начали работу с проектом в ноябре 2024 года. И с самого начала понимали — здесь нельзя делать обычный автосервисный Instagram. Нужно было создать бренд, у которого есть лицо, энергия и свой вайб.",
-  },
-  {
-    chapter: "02 / Реализация",
-    text: "Постробили весь проект вокруг личного бренда владельца: его знаний, подачи, отношения к машинам и людям. Именно это стало фундаментом всего визуала, контента и коммуникации. Мы полностью выстроили SMM‑направление: от позиционирования и атмосферы аккаунта до форматов Reels, подачи, смыслов и визуального стиля.",
-  },
-  {
-    chapter: "03 / Результат",
-    text: "За время работы Diskokras начал расти органически. Люди начали приходить через рекомендации, сохранения, Reels и узнаваемость. Сегодня аккаунт воспринимается уже не как страница сервиса, а как полноценный автомобильный бренд со своей эстетикой, подачей и комьюнити вокруг него. И это именно тот результат, который мы любим больше всего — когда бренд начинает вызывать эмоцию.",
-  },
+const caseDescription = [
+  "Мы начали работу с проектом в ноябре 2024 года. И с самого начала понимали — здесь нельзя делать обычный автосервисный Instagram. Нужно было создать бренд, у которого есть лицо, энергия и свой вайб.",
+  "Построили весь проект вокруг личного бренда владельца, его знаний, подачи, отношения к машинам и людям. Именно это стало фундаментом всего визуала, контента и коммуникации.",
+  "Мы полностью выстроили SMM-направление: от позиционирования и атмосферы аккаунта до форматов Reels, подачи, смыслов и визуального стиля. За время работы Diskokras начал расти органически.",
+  "Люди начали приходить через рекомендации, сохранения, Reels и узнаваемость. Сегодня аккаунт воспринимается уже не как страница сервиса, а как полноценный автомобильный бренд со своей эстетикой, подачей и комьюнити вокруг него. И это именно тот результат, который мы любим больше всего — когда бренд начинает вызывать эмоцию.",
 ];
 
 // ─── Grain SVG as data URL ─────────────────────────────────────────────────────
@@ -355,44 +347,7 @@ export default function DiskokrasCasePage() {
           </div>
         </section>
 
-        {/* ── MAIN CONTENT Blocks ───────────────────────────── */}
-        {contentBlocks.map(({ chapter, text }, idx) => (
-          <section
-            key={chapter}
-            className="relative border-b border-white/10"
-            style={{ background: idx % 2 === 1 ? "rgba(255,255,255,0.02)" : "transparent" }}
-          >
-            <div
-              className="pointer-events-none absolute inset-0 z-0"
-              style={{ ...GRAIN_STYLE, opacity: 0.06 }}
-            />
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-px px-[var(--page-margin)] py-20 md:py-28">
-              <div className="lg:col-span-3 flex flex-col justify-between gap-6 mb-8 lg:mb-0">
-                <div>
-                  <span className="no-invert font-sans text-[10px] uppercase tracking-[0.3em] text-white/25 block mb-3">
-                    {chapter}
-                  </span>
-                  <div className="h-px w-10 bg-white/15" />
-                </div>
-                <div
-                  className="no-invert font-sans font-semibold text-white/05 select-none"
-                  style={{ fontSize: "clamp(5rem, 8vw, 9rem)", lineHeight: 1 }}
-                  aria-hidden
-                >
-                  {String(idx + 1).padStart(2, "0")}
-                </div>
-              </div>
-              <div className="lg:col-span-9 lg:pl-16">
-                <p
-                  className="no-invert font-sans text-white/85 leading-[1.6]"
-                  style={{ fontSize: "clamp(1.15rem, 2vw, 1.65rem)", letterSpacing: "-0.02em" }}
-                >
-                  {formatTypography(text)}
-                </p>
-              </div>
-            </div>
-          </section>
-        ))}
+        <CaseDescriptionColumns paragraphs={caseDescription} />
 
                 {/* ── REELS GRID GALLERY ────────────────────────────── */}
                 <CaseVideoGallery slug="diskokras" />
