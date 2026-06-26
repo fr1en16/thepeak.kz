@@ -2,6 +2,7 @@
 
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import { allCasesData } from "@/data/cases";
+import type { CaseItem } from "@/data/cases";
 import { cn } from "@/lib/utils";
 import { formatTypography } from "@/utils/typography";
 import { useEffect, useRef, useState } from "react";
@@ -9,6 +10,8 @@ import { useEffect, useRef, useState } from "react";
 interface CasesBentoGridProps {
   limit?: number;
   className?: string;
+  cases?: CaseItem[];
+  preserveSpans?: boolean;
 }
 
 const renderCaseLogo = (name: string) => {
@@ -106,8 +109,14 @@ function LazyCaseVideo({ alt, poster, src }: { alt: string; poster?: string; src
   );
 }
 
-export default function CasesBentoGrid({ limit, className }: CasesBentoGridProps) {
-  const cases = typeof limit === "number" ? allCasesData.slice(0, limit) : allCasesData;
+export default function CasesBentoGrid({
+  limit,
+  className,
+  cases: casesProp,
+  preserveSpans = true,
+}: CasesBentoGridProps) {
+  const sourceCases = casesProp ?? allCasesData;
+  const cases = typeof limit === "number" ? sourceCases.slice(0, limit) : sourceCases;
 
   return (
     <BentoGrid className={className}>
@@ -119,7 +128,7 @@ export default function CasesBentoGrid({ limit, className }: CasesBentoGridProps
         return (
           <div
             key={item.href}
-            className={item.className}
+            className={preserveSpans ? item.className : "col-span-1"}
             data-services={item.services.join(",")}
             data-industry={item.industry}
           >

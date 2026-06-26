@@ -24,6 +24,19 @@ interface VideoState {
     progress: number;
 }
 
+type FullscreenVideoElement = HTMLVideoElement & {
+    webkitEnterFullscreen?: () => void;
+    webkitRequestFullscreen?: () => Promise<void> | void;
+};
+
+function getMediaAspectRatio(item: CaseGalleryItem) {
+    if (item.width && item.height) {
+        return `${item.width} / ${item.height}`;
+    }
+
+    return item.type === "video" ? "9 / 16" : "1 / 1";
+}
+
 function getMimeType(src: string) {
     const normalizedSrc = src.toLowerCase().split("?")[0];
 
@@ -183,13 +196,31 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
     };
 
     const openFullscreen = (src: string) => {
+        const video = videoRefs.current[src] as FullscreenVideoElement | null;
         const card = cardRefs.current[src];
+        const fullscreenTarget = video || card;
 
-        if (!card || !document.fullscreenEnabled) {
+        if (!fullscreenTarget) {
             return;
         }
 
-        void card.requestFullscreen();
+        if (fullscreenTarget.requestFullscreen) {
+            void fullscreenTarget.requestFullscreen().catch(() => {
+                if (video?.webkitEnterFullscreen) {
+                    video.webkitEnterFullscreen();
+                }
+            });
+            return;
+        }
+
+        if (video?.webkitEnterFullscreen) {
+            video.webkitEnterFullscreen();
+        }
+    };
+
+    const handleVideoCardClick = (src: string) => {
+        openFullscreen(src);
+        playVideo(src);
     };
 
     if (!isLoaded) {
@@ -210,33 +241,35 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                     Смотреть
                 </div>
             )}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
+            <div className="grid grid-cols-2 items-start gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 {mediaItems.map((item, index) => (
                     <div
                         key={`${item.src}-${index}`}
                         ref={(node) => {
                             cardRefs.current[item.src] = node;
                         }}
-                        className="w-full bg-zinc-950 border border-white/5 rounded-none overflow-hidden"
+                        className="w-full self-start bg-zinc-950 border border-white/5 rounded-none overflow-hidden"
                     >
                         {item.type === "image" ? (
                             <img
-                                className="block h-auto w-full bg-zinc-900 object-contain"
+                                className="block h-full w-full bg-zinc-900 object-cover"
                                 src={item.src}
                                 alt={item.name || `Материал кейса ${index + 1}`}
                                 loading="lazy"
                                 width={item.width}
                                 height={item.height}
+                                style={{ aspectRatio: getMediaAspectRatio(item) }}
                             />
                         ) : (
                             <div
                                 className={`group relative w-full bg-zinc-900 overflow-hidden ${
                                     activeVideoSrc === item.src ? "cursor-auto" : "cursor-none"
                                 }`}
+                                style={{ aspectRatio: getMediaAspectRatio(item) }}
                                 role="button"
                                 tabIndex={0}
                                 aria-label={`Смотреть ${item.name || `видео кейса ${index + 1}`}`}
-                                onClick={() => togglePlayback(item.src)}
+                                onClick={() => handleVideoCardClick(item.src)}
                                 onMouseMove={(event) => {
                                     if (activeVideoSrc !== item.src) {
                                         setCursor({ visible: true, x: event.clientX, y: event.clientY });
@@ -246,7 +279,7 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                                 onKeyDown={(event) => {
                                     if (event.key === "Enter" || event.key === " ") {
                                         event.preventDefault();
-                                        togglePlayback(item.src);
+                                        handleVideoCardClick(item.src);
                                     }
                                 }}
                             >
@@ -254,7 +287,7 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                                     ref={(node) => {
                                         videoRefs.current[item.src] = node;
                                     }}
-                                    className="block h-auto w-full object-contain transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                                    className="block h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
                                     controls={false}
                                     controlsList="nodownload noplaybackrate noremoteplayback"
                                     disablePictureInPicture
@@ -265,6 +298,10 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                                     height={item.height}
                                     aria-label={item.name || `Видео кейса ${index + 1}`}
                                     onContextMenu={(event) => event.preventDefault()}
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        handleVideoCardClick(item.src);
+                                    }}
                                     onLoadedMetadata={(event) => {
                                         updateVideoState(item.src, {
                                             duration: event.currentTarget.duration,
@@ -288,6 +325,15 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                                 >
                                     <source src={item.src} type={getMimeType(item.src)} />
                                 </video>
+                                <button
+                                    type="button"
+                                    className="absolute inset-0 z-10 cursor-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                                    aria-label={`Смотреть ${item.name || `видео кейса ${index + 1}`}`}
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        handleVideoCardClick(item.src);
+                                    }}
+                                />
                                 {!videoStates[item.src]?.hasStarted && (
                                     <div className="pointer-events-none absolute inset-0 z-20 grid place-items-center md:hidden">
                                         <span className="grid h-14 w-14 place-items-center rounded-full bg-white/90 text-black shadow-[0_14px_34px_rgba(0,0,0,0.3)] backdrop-blur">

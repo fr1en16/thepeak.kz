@@ -106,6 +106,16 @@ export const allCasesData: CaseItem[] = [
     industry: "Фитнес",
   },
   {
+    name: "Invictus Academy",
+    type: "продакшн",
+    text: "Видеопродакшн для фитнес-академии: сняли динамичный контент про тренировки, тренеров и атмосферу проекта.",
+    image: "/cases/invictus-academy/%D0%93%D0%B5%D0%BD%D0%B5%D0%B7%D0%B8%D1%81%D0%A2%D1%8C%D1%8E.webp",
+    className: "col-span-1 lg:col-span-1 lg:row-span-1",
+    href: "/cases/invictus-academy",
+    services: ["Видеопродакшн", "Контент"],
+    industry: "Фитнес",
+  },
+  {
     name: "Diskokras",
     type: "smm",
     text: "Построили личный бренд вокруг владельца, органический рост и живое комьюнити вместо обычной страницы сервиса.",

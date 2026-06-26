@@ -37,6 +37,8 @@ const CASE_HERO_MEDIA: Record<string, { src: string; type: "image" | "video" }> 
     diskokras: { src: "/cases/diskokras/diskokras.webp", type: "image" },
     "double-coffee": { src: "/cases/bossxo.webp", type: "image" },
     gippo: { src: "/cases/gippo.webp", type: "image" },
+    // Invictus hero placeholder: set src when the final cover image is ready.
+    // "invictus-academy": { src: "/cases/invictus-academy/hero.webp", type: "image" },
     lukoil: { src: "/cases/lukoil.mp4", type: "video" },
     mindofbody: { src: "/cases/mob.webp", type: "image" },
     onmacabim: { src: "/cases/onmacabim.webp", type: "image" },
@@ -352,12 +354,14 @@ export default function CaseClient({ data, slug }: { data: CaseData; slug: strin
                             </div>
 
                             <div className="lg:col-span-4 space-y-8">
-                                <p
-                                    className="no-invert font-sans text-white/60 leading-relaxed"
-                                    style={{ fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)" }}
-                                >
-                                    {formatTypography(data.hero_desc || "")}
-                                </p>
+                                {data.hero_desc && (
+                                    <p
+                                        className="no-invert font-sans text-white/60 leading-relaxed"
+                                        style={{ fontSize: "clamp(0.9rem, 1.2vw, 1.1rem)" }}
+                                    >
+                                        {formatTypography(data.hero_desc)}
+                                    </p>
+                                )}
 
                                 <div className="grid grid-cols-3 gap-px border border-white/10">
                                     <div className="p-4 border border-white/10" style={{ background: "rgba(255,255,255,0.03)" }}>

@@ -1,4 +1,4 @@
-import { readdir } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { NextRequest } from "next/server";
 import { caseMediaManifest } from "@/data/case-media-manifest";
@@ -56,6 +56,53 @@ function getMediaType(fileName: string): CaseMediaItem["type"] | null {
     }
 
     return null;
+}
+
+function getWebpDimensions(buffer: Buffer) {
+    if (buffer.toString("ascii", 0, 4) !== "RIFF" || buffer.toString("ascii", 8, 12) !== "WEBP") {
+        return {};
+    }
+
+    const chunkType = buffer.toString("ascii", 12, 16);
+
+    if (chunkType === "VP8 " && buffer.length >= 30) {
+        return {
+            width: buffer.readUInt16LE(26) & 0x3fff,
+            height: buffer.readUInt16LE(28) & 0x3fff,
+        };
+    }
+
+    if (chunkType === "VP8X" && buffer.length >= 30) {
+        return {
+            width: 1 + buffer.readUIntLE(24, 3),
+            height: 1 + buffer.readUIntLE(27, 3),
+        };
+    }
+
+    if (chunkType === "VP8L" && buffer.length >= 25) {
+        const bits = buffer.readUInt32LE(21);
+
+        return {
+            width: 1 + (bits & 0x3fff),
+            height: 1 + ((bits >> 14) & 0x3fff),
+        };
+    }
+
+    return {};
+}
+
+async function getLocalImageDimensions(filePath: string) {
+    try {
+        const extension = path.extname(filePath).toLowerCase();
+
+        if (extension === ".webp") {
+            return getWebpDimensions(await readFile(filePath));
+        }
+    } catch {
+        return {};
+    }
+
+    return {};
 }
 
 function getCloudinaryConfig() {
@@ -180,12 +227,12 @@ async function getCloudinaryVideos(slug: string, localPosters: CaseMediaItem[]):
                 const poster = findPosterForVideoName(name, localPosters) || findPosterForVideoName(src, localPosters);
 
                 return {
-                    height: resource.height,
+                    height: poster?.height ?? resource.height,
                     src,
                     name,
                     posterSrc: poster?.src,
                     type: "video" as const,
-                    width: resource.width,
+                    width: poster?.width ?? resource.width,
                 };
             })
             .sort((a, b) => a.name.localeCompare(b.name, "ru"));
@@ -200,8 +247,8 @@ async function getLocalMedia(slug: string, allowedTypes: Set<CaseMediaItem["type
     try {
         const entries = await readdir(videoDir, { withFileTypes: true });
 
-        return entries
-            .flatMap((entry) => {
+        const media = await Promise.all(
+            entries.flatMap((entry) => {
                 if (!entry.isFile()) {
                     return [];
                 }
@@ -213,14 +260,17 @@ async function getLocalMedia(slug: string, allowedTypes: Set<CaseMediaItem["type
                 }
 
                 return [
-                    {
+                    (async () => ({
                         src: getPublicMediaSrc(slug, entry.name),
                         name: path.parse(entry.name).name,
                         type,
-                    },
+                        ...(type === "image" ? await getLocalImageDimensions(path.join(videoDir, entry.name)) : {}),
+                    }))(),
                 ];
-            })
-            .sort((a, b) => a.name.localeCompare(b.name, "ru"));
+            }),
+        );
+
+        return media.sort((a, b) => a.name.localeCompare(b.name, "ru"));
     } catch {
         return [];
     }
@@ -237,13 +287,16 @@ async function getLocalPosters(slug: string): Promise<CaseMediaItem[]> {
                 .map((entry) => path.parse(entry.name).name),
         );
         const manifestVideos = (caseMediaManifest[slug] || []).filter((item) => item.type === "video");
-        const posterCandidates = entries
-            .filter((entry) => entry.isFile() && path.extname(entry.name).toLowerCase() === ".webp")
-            .map((entry) => ({
-                src: getPublicMediaSrc(slug, entry.name),
-                name: path.parse(entry.name).name,
-                type: "image" as const,
-            }));
+        const posterCandidates = await Promise.all(
+            entries
+                .filter((entry) => entry.isFile() && path.extname(entry.name).toLowerCase() === ".webp")
+                .map(async (entry) => ({
+                    src: getPublicMediaSrc(slug, entry.name),
+                    name: path.parse(entry.name).name,
+                    type: "image" as const,
+                    ...(await getLocalImageDimensions(path.join(mediaDir, entry.name))),
+                })),
+        );
 
         return posterCandidates
             .filter((poster) => {
@@ -279,7 +332,12 @@ function getManifestMedia(
                 findPosterForVideoName(item.name, localPosters) ||
                 findPosterForVideoName(getCloudinaryPublicName(item.src), localPosters);
 
-            return { ...item, posterSrc: poster?.src };
+            return {
+                ...item,
+                height: poster?.height ?? item.height,
+                posterSrc: poster?.src,
+                width: poster?.width ?? item.width,
+            };
         })
         .sort((a, b) => a.name.localeCompare(b.name, "ru"));
 }

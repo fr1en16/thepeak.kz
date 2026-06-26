@@ -13,3 +13,13 @@ To ensure high-quality, professional, and visually premium layout, follow these 
    - In static TSX text or strings, use non-breaking spaces (represented as `\u00a0` or `{"\u00a0"}`) instead of regular spaces after these short words to bind them to the next word.
    - For dynamic text or data arrays, wrap them in the `formatTypography` helper function from `@/utils/typography` (e.g., `formatTypography(someString)`).
 3. **Double check**: Always make sure the text wraps properly on all viewport widths (especially mobile) without leaving orphan words or hanging particles.
+
+# Case Media Gallery Rules
+
+For every case media gallery, keep the responsive grid consistent:
+
+1. Large desktop screens: 5 media columns.
+2. Laptop screens: 4 media columns.
+3. Tablet screens: 3 media columns.
+4. Mobile screens: 2 media columns.
+5. Clicking a case video must open it fullscreen immediately.
