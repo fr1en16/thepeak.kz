@@ -20,7 +20,7 @@ const teamMembers: TeamMember[] = [
   {
     name: "Сергей Белодедов",
     role: "Арт-директор",
-    description: "Создаёт визуал, который выделяет бренды среди конкурентов",
+    description: "Делает так, чтобы бренд выглядел дороже своих конкурентов",
     image: "/team/sergey.webp",
   },
   {
@@ -33,7 +33,7 @@ const teamMembers: TeamMember[] = [
   {
     name: "Яков Пилипюк",
     role: "Сооснователь, дизайнер",
-    description: "Наведёт красоту",
+    description: "Создаёт визуал, который выделяет бренды среди конкурентов",
     image: "/team/yakov.webp",
   },
 ];
