@@ -20,13 +20,14 @@ const teamMembers: TeamMember[] = [
   {
     name: "Сергей Белодедов",
     role: "Арт-директор",
-    description: "Снимает по кайфу",
+    description: "Создаёт визуал, который выделяет бренды среди конкурентов",
     image: "/team/sergey.webp",
   },
   {
     name: "Софина Хакимова",
     role: "Performance-специалист",
-    description: "Находит рабочие связки, тестирует гипотезы и превращает рекламу в заявки",
+    description:
+      "Находит рабочие связки, тестирует гипотезы и превращает рекламу в заявки",
     image: "/team/sofina.webp",
   },
   {
@@ -39,10 +40,12 @@ const teamMembers: TeamMember[] = [
 
 export default function Team() {
   return (
-    <section className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] border-b border-brand-gray/10 bg-brand-light-gray/20 scroll-mt-[clamp(2rem,2.8vw,3.5rem)]" id="team">
+    <section
+      className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] border-b border-brand-gray/10 bg-brand-light-gray/20 scroll-mt-[clamp(2rem,2.8vw,3.5rem)]"
+      id="team"
+    >
       {/* 2-Column Swiss Grid Layout */}
       <div className="swiss-grid items-stretch rounded-none w-full">
-        
         {/* Left Column: Philosophical/Intro Text - matches service card width (33.33% on lg, 25% on xl) */}
         <div className="col-span-12 lg:col-span-4 xl:col-span-3 text-left pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] pt-0 lg:pr-[var(--grid-gap)] border-solid border-brand-gray/25 border-b lg:border-b-0 lg:border-r self-stretch flex flex-col">
           <div className="max-w-[95%] flex flex-col justify-between flex-grow gap-8 pt-[3rem] md:pt-[var(--page-margin)]">
@@ -54,7 +57,9 @@ export default function Team() {
               {"в\u00a0своей области"}
             </h2>
             <p className="no-invert description-text text-brand-gray/80">
-              {"Вы работаете не\u00a0просто с\u00a0безликими подрядчиками, а\u00a0с\u00a0людьми, которые принимают ключевые решения, глубоко погружаются в\u00a0ваш бизнес и\u00a0несут личную ответственность за\u00a0конечный результат."}
+              {
+                "Вы работаете не\u00a0просто с\u00a0безликими подрядчиками, а\u00a0с\u00a0людьми, которые принимают ключевые решения, глубоко погружаются в\u00a0ваш бизнес и\u00a0несут личную ответственность за\u00a0конечный результат."
+              }
             </p>
           </div>
         </div>
@@ -63,7 +68,7 @@ export default function Team() {
         <div className="col-span-12 lg:col-span-8 xl:col-span-9 pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] pt-0 lg:pl-[clamp(1.5rem,3vw,3rem)] w-full">
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-3 w-full pt-[3rem] md:pt-[var(--page-margin)]">
             {teamMembers.map((member, index) => (
-              <div 
+              <div
                 key={index}
                 className="relative w-full aspect-[5/8] sm:aspect-[1/1.68] bg-white border border-brand-gray/15 overflow-hidden rounded-none flex flex-col justify-between group"
               >
@@ -96,7 +101,6 @@ export default function Team() {
             ))}
           </div>
         </div>
-
       </div>
     </section>
   );
