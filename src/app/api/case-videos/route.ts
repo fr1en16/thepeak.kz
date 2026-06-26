@@ -268,6 +268,12 @@ function getManifestMedia(
         .sort((a, b) => a.name.localeCompare(b.name, "ru"));
 }
 
+function excludeVideoPostersFromImages(images: CaseMediaItem[], videos: CaseMediaItem[]) {
+    const posterSrcs = new Set(videos.map((video) => video.posterSrc).filter(Boolean));
+
+    return images.filter((image) => !posterSrcs.has(image.src));
+}
+
 export async function GET(request: NextRequest) {
     const slug = request.nextUrl.searchParams.get("slug")?.trim();
 
@@ -280,14 +286,14 @@ export async function GET(request: NextRequest) {
     const fallbackVideos = getManifestMedia(slug, new Set(["video"]), localPosters);
 
     if (cloudinaryVideos && cloudinaryVideos.length > 0) {
-        const localImages = await getLocalMedia(slug, new Set(["image"]));
+        const localImages = excludeVideoPostersFromImages(await getLocalMedia(slug, new Set(["image"])), cloudinaryVideos);
         const media = [...cloudinaryVideos, ...localImages].sort((a, b) => a.name.localeCompare(b.name, "ru"));
 
         return Response.json({ media, videos: media.filter((item) => item.type === "video") });
     }
 
     if (fallbackVideos.length > 0) {
-        const localImages = await getLocalMedia(slug, new Set(["image"]));
+        const localImages = excludeVideoPostersFromImages(await getLocalMedia(slug, new Set(["image"])), fallbackVideos);
         const media = [...fallbackVideos, ...localImages].sort((a, b) => a.name.localeCompare(b.name, "ru"));
 
         return Response.json({ media, videos: media.filter((item) => item.type === "video") });
