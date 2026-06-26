@@ -236,24 +236,26 @@ async function getLocalPosters(slug: string): Promise<CaseMediaItem[]> {
                 .filter((entry) => entry.isFile() && VIDEO_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))
                 .map((entry) => path.parse(entry.name).name),
         );
+        const manifestVideos = (caseMediaManifest[slug] || []).filter((item) => item.type === "video");
+        const posterCandidates = entries
+            .filter((entry) => entry.isFile() && path.extname(entry.name).toLowerCase() === ".webp")
+            .map((entry) => ({
+                src: getPublicMediaSrc(slug, entry.name),
+                name: path.parse(entry.name).name,
+                type: "image" as const,
+            }));
 
-        return entries
-            .flatMap((entry) => {
-                if (
-                    !entry.isFile() ||
-                    path.extname(entry.name).toLowerCase() !== ".webp" ||
-                    !videoNames.has(path.parse(entry.name).name)
-                ) {
-                    return [];
+        return posterCandidates
+            .filter((poster) => {
+                if (videoNames.has(poster.name)) {
+                    return true;
                 }
 
-                return [
-                    {
-                        src: getPublicMediaSrc(slug, entry.name),
-                        name: path.parse(entry.name).name,
-                        type: "image" as const,
-                    },
-                ];
+                return manifestVideos.some(
+                    (video) =>
+                        findPosterForVideoName(video.name, [poster]) ||
+                        findPosterForVideoName(getCloudinaryPublicName(video.src), [poster]),
+                );
             })
             .sort((a, b) => a.name.localeCompare(b.name, "ru"));
     } catch {
