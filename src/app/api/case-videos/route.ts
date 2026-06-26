@@ -111,6 +111,7 @@ function findPosterForVideoName(videoName: string, posterItems: CaseMediaItem[])
 
     return posterItems.find((poster) => {
         const posterKey = normalizeMediaKey(poster.name);
+        const posterToken = getBracketToken(poster.name);
 
         if (posterKey === exactKey) {
             return true;
@@ -120,7 +121,11 @@ function findPosterForVideoName(videoName: string, posterItems: CaseMediaItem[])
             return true;
         }
 
-        return posterKey.length > 0 && exactKey.includes(posterKey);
+        if (posterToken && exactKey.includes(posterToken)) {
+            return true;
+        }
+
+        return posterKey.length > 0 && exactKey.startsWith(`${posterKey} `);
     });
 }
 
@@ -226,10 +231,19 @@ async function getLocalPosters(slug: string): Promise<CaseMediaItem[]> {
 
     try {
         const entries = await readdir(mediaDir, { withFileTypes: true });
+        const videoNames = new Set(
+            entries
+                .filter((entry) => entry.isFile() && VIDEO_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))
+                .map((entry) => path.parse(entry.name).name),
+        );
 
         return entries
             .flatMap((entry) => {
-                if (!entry.isFile() || path.extname(entry.name).toLowerCase() !== ".webp") {
+                if (
+                    !entry.isFile() ||
+                    path.extname(entry.name).toLowerCase() !== ".webp" ||
+                    !videoNames.has(path.parse(entry.name).name)
+                ) {
                     return [];
                 }
 
