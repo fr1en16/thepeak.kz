@@ -33,21 +33,6 @@ function getMimeType(src: string) {
     return "video/mp4";
 }
 
-function getCloudinaryPosterSrc(src: string) {
-    if (!src.includes("res.cloudinary.com") || !src.includes("/video/upload/")) {
-        return undefined;
-    }
-
-    const [baseSrc, query = ""] = src.split("?");
-    const sourceWithoutExtension = baseSrc.replace(/\.[a-z0-9]+$/i, "");
-    const posterSrc = sourceWithoutExtension.replace(
-        /\/video\/upload\/(?:[^/]+\/)?(v\d+\/)/,
-        "/video/upload/so_0.1,q_auto:good,f_jpg/$1",
-    );
-
-    return `${posterSrc}.jpg${query ? `?${query}` : ""}`;
-}
-
 function formatTime(seconds: number) {
     if (!Number.isFinite(seconds) || seconds <= 0) {
         return "0:00";
@@ -274,7 +259,7 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                                     controlsList="nodownload noplaybackrate noremoteplayback"
                                     disablePictureInPicture
                                     playsInline
-                                    poster={item.posterSrc || getCloudinaryPosterSrc(item.src)}
+                                    poster={item.posterSrc}
                                     preload="metadata"
                                     width={item.width}
                                     height={item.height}

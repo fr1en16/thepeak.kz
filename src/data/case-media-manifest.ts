@@ -1,6 +1,7 @@
 export interface CaseMediaManifestItem {
     height?: number;
     name: string;
+    posterSrc?: string;
     src: string;
     type: "image" | "video";
     width?: number;

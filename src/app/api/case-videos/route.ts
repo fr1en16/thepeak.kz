@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 import { caseMediaManifest } from "@/data/case-media-manifest";
 
 const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"]);
+const VIDEO_EXTENSIONS = new Set([".m4v", ".mov", ".mp4", ".webm"]);
 const CLOUDINARY_CASES_FOLDER = "cases";
 const CLOUDINARY_VIDEO_TRANSFORMATION = "q_auto:best";
 
@@ -43,15 +44,15 @@ function isSafeSlug(slug: string) {
     return /^[a-z0-9-]+$/i.test(slug);
 }
 
-function getPublicVideoSrc(slug: string, fileName: string) {
-    return `/cases/${slug}/${encodeURIComponent(fileName)}`;
-}
-
 function getMediaType(fileName: string): CaseMediaItem["type"] | null {
     const extension = path.extname(fileName).toLowerCase();
 
     if (IMAGE_EXTENSIONS.has(extension)) {
         return "image";
+    }
+
+    if (VIDEO_EXTENSIONS.has(extension)) {
+        return "video";
     }
 
     return null;
@@ -78,18 +79,52 @@ function getHighQualityCloudinaryVideoSrc(src: string) {
     return src.replace("/video/upload/", `/video/upload/${CLOUDINARY_VIDEO_TRANSFORMATION}/`);
 }
 
-function getCloudinaryVideoPosterSrc(src: string) {
-    const [baseSrc, query = ""] = src.split("?");
-    const sourceWithoutExtension = baseSrc.replace(/\.[a-z0-9]+$/i, "");
-    const posterSrc = sourceWithoutExtension.replace(
-        /\/video\/upload\/(?:[^/]+\/)?(v\d+\/)/,
-        "/video/upload/so_0.1,q_auto:good,f_jpg/$1",
-    );
-
-    return `${posterSrc}.jpg${query ? `?${query}` : ""}`;
+function getPublicMediaSrc(slug: string, fileName: string) {
+    return `/cases/${slug}/${encodeURIComponent(fileName)}`;
 }
 
-async function getCloudinaryVideos(slug: string): Promise<CaseMediaItem[] | null> {
+function normalizeMediaKey(value: string) {
+    return value
+        .normalize("NFC")
+        .toLowerCase()
+        .replace(/\.[a-z0-9]+$/i, "")
+        .replace(/%[0-9a-f]{2}/gi, " ")
+        .replace(/[^a-zа-яё0-9]+/giu, " ")
+        .trim();
+}
+
+function getBracketToken(value: string) {
+    return value.match(/\[([^\]]+)\]/)?.[1]?.toLowerCase();
+}
+
+function getCloudinaryPublicName(value: string) {
+    const withoutQuery = value.split("?")[0];
+    const withoutExtension = withoutQuery.replace(/\.[a-z0-9]+$/i, "");
+    const decoded = decodeURIComponent(withoutExtension);
+
+    return path.basename(decoded);
+}
+
+function findPosterForVideoName(videoName: string, posterItems: CaseMediaItem[]) {
+    const exactKey = normalizeMediaKey(videoName);
+    const token = getBracketToken(videoName);
+
+    return posterItems.find((poster) => {
+        const posterKey = normalizeMediaKey(poster.name);
+
+        if (posterKey === exactKey) {
+            return true;
+        }
+
+        if (token && posterKey.includes(token)) {
+            return true;
+        }
+
+        return posterKey.length > 0 && exactKey.includes(posterKey);
+    });
+}
+
+async function getCloudinaryVideos(slug: string, localPosters: CaseMediaItem[]): Promise<CaseMediaItem[] | null> {
     const config = getCloudinaryConfig();
 
     if (!config) {
@@ -136,12 +171,14 @@ async function getCloudinaryVideos(slug: string): Promise<CaseMediaItem[] | null
             })
             .map((resource) => {
                 const src = getHighQualityCloudinaryVideoSrc(resource.secure_url);
+                const name = getCloudinaryVideoName(resource, folderPrefix);
+                const poster = findPosterForVideoName(name, localPosters) || findPosterForVideoName(src, localPosters);
 
                 return {
                     height: resource.height,
                     src,
-                    name: getCloudinaryVideoName(resource, folderPrefix),
-                    posterSrc: getCloudinaryVideoPosterSrc(src),
+                    name,
+                    posterSrc: poster?.src,
                     type: "video" as const,
                     width: resource.width,
                 };
@@ -172,7 +209,7 @@ async function getLocalMedia(slug: string, allowedTypes: Set<CaseMediaItem["type
 
                 return [
                     {
-                        src: getPublicVideoSrc(slug, entry.name),
+                        src: getPublicMediaSrc(slug, entry.name),
                         name: path.parse(entry.name).name,
                         type,
                     },
@@ -184,10 +221,50 @@ async function getLocalMedia(slug: string, allowedTypes: Set<CaseMediaItem["type
     }
 }
 
-function getManifestMedia(slug: string, allowedTypes: Set<CaseMediaItem["type"]>): CaseMediaItem[] {
+async function getLocalPosters(slug: string): Promise<CaseMediaItem[]> {
+    const mediaDir = path.join(process.cwd(), "public", "cases", slug);
+
+    try {
+        const entries = await readdir(mediaDir, { withFileTypes: true });
+
+        return entries
+            .flatMap((entry) => {
+                if (!entry.isFile() || path.extname(entry.name).toLowerCase() !== ".webp") {
+                    return [];
+                }
+
+                return [
+                    {
+                        src: getPublicMediaSrc(slug, entry.name),
+                        name: path.parse(entry.name).name,
+                        type: "image" as const,
+                    },
+                ];
+            })
+            .sort((a, b) => a.name.localeCompare(b.name, "ru"));
+    } catch {
+        return [];
+    }
+}
+
+function getManifestMedia(
+    slug: string,
+    allowedTypes: Set<CaseMediaItem["type"]>,
+    localPosters: CaseMediaItem[] = [],
+): CaseMediaItem[] {
     return (caseMediaManifest[slug] || [])
         .filter((item) => allowedTypes.has(item.type))
-        .map((item) => ({ ...item }))
+        .map((item) => {
+            if (item.type !== "video" || item.posterSrc) {
+                return { ...item };
+            }
+
+            const poster =
+                findPosterForVideoName(item.name, localPosters) ||
+                findPosterForVideoName(getCloudinaryPublicName(item.src), localPosters);
+
+            return { ...item, posterSrc: poster?.src };
+        })
         .sort((a, b) => a.name.localeCompare(b.name, "ru"));
 }
 
@@ -198,8 +275,9 @@ export async function GET(request: NextRequest) {
         return Response.json({ videos: [] }, { status: 400 });
     }
 
-    const cloudinaryVideos = await getCloudinaryVideos(slug);
-    const fallbackVideos = getManifestMedia(slug, new Set(["video"]));
+    const localPosters = await getLocalPosters(slug);
+    const cloudinaryVideos = await getCloudinaryVideos(slug, localPosters);
+    const fallbackVideos = getManifestMedia(slug, new Set(["video"]), localPosters);
 
     if (cloudinaryVideos && cloudinaryVideos.length > 0) {
         const localImages = await getLocalMedia(slug, new Set(["image"]));
