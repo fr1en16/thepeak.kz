@@ -2,6 +2,7 @@
 
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import { allCasesData } from "@/data/cases";
+import { cn } from "@/lib/utils";
 import { formatTypography } from "@/utils/typography";
 import { useEffect, useRef, useState } from "react";
 
@@ -78,9 +79,10 @@ function LazyCaseVideo({ alt, poster, src }: { alt: string; poster?: string; src
         <img
           src={poster}
           alt={alt}
-          className={`absolute inset-0 h-full w-full object-cover opacity-85 transition-opacity duration-300 ease-out group-hover:scale-105 ${
-            isPlaying ? "opacity-0" : "opacity-85"
-          }`}
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover opacity-85 transition-[opacity,transform] duration-300 ease-out group-hover:scale-105",
+            isPlaying && "opacity-0",
+          )}
           loading="lazy"
           decoding="async"
         />
@@ -93,10 +95,10 @@ function LazyCaseVideo({ alt, poster, src }: { alt: string; poster?: string; src
         muted
         playsInline
         preload="none"
-        poster={poster}
-        className={`h-full w-full object-cover opacity-85 transition duration-700 ease-out group-hover:scale-105 ${
-          poster && !isPlaying ? "opacity-0" : "opacity-85"
-        }`}
+        className={cn(
+          "h-full w-full object-cover transition-[opacity,transform] duration-700 ease-out group-hover:scale-105",
+          poster && !isPlaying ? "opacity-0" : "opacity-85",
+        )}
         onPlaying={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
       />
