@@ -6,22 +6,100 @@ import StatsBlock from "./StatsBlock";
 import { formatTypography } from "@/utils/typography";
 
 export default function HeroDuplicate() {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = React.useState(false);
   const logoIds = [2, 12, 20, 21, 24, 38, 39, 40, 41, 44];
   // Two copies for seamless loop (translateX -50% = exactly one set)
   const marqueeItems = [...logoIds, ...logoIds];
+
+  const playHeroVideo = React.useCallback(() => {
+    const video = videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.autoplay = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.setAttribute("autoplay", "");
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        setIsVideoPlaying(false);
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    playHeroVideo();
+
+    const handleCanPlay = () => {
+      playHeroVideo();
+    };
+    const handlePlaying = () => {
+      setIsVideoPlaying(true);
+    };
+    const handlePause = () => {
+      setIsVideoPlaying(false);
+    };
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        playHeroVideo();
+      }
+    };
+    const handleUserGesture = () => {
+      playHeroVideo();
+    };
+
+    video.addEventListener("loadedmetadata", handleCanPlay);
+    video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("playing", handlePlaying);
+    video.addEventListener("pause", handlePause);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("pointerdown", handleUserGesture, { once: true, passive: true });
+    document.addEventListener("touchstart", handleUserGesture, { once: true, passive: true });
+
+    return () => {
+      video.removeEventListener("loadedmetadata", handleCanPlay);
+      video.removeEventListener("canplay", handleCanPlay);
+      video.removeEventListener("playing", handlePlaying);
+      video.removeEventListener("pause", handlePause);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("pointerdown", handleUserGesture);
+      document.removeEventListener("touchstart", handleUserGesture);
+    };
+  }, [playHeroVideo]);
 
   return (
     <section className="col-span-12 relative w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] overflow-hidden h-screen md:h-auto md:min-h-screen flex flex-col justify-between pt-[60px] md:pt-[clamp(4rem,8vw,6rem)] pb-0 border-b border-brand-gray/10 select-none" id="hero-alternative">
       {/* 1. Background Video */}
       <div className="hero-video-shell absolute top-0 left-0 w-full h-full overflow-hidden">
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
           poster="/bg-mobile-poster.jpg"
-          className="w-full h-full object-cover"
+          disablePictureInPicture
+          className={`w-full h-full object-cover transition-opacity duration-300 ${isVideoPlaying ? "opacity-100" : "opacity-0"}`}
+          aria-hidden="true"
+          tabIndex={-1}
         >
           <source
             src="/bg-mobile-fast.mp4"

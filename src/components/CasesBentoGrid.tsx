@@ -18,14 +18,17 @@ const renderCaseLogo = (name: string) => {
   );
 };
 
-function LazyCaseVideo({ src }: { src: string }) {
+function LazyCaseVideo({ alt, poster, src }: { alt: string; poster?: string; src: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [shouldPlay, setShouldPlay] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const node = containerRef.current;
 
-    if (!node || shouldLoad) {
+    if (!node) {
       return;
     }
 
@@ -33,27 +36,69 @@ function LazyCaseVideo({ src }: { src: string }) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setShouldLoad(true);
-          observer.disconnect();
         }
+        setShouldPlay(entry.isIntersecting && entry.intersectionRatio >= 0.2);
       },
-      { rootMargin: "240px 0px" },
+      { rootMargin: "120px 0px", threshold: [0, 0.2] },
     );
 
     observer.observe(node);
 
     return () => observer.disconnect();
-  }, [shouldLoad]);
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video || !shouldLoad) {
+      return;
+    }
+
+    video.muted = true;
+    video.playsInline = true;
+
+    if (!shouldPlay) {
+      video.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        setIsPlaying(false);
+      });
+    }
+  }, [shouldLoad, shouldPlay]);
 
   return (
     <div ref={containerRef} className="relative h-full w-full bg-black">
+      {poster && (
+        <img
+          src={poster}
+          alt={alt}
+          className={`absolute inset-0 h-full w-full object-cover opacity-85 transition-opacity duration-300 ease-out group-hover:scale-105 ${
+            isPlaying ? "opacity-0" : "opacity-85"
+          }`}
+          loading="lazy"
+          decoding="async"
+        />
+      )}
       <video
+        ref={videoRef}
         src={shouldLoad ? src : undefined}
-        autoPlay={shouldLoad}
+        autoPlay={shouldPlay}
         loop
         muted
         playsInline
         preload="none"
-        className="h-full w-full object-cover opacity-85 transition-transform duration-700 ease-out group-hover:scale-105"
+        poster={poster}
+        className={`h-full w-full object-cover opacity-85 transition duration-700 ease-out group-hover:scale-105 ${
+          poster && !isPlaying ? "opacity-0" : "opacity-85"
+        }`}
+        onPlaying={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
       />
     </div>
   );
@@ -64,9 +109,10 @@ export default function CasesBentoGrid({ limit, className }: CasesBentoGridProps
 
   return (
     <BentoGrid className={className}>
-      {cases.map((item) => {
+      {cases.map((item, index) => {
         const isVideo = item.video || item.image?.toLowerCase().endsWith(".mp4");
         const mediaSrc = item.video || item.image;
+        const imageLoading = index < 3 ? "eager" : "lazy";
 
         return (
           <div
@@ -79,13 +125,15 @@ export default function CasesBentoGrid({ limit, className }: CasesBentoGridProps
               href={item.href}
               background={
                 isVideo && mediaSrc ? (
-                  <LazyCaseVideo src={mediaSrc} />
+                  <LazyCaseVideo alt={item.name} poster={item.poster} src={mediaSrc} />
                 ) : item.image ? (
                   <img
                     src={item.image}
                     alt={item.name}
                     className="w-full h-full object-cover opacity-85 transition-transform duration-700 ease-out group-hover:scale-105"
-                    loading="lazy"
+                    loading={imageLoading}
+                    fetchPriority={index < 3 ? "low" : "auto"}
+                    decoding="async"
                   />
                 ) : (
                   <div className="w-full h-full bg-black" />

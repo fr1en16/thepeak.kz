@@ -4,6 +4,7 @@ export interface CaseItem {
   text: string;
   image?: string;
   video?: string;
+  poster?: string;
   className: string;
   href: string;
   services: string[];
@@ -46,6 +47,7 @@ export const allCasesData: CaseItem[] = [
     type: "smm, дизайн",
     text: "Выстроили современную коммуникацию для крупного бренда: Instagram, TikTok, YouTube, дизайн для дрифт-команды и рост охватов.",
     image: "/cases/lukoil.mp4",
+    poster: "/cases/posters/lukoil.jpg",
     className: "col-span-1 sm:col-span-2 lg:col-span-2 lg:row-span-2",
     href: "/cases/lukoil",
     services: ["SMM", "Дизайн", "Контент"],
@@ -56,6 +58,7 @@ export const allCasesData: CaseItem[] = [
     type: "продакшн",
     text: "Видео и digital-контент для застрощика: показали масштаб проектов, детали продукта и атмосферу жилой среды.",
     image: "/cases/bazis a.mp4",
+    poster: "/cases/posters/bazis-a.jpg",
     className: "col-span-1 lg:col-span-1 lg:row-span-1",
     href: "/cases/bazisa",
     services: ["Видеопродакшн", "Контент"],
@@ -76,6 +79,7 @@ export const allCasesData: CaseItem[] = [
     type: "smm",
     text: "Продвижение автосервиса через понятный контент, экспертные форматы и визуальную подачу, которая помогает выбирать услугу.",
     image: "/cases/raccoon.mp4",
+    poster: "/cases/posters/raccoon.jpg",
     className: "col-span-1 lg:col-span-1 lg:row-span-1",
     href: "/cases/racoon",
     services: ["SMM", "Контент"],
@@ -106,6 +110,7 @@ export const allCasesData: CaseItem[] = [
     type: "smm",
     text: "Построили личный бренд вокруг владельца, органический рост и живое комьюнити вместо обычной страницы сервиса.",
     image: "/cases/diskokras.mp4",
+    poster: "/cases/posters/diskokras.jpg",
     className: "col-span-1 lg:col-span-1 lg:row-span-2",
     href: "/cases/diskokras",
     services: ["SMM", "Личный бренд", "Контент"],
@@ -116,6 +121,7 @@ export const allCasesData: CaseItem[] = [
     type: "smm",
     text: "Digital-коммуникация для ресторана: визуальный контент, регулярные рубрики и подача, которая работает на посещаемость.",
     image: "/cases/ris.mp4",
+    poster: "/cases/posters/ris.jpg",
     className: "col-span-1 lg:col-span-1 lg:row-span-1",
     href: "/cases/ris",
     services: ["SMM", "Контент"],
@@ -166,6 +172,7 @@ export const allCasesData: CaseItem[] = [
     type: "smm",
     text: "Контент для автосервиса и мотопроекта: показали процесс, экспертизу команды и поводы обратиться за услугой.",
     image: "/cases/avtopilot.mp4",
+    poster: "/cases/posters/avtopilot.jpg",
     className: "col-span-1 lg:col-span-1 lg:row-span-1",
     href: "/cases/avtopilot",
     services: ["SMM", "Контент"],
@@ -176,6 +183,7 @@ export const allCasesData: CaseItem[] = [
     type: "smm",
     text: "Визуальный контент для детейлинга: акцент на деталях, качестве работ и доверии к мастерам через короткие видеоформаты.",
     image: "/cases/ark.mp4",
+    poster: "/cases/posters/ark.jpg",
     className: "col-span-1 lg:col-span-1 lg:row-span-1",
     href: "/cases/ark",
     services: ["SMM", "Контент"],
