@@ -1,6 +1,7 @@
 "use client";
 
-import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
+import { BentoCard } from "@/components/ui/bento-grid";
+import { CaseSizeGrid, CaseSizeGridItem } from "@/components/ui/case-size-grid";
 import { allCasesData } from "@/data/cases";
 import type { CaseItem } from "@/data/cases";
 import { cn } from "@/lib/utils";
@@ -11,7 +12,6 @@ interface CasesBentoGridProps {
   limit?: number;
   className?: string;
   cases?: CaseItem[];
-  preserveSpans?: boolean;
 }
 
 const renderCaseLogo = (name: string) => {
@@ -113,22 +113,21 @@ export default function CasesBentoGrid({
   limit,
   className,
   cases: casesProp,
-  preserveSpans = true,
 }: CasesBentoGridProps) {
   const sourceCases = casesProp ?? allCasesData;
   const cases = typeof limit === "number" ? sourceCases.slice(0, limit) : sourceCases;
 
   return (
-    <BentoGrid className={className}>
+    <CaseSizeGrid className={className}>
       {cases.map((item, index) => {
         const isVideo = item.video || item.image?.toLowerCase().endsWith(".mp4");
         const mediaSrc = item.video || item.image;
         const imageLoading = index < 3 ? "eager" : "lazy";
 
         return (
-          <div
+          <CaseSizeGridItem
             key={item.href}
-            className={preserveSpans ? item.className : "col-span-1"}
+            size={item.size}
             data-services={item.services.join(",")}
             data-industry={item.industry}
           >
@@ -154,9 +153,9 @@ export default function CasesBentoGrid({
               type={item.type}
               text={formatTypography(item.text)}
             />
-          </div>
+          </CaseSizeGridItem>
         );
       })}
-    </BentoGrid>
+    </CaseSizeGrid>
   );
 }

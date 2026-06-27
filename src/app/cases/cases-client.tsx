@@ -81,8 +81,6 @@ export default function CasesClient() {
             {filteredCases.length > 0 ? (
               <CasesBentoGrid
                 cases={filteredCases}
-                className="auto-rows-[440px] sm:auto-rows-[480px] lg:grid-cols-3 xl:grid-cols-4"
-                preserveSpans={false}
               />
             ) : (
               <p className="py-16 text-center font-mono text-xs uppercase tracking-widest text-white/50">
