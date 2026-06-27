@@ -96,7 +96,7 @@ export default function WorkStages() {
 
   return (
     <section
-      className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] bg-[#060606] text-white border-b border-white/10 scroll-mt-[clamp(2rem,2.8vw,3.5rem)]"
+      className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] bg-black text-white border-b border-white/10 scroll-mt-[clamp(2rem,2.8vw,3.5rem)]"
       id="work-stages"
     >
       <div className="swiss-grid items-stretch rounded-none w-full">
