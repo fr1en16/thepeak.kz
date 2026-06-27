@@ -160,7 +160,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       <div className="flex flex-col mb-4 h-full z-0">
         <div>
           {shape && (
-            <div className="mb-[clamp(1rem,1.8vw,2.2rem)] select-none">
+            <div className="mb-6 md:mb-[clamp(1rem,1.8vw,2.2rem)] select-none">
               <img
                 src={shape}
                 alt=""
@@ -168,13 +168,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
               />
             </div>
           )}
-          <h3 className={`no-invert font-headline font-semibold text-[clamp(1.2rem,1.78vw,1.6rem)] mb-[clamp(0.75rem,1.5vw,1.5rem)] tracking-wide ${isCTA ? "text-white" : "text-brand-gray"} leading-[0.9]`}>
+          <h3 className={`no-invert font-headline font-semibold text-[clamp(1.2rem,1.78vw,1.6rem)] mb-6 md:mb-[clamp(0.75rem,1.5vw,1.5rem)] tracking-wide ${isCTA ? "text-white" : "text-brand-gray"} leading-[0.9]`}>
             {title}
           </h3>
         </div>
 
         {/* Description: Always visible on mobile, hidden on desktop (shown via hover overlay) */}
-        <p className={`no-invert font-sans font-medium text-[clamp(0.9rem,0.9vw,0.95rem)] leading-relaxed mt-auto md:hidden ${isCTA ? "text-white/85" : "text-brand-gray/75"}`}>
+        <p className={`no-invert font-sans font-medium text-[clamp(0.9rem,0.9vw,0.95rem)] leading-relaxed md:hidden ${isCTA ? "text-white/85" : "text-brand-gray/75"}`}>
           {description}
         </p>
       </div>

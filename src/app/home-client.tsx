@@ -9,6 +9,7 @@ import ClientLogosBlock from "@/components/ClientLogosBlock";
 import Team from "@/components/Team";
 import ContactSection from "@/components/ContactSection";
 import StatsBlock from "@/components/StatsBlock";
+import HeroScrollAnimation from "@/components/ui/hero-scroll-animation";
 
 export default function HomeClient() {
   return (
@@ -19,8 +20,10 @@ export default function HomeClient() {
         <StatsBlock />
       </div>
       <ServicesAnimate />
-      <WorkStages />
-      <CasesMasonrySection />
+      <HeroScrollAnimation
+        cover={<WorkStages />}
+        second={<CasesMasonrySection />}
+      />
       <ClientLogosBlock />
       <Team />
       <ContactSection />

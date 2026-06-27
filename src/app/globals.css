@@ -290,6 +290,22 @@ html {
   color: transparent !important;
 }
 
+/* One composited text layer keeps difference blending stable in Safari. */
+.team-card-difference {
+  -webkit-mix-blend-mode: difference;
+  mix-blend-mode: difference;
+  color: #ffffff;
+}
+
+@supports (-webkit-hyphens: none) {
+  .team-card-difference {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
 /* Apply difference blending globally to all headlines, text paragraphs, links, and custom blend elements, excluding no-invert class */
 h1:not(.no-invert), h2:not(.no-invert), h3:not(.no-invert), h4:not(.no-invert), h5:not(.no-invert), h6:not(.no-invert), p:not(.no-invert), nav a:not(.no-invert), a[href^="tel:"]:not(.no-invert), .inverttext {
   mix-blend-mode: difference !important;

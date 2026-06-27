@@ -101,11 +101,8 @@ export default function WorkStages() {
     >
       <div className="swiss-grid items-stretch rounded-none w-full">
         {/* Left Column: Fixed Content */}
-        <div className="col-span-12 lg:col-span-5 xl:col-span-5 border-b lg:border-b-0 lg:border-r border-white/10 pt-[clamp(2.5rem,5vw,4.5rem)] pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] pr-0 lg:pr-[clamp(1.5rem,3vw,3rem)] flex flex-col justify-between">
+        <div className="col-span-12 lg:col-span-5 xl:col-span-5 border-b lg:border-b-0 lg:border-r border-white/10 pt-[clamp(2.5rem,5vw,4.5rem)] pb-[clamp(2.5rem,5vw,4.5rem)] lg:pb-[clamp(3.5rem,7vw,7rem)] pr-0 lg:pr-[clamp(1.5rem,3vw,3rem)] flex flex-col">
           <div className="flex flex-col gap-6">
-            <span className="no-invert font-mono text-[10px] tracking-[0.25em] text-[#FD4B32] uppercase font-bold hidden lg:inline-block">
-              {"/// ЭТАПЫ РАБОТЫ"}
-            </span>
             <h2 className="no-invert font-headline font-bold text-[clamp(2rem,3.5vw,3.2rem)] leading-[1.0] tracking-tight text-white max-w-sm">
               {formatTypography("Как мы создаем результат")}
             </h2>
@@ -120,7 +117,7 @@ export default function WorkStages() {
             onClick={handleScrollToContacts}
             text={formatTypography("Обсудить проект")}
             variant="dark"
-            className="mt-12 lg:mt-auto"
+            className="mt-[72px]"
           />
         </div>
 

@@ -70,7 +70,7 @@ export default function Team() {
             {teamMembers.map((member, index) => (
               <div
                 key={index}
-                className="relative w-full aspect-[5/8] sm:aspect-[1/1.68] bg-white border border-brand-gray/15 overflow-hidden rounded-none flex flex-col justify-between group"
+                className="relative isolate w-full aspect-[5/8] sm:aspect-[1/1.68] bg-white border border-brand-gray/15 overflow-hidden rounded-none group"
               >
                 {/* Profile Image */}
                 <div className="absolute inset-0 w-full h-full z-0">
@@ -83,19 +83,20 @@ export default function Team() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                 </div>
 
-                {/* Top Badge: Role */}
-                <div className="no-invert absolute top-3 left-3 right-3 z-10 text-white font-sans text-[clamp(0.75rem,0.7vw,0.75rem)] font-bold uppercase tracking-wider leading-tight">
-                  {formatTypography(member.role)}
-                </div>
+                {/* A single blend layer is more reliable than nested blend modes in Safari. */}
+                <div className="team-card-difference no-invert pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-3 text-white">
+                  <div className="no-invert font-sans text-[clamp(0.75rem,0.7vw,0.75rem)] font-bold uppercase tracking-wider leading-tight">
+                    {formatTypography(member.role)}
+                  </div>
 
-                {/* Bottom Info Block */}
-                <div className="no-invert mt-auto px-3 pb-3 z-10 text-white flex flex-col items-start gap-2 w-full">
-                  <h3 className="no-invert font-headline font-semibold text-[clamp(1rem,1.34vw,1.2rem)] tracking-wide leading-[1.1] w-full">
-                    {formatTypography(member.name)}
-                  </h3>
-                  <p className="no-invert font-sans !text-[0.8rem] md:!text-[clamp(0.8rem,0.85vw,0.85rem)] leading-[1.2] font-medium text-white w-full">
-                    {formatTypography(member.description)}
-                  </p>
+                  <div className="no-invert flex w-full flex-col items-start gap-2">
+                    <h3 className="no-invert font-headline font-semibold text-[clamp(1rem,1.34vw,1.2rem)] tracking-wide leading-[1.1] w-full">
+                      {formatTypography(member.name)}
+                    </h3>
+                    <p className="no-invert font-sans !text-[0.8rem] md:!text-[clamp(0.8rem,0.85vw,0.85rem)] leading-[1.2] font-medium text-white w-full">
+                      {formatTypography(member.description)}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
