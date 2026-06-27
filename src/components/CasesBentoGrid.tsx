@@ -133,6 +133,7 @@ export default function CasesBentoGrid({
           >
             <BentoCard
               href={item.href}
+              tiltFactor={4}
               background={
                 isVideo && mediaSrc ? (
                   <LazyCaseVideo alt={item.name} poster={item.poster} src={mediaSrc} />

@@ -2,7 +2,10 @@
 
 import CasesBentoGrid from "@/components/CasesBentoGrid";
 import { Button01 } from "@/components/ui/nextjsshop-button";
+import { allCasesData } from "@/data/cases";
 import { formatTypography } from "@/utils/typography";
+
+const homeCases = allCasesData.filter((caseItem) => caseItem.href !== "/cases/invictus-academy");
 
 export default function CasesMasonrySection() {
   return (
@@ -25,7 +28,7 @@ export default function CasesMasonrySection() {
 
       <div className="swiss-grid">
         <div className="col-span-12 w-full">
-          <CasesBentoGrid limit={10} />
+          <CasesBentoGrid cases={homeCases} limit={12} />
         </div>
       </div>
 

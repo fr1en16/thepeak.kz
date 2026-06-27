@@ -151,7 +151,7 @@ export const BentoCard = ({
   type,
   text,
   href,
-  tiltFactor = 12,
+  tiltFactor = 4,
   perspective = 1000,
   transitionDuration = 0.2,
   hoverScale = 1.03,

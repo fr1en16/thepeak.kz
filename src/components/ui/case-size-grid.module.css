@@ -14,8 +14,14 @@
 .item {
   height: var(--case-row-height);
   min-width: 0;
-  overflow: hidden;
-  background: #000;
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  background: transparent;
+}
+
+.item:hover {
+  z-index: 10;
 }
 
 .small {
@@ -24,6 +30,8 @@
 
 .middle {
   grid-column: span 2;
+  height: auto;
+  aspect-ratio: 4 / 3;
 }
 
 .large {
@@ -37,6 +45,11 @@
     --case-row-height: calc(50cqw - 0.75rem);
 
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .middle {
+    height: var(--case-row-height);
+    aspect-ratio: auto;
   }
 }
 
