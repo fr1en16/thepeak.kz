@@ -48,6 +48,9 @@ const CASE_HERO_MEDIA: Record<string, { src: string; type: "image" | "video" }> 
     ris: { src: "/cases/ris.mp4", type: "video" },
     sensata: { src: "/cases/sensata.webp", type: "image" },
     uaz: { src: "/cases/uaz.webp", type: "image" },
+    kenfsad: { src: "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641222/kf1_h9sr9l.mp4", type: "video" },
+    mg: { src: "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641225/mg1_qmtkuy.mp4", type: "video" },
+    omo: { src: "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641223/OMO_%D1%85_Almaty_marathon_1_oqdkmb.mp4", type: "video" },
     velmar: { src: "/cases/Velmar.webp", type: "image" },
 };
 

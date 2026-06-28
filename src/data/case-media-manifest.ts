@@ -841,5 +841,74 @@ export const caseMediaManifest: Record<string, CaseMediaManifestItem[]> = {
             "width": 1080,
             "height": 1920
         }
+    ],
+    "kenfsad": [
+        {
+            "type": "video",
+            "name": "kf1_h9sr9l",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641222/kf1_h9sr9l.mp4",
+            "width": 1080,
+            "height": 1920
+        },
+        {
+            "type": "video",
+            "name": "kf2_ufiv5b",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641228/kf2_ufiv5b.mp4",
+            "width": 1080,
+            "height": 1920
+        },
+        {
+            "type": "video",
+            "name": "kf3_zx3jfh",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641222/kf3_zx3jfh.mp4",
+            "width": 1080,
+            "height": 1920
+        },
+        {
+            "type": "video",
+            "name": "kf4_pvpjsk",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641223/kf4_pvpjsk.mp4",
+            "width": 1080,
+            "height": 1920
+        },
+        {
+            "type": "video",
+            "name": "kf5_pgsbrb",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641223/kf5_pgsbrb.mp4",
+            "width": 1080,
+            "height": 1920
+        }
+    ],
+    "mg": [
+        {
+            "type": "video",
+            "name": "mg1_qmtkuy",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641225/mg1_qmtkuy.mp4",
+            "width": 1080,
+            "height": 1920
+        },
+        {
+            "type": "video",
+            "name": "mg2_ttzsip",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641221/mg2_ttzsip.mp4",
+            "width": 1080,
+            "height": 1920
+        },
+        {
+            "type": "video",
+            "name": "mg3_d2zy1f",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641225/mg3_d2zy1f.mp4",
+            "width": 1080,
+            "height": 1920
+        }
+    ],
+    "omo": [
+        {
+            "type": "video",
+            "name": "OMO_х_Almaty_marathon_1_oqdkmb",
+            "src": "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641223/OMO_%D1%85_Almaty_marathon_1_oqdkmb.mp4",
+            "width": 1080,
+            "height": 1920
+        }
     ]
 };
