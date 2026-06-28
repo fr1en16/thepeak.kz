@@ -286,7 +286,7 @@ export const allCasesData: CaseItem[] = [
     name: "MG Шымкент / Алматы",
     type: "таргет",
     text: "Лидогенерация для MG: 250+ лидов, 781 000+ показов, 346 000+ охвата и более 8 800 кликов.",
-    image: "/cases/tinga-logistics.webp",
+    image: "https://res.cloudinary.com/dxvynbrut/video/upload/q_auto:best/v1782641225/mg1_qmtkuy.mp4",
     size: "small",
     href: "/cases/mg-kazakhstan",
     services: ["Таргет"],
