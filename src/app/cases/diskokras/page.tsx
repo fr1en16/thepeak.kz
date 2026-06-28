@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
+import HeroWave from "@/components/ui/dynamic-wave-canvas-background";
 import CaseVideoGallery from "@/components/CaseVideoGallery";
 import CaseDescriptionColumns from "@/components/CaseDescriptionColumns";
 import { formatTypography } from "@/utils/typography";
@@ -212,9 +213,10 @@ export default function DiskokrasCasePage() {
       <Navigation />
 
       <div
-        className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)]"
+        className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] relative overflow-hidden"
         style={{ backgroundColor: "#060606", color: "#ffffff" }}
       >
+        <HeroWave />
         {/* ── HERO ─────────────────────────────────────────── */}
         <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
           <div

@@ -20,6 +20,7 @@ import {
 import { Button01 } from "@/components/ui/nextjsshop-button";
 import PhoneInput from "@/components/ui/PhoneInput";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import HeroWave from "@/components/ui/dynamic-wave-canvas-background";
 
 const GRAIN_STYLE: React.CSSProperties = {
     backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
@@ -307,9 +308,10 @@ export default function CaseClient({ data, slug }: { data: CaseData; slug: strin
             <Navigation />
 
             <div
-                className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)]"
+                className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] relative overflow-hidden"
                 style={{ backgroundColor: "#060606", color: "#ffffff" }}
             >
+                <HeroWave />
                 {/* ── HERO ─────────────────────────────────────────── */}
                 <section className="relative min-h-screen flex flex-col justify-end overflow-hidden border-b border-white/10">
 
@@ -417,7 +419,7 @@ export default function CaseClient({ data, slug }: { data: CaseData; slug: strin
                     <section
                         key={idx}
                         className="relative border-b border-white/10"
-                        style={{ background: idx % 2 === 1 ? "rgba(255,255,255,0.02)" : "transparent" }}
+
                     >
                         <div
                             className="pointer-events-none absolute inset-0 z-0"

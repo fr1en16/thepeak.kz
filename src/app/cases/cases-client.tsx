@@ -8,6 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import CasesBentoGrid from "@/components/CasesBentoGrid";
 import { allCasesData } from "@/data/cases";
 import { cn } from "@/lib/utils";
+import HeroWave from "@/components/ui/dynamic-wave-canvas-background";
 
 const GRAIN_STYLE: React.CSSProperties = {
   backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
@@ -35,6 +36,7 @@ export default function CasesClient() {
       <div className="col-span-12 w-[calc(100%+2*var(--page-margin))] -ml-[var(--page-margin)] min-h-screen relative overflow-hidden" style={{ backgroundColor: "#060606", color: "#ffffff" }}>
         {/* Шумовой слой */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.025] z-50" style={GRAIN_STYLE} />
+        <HeroWave />
 
         {/* HEADER */}
         <header className="px-[var(--page-margin)] pt-24 pb-12 border-b border-white/10 relative z-10">
@@ -51,7 +53,7 @@ export default function CasesClient() {
         </header>
 
         {/* СЕТКА ПРОЕКТОВ */}
-        <section className="relative px-[var(--page-margin)] py-16 bg-[#060606] border-b border-white/10 z-10">
+        <section className="relative px-[var(--page-margin)] py-16 border-b border-white/10 z-10">
           <div className="w-full">
             <div className="mb-8 flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist" aria-label="Фильтр кейсов по услуге">
               {services.map((service) => {
