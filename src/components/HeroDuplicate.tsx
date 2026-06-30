@@ -145,7 +145,6 @@ export default function HeroDuplicate() {
             <Button01
               href="#contacts"
               text={formatTypography("оставить заявку")}
-              variant="light"
               /* max-w-[80%] — забирает лишнюю длину на мобилке.
                 md:max-w-none — отменяет это ограничение на компьютерах.
               */

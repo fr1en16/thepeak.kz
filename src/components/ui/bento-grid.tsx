@@ -1,4 +1,4 @@
-import { ReactNode, useState, useCallback, useRef } from "react";
+import { ReactNode, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -28,118 +28,76 @@ function CardInner({
   logo,
   type,
   text,
-  tiltFactor,
-  perspective,
   transitionDuration,
-  hoverScale,
-  glareEffect,
-  glareIntensity,
-  glareSize,
 }: {
   background: ReactNode;
   logo: ReactNode;
   type: string;
   text: string;
-  tiltFactor: number;
-  perspective: number;
   transitionDuration: number;
-  hoverScale: number;
-  glareEffect: boolean;
-  glareIntensity: number;
-  glareSize: number;
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [tiltValues, setTiltValues] = useState({ x: 0, y: 0 });
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (!cardRef.current || !isHovered) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 100;
-      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 100;
-      setMousePosition({ x, y });
-      const tiltX = -(y / 50) * tiltFactor;
-      const tiltY = (x / 50) * tiltFactor;
-      setTiltValues({ x: tiltX, y: tiltY });
-    },
-    [isHovered, tiltFactor]
-  );
-
-  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
-    setTiltValues({ x: 0, y: 0 });
+  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
+    setIsHovered(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   }, []);
 
-  const glareX = mousePosition.x / 2 + 50;
-  const glareY = mousePosition.y / 2 + 50;
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
 
   return (
     <motion.div
-      ref={cardRef}
-      className="group relative w-full h-full select-none cursor-pointer"
-      style={{
-        perspective: `${perspective}px`,
-        transformStyle: "preserve-3d",
-      }}
-      animate={{ scale: isHovered ? hoverScale : 1 }}
+      className="no-invert group relative w-full h-full select-none cursor-none flex flex-col"
       transition={{ duration: transitionDuration, ease: "easeOut" }}
-      onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
+      onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Top row - Name on left, Services/Type on right */}
+      <div className="no-invert w-full flex justify-between items-center pb-[5px] shrink-0 pointer-events-none" style={{ mixBlendMode: "normal" }}>
+        <div className="select-none" style={{ color: "inherit" }}>
+          {logo}
+        </div>
+        <span className="text-[10px] font-sans font-semibold uppercase tracking-wide select-none" style={{ color: "inherit", opacity: 0.6 }}>
+          {type}
+        </span>
+      </div>
+
+      {/* Card visual body (middle) */}
       <motion.div
-        className="absolute inset-0 w-full h-full overflow-hidden bg-black rounded-none"
-        style={{
-          transformStyle: "preserve-3d",
-        }}
-        animate={{
-          rotateX: tiltValues.x,
-          rotateY: tiltValues.y,
-          boxShadow: isHovered
-            ? "0 20px 40px -10px rgba(0, 0, 0, 0.4)"
-            : "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-        }}
-        transition={{ duration: transitionDuration, ease: "easeOut" }}
+        className="relative w-full flex-1 overflow-hidden bg-black rounded-none isolate"
       >
         {/* Background container */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0">
           {background}
-          {/* Dark overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/85 z-10 transition-opacity duration-300 group-hover:from-black/55 group-hover:to-black/90" />
         </div>
-
-        {/* Top row */}
-        <div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center p-2 md:p-4">
-          <div className="mix-blend-difference select-none pointer-events-none">
-            {logo}
-          </div>
-          <span className="text-[10px] font-sans font-semibold text-white uppercase tracking-wide select-none mix-blend-difference pointer-events-none">
-            {type}
-          </span>
-        </div>
-
-        {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 z-20 p-2 pb-3 md:p-4 md:pb-6 flex flex-col justify-end">
-          <p className="font-sans font-normal text-[13px] leading-relaxed text-white select-none mix-blend-difference pointer-events-none">
-            {text}
-          </p>
-        </div>
-
-        {/* Glare effect */}
-        {glareEffect && (
-          <motion.div
-            className="absolute inset-0 z-30 pointer-events-none"
-            style={{
-              background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, ${glareIntensity}) 0%, rgba(255, 255, 255, 0) ${glareSize}%)`,
-            }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            transition={{ duration: transitionDuration }}
-          />
-        )}
       </motion.div>
+
+      {/* Bottom row - Description */}
+      <div className="w-full pt-[5px] shrink-0 pointer-events-none">
+        <p className="no-invert font-sans font-normal text-[13px] leading-relaxed select-none" style={{ color: "inherit", mixBlendMode: "normal" }}>
+          {text}
+        </p>
+      </div>
+
+      {/* Floating tooltip cursor "Перейти" */}
+      {isHovered && (
+        <div
+          className="pointer-events-none absolute left-0 top-0 z-[100] font-sans text-xs font-bold uppercase tracking-[0.24em] text-white mix-blend-difference will-change-transform"
+          style={{ transform: `translate3d(${mousePos.x}px, ${mousePos.y}px, 0) translate(-50%, -50%)` }}
+        >
+          Перейти
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -179,20 +137,14 @@ export const BentoCard = ({
       logo={logo}
       type={type}
       text={text}
-      tiltFactor={tiltFactor}
-      perspective={perspective}
       transitionDuration={transitionDuration}
-      hoverScale={hoverScale}
-      glareEffect={glareEffect}
-      glareIntensity={glareIntensity}
-      glareSize={glareSize}
     />
   );
 
   if (href) {
     // className with col-span/row-span MUST be on the direct grid child (Link → <a>)
     return (
-      <Link href={href} className={cn("block w-full h-full", className)}>
+      <Link href={href} className={cn("flex flex-col w-full h-full", className)}>
         {inner}
       </Link>
     );
@@ -200,7 +152,7 @@ export const BentoCard = ({
 
   // No href: wrap in a div so className grid spans apply to the direct grid child
   return (
-    <div className={cn("w-full h-full", className)}>
+    <div className={cn("flex flex-col w-full h-full", className)}>
       {inner}
     </div>
   );

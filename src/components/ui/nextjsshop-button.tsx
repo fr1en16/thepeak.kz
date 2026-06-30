@@ -1,60 +1,58 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface Button01Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface Button01Props extends React.AllHTMLAttributes<HTMLElement> {
   text: string;
   href?: string;
   className?: string;
   variant?: 'light' | 'dark';
-  onClick?: React.MouseEventHandler<HTMLElement>;
+  onClick?: React.MouseEventHandler<any>;
 }
 
 export const Button01 = React.forwardRef<HTMLElement, Button01Props>(
-  ({ text, href, className, onClick, type = 'button', variant = 'light', ...props }, ref) => {
+  ({ text, href, className, onClick, type = 'button', variant = 'light', disabled, ...props }, ref) => {
     const isDark = variant === 'dark';
-    
-    const outerClass = cn(
-      "no-invert group inline-flex items-stretch border p-0 cursor-pointer select-none rounded-none w-fit transition-colors duration-300",
-      isDark
-        ? "border-white/20 hover:border-[#FD4B32]"
-        : "border-[#060606]/20 hover:border-[#FD4B32]",
+    const buttonClass = cn(
+      "button01", 
+      isDark && "dark", 
+      disabled && "opacity-50 pointer-events-none",
       className
     );
 
-    const leftSquareClass = cn(
-      "w-12 h-12 flex items-center justify-center border-r transition-colors duration-300 shrink-0",
-      isDark
-        ? "bg-white text-black border-white/20 group-hover:bg-[#FD4B32] group-hover:text-white"
-        : "bg-[#060606] text-white border-[#060606]/20 group-hover:bg-[#FD4B32] group-hover:text-white"
-    );
-
-    const rightRectClass = cn(
-      "px-6 flex items-center font-sans text-xs uppercase tracking-[0.2em] font-bold transition-colors duration-300 flex-grow justify-center",
-      isDark
-        ? "bg-[#060606] text-white group-hover:text-[#FD4B32]"
-        : "bg-white text-black group-hover:text-[#FD4B32]"
-    );
-
-    const ArrowIcon = () => (
-      <svg 
-        className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
-        fill="none" 
-        viewBox="0 0 24 24" 
-        stroke="currentColor" 
-        strokeWidth={2.5}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-      </svg>
-    );
-
-    const splitContent = (
+    const content = (
       <>
-        <div className={leftSquareClass}>
-          <ArrowIcon />
-        </div>
-        <div className={rightRectClass}>
-          <span>{text}</span>
-        </div>
+        <span className="button01_bg">
+          <span className="button01_bg-mid"></span>
+          <span className="button01_bg-right">
+            {[...Array(25)].map((_, index) => {
+              // Deterministic pseudo-random index to prevent SSR hydration mismatches
+              const delayIndex = (index * 7 + 3) % 4;
+              return (
+                <span
+                  key={`pixel-${index}`}
+                  style={{ '--index': delayIndex } as React.CSSProperties}
+                  className="button01_bg-pixel"
+                ></span>
+              );
+            })}
+          </span>
+          <span className="button01_bg-right-overlay">
+            {[...Array(11)].map((_, index) => {
+              // Deterministic pseudo-random index to prevent SSR hydration mismatches
+              const delayIndex = 4 + ((index * 13 + 5) % 4);
+              return (
+                <span
+                  key={`overlay-${index}`}
+                  style={{ '--index': delayIndex } as React.CSSProperties}
+                  className="button01_bg-pixel"
+                ></span>
+              );
+            })}
+          </span>
+        </span>
+        <span data-text={text} className="button01_inner">
+          <span className="button01_text">{text}</span>
+        </span>
       </>
     );
 
@@ -62,27 +60,28 @@ export const Button01 = React.forwardRef<HTMLElement, Button01Props>(
       return (
         <a
           href={href}
-          className={outerClass}
+          className={buttonClass}
           onClick={onClick as React.MouseEventHandler<HTMLAnchorElement>}
           ref={ref as React.ForwardedRef<HTMLAnchorElement>}
+          style={{ '--characters': text.length } as React.CSSProperties}
           {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-          style={{ borderRadius: 0 }}
         >
-          {splitContent}
+          {content}
         </a>
       );
     }
 
     return (
       <button
-        type={type}
-        className={outerClass}
-        onClick={onClick}
+        type={type as any}
+        className={buttonClass}
+        onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
         ref={ref as React.ForwardedRef<HTMLButtonElement>}
+        disabled={disabled}
+        style={{ '--characters': text.length } as React.CSSProperties}
         {...props}
-        style={{ borderRadius: 0 }}
       >
-        {splitContent}
+        {content}
       </button>
     );
   }

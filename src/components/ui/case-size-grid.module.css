@@ -1,5 +1,6 @@
 .grid {
   --case-gap: 0.75rem;
+  --case-col-gap: 3rem;
   --case-row-height: calc(75cqw - 0.5625rem);
 
   container-type: inline-size;
@@ -7,7 +8,8 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-flow: dense;
   align-items: start;
-  gap: var(--case-gap);
+  row-gap: var(--case-gap);
+  column-gap: var(--case-col-gap);
   width: 100%;
 }
 

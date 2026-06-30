@@ -16,6 +16,7 @@ import {
 import { formatTypography } from "@/utils/typography";
 import PhoneInput from "@/components/ui/PhoneInput";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import { Button01 } from "@/components/ui/nextjsshop-button";
 
 type ContactInfoProps = React.ComponentProps<"div"> & {
   icon: React.ComponentType<{ className?: string }>;
@@ -338,13 +339,13 @@ export default function ContactSection() {
               </p>
             )}
 
-            <button
+            <Button01
               type="submit"
               disabled={status === "loading"}
-              className="w-full flex items-center justify-center bg-white text-black font-medium py-3.5 tracking-wider uppercase text-xs transition-opacity duration-200 cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100"
-            >
-              {status === "loading" ? "Отправка..." : "Отправить заявку"}
-            </button>
+              text={status === "loading" ? "Отправка..." : "Отправить заявку"}
+              variant="dark"
+              className="w-full cursor-pointer"
+            />
           </form>
         )}
       </ContactCard>

@@ -271,16 +271,14 @@ export default function BlinkMapCasePage() {
                   ))}
                 </div>
 
-                <a
+                <Button01
                   href="https://www.instagram.com/blink_map.kz"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="no-invert inline-flex items-center gap-3 border border-white/20 text-white text-xs uppercase tracking-[0.2em] font-sans px-6 py-4 hover:border-white/60 hover:bg-white/5 transition-all duration-300 group w-full justify-between"
-                  style={{ borderRadius: 0 }}
-                >
-                  {formatTypography("Смотреть профиль")}
-                  <ArrowUpRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                  text="Смотреть профиль"
+                  variant="dark"
+                  className="w-full cursor-pointer"
+                />
               </div>
             </div>
 

@@ -16,7 +16,7 @@ interface CasesBentoGridProps {
 
 const renderCaseLogo = (name: string) => {
   return (
-    <span className="font-sans font-extrabold text-[12px] tracking-wider text-white uppercase leading-none select-none">
+    <span className="no-invert font-sans font-extrabold text-[12px] tracking-wider uppercase leading-none select-none" style={{ color: "inherit", mixBlendMode: "normal" }}>
       {name}
     </span>
   );
@@ -77,34 +77,37 @@ function LazyCaseVideo({ alt, poster, src }: { alt: string; poster?: string; src
   }, [shouldLoad, shouldPlay]);
 
   return (
-    <div ref={containerRef} className="relative h-full w-full bg-black">
-      {poster && (
-        <img
-          src={poster}
-          alt={alt}
-          className={cn(
-            "absolute inset-0 h-full w-full object-cover opacity-85 transition-[opacity,transform] duration-300 ease-out group-hover:scale-105",
-            isPlaying && "opacity-0",
-          )}
-          loading="lazy"
-          decoding="async"
-        />
-      )}
-      <video
-        ref={videoRef}
-        src={shouldLoad ? src : undefined}
-        autoPlay={shouldPlay}
-        loop
-        muted
-        playsInline
-        preload="none"
-        className={cn(
-          "h-full w-full object-cover transition-[opacity,transform] duration-700 ease-out group-hover:scale-105",
-          poster && !isPlaying ? "opacity-0" : "opacity-85",
+    <div ref={containerRef} className="relative h-full w-full bg-black overflow-hidden">
+      {/* Zoom Wrapper */}
+      <div className="w-full h-full transition-transform duration-[1200ms] ease-out group-hover:scale-102">
+        {poster && (
+          <img
+            src={poster}
+            alt={alt}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-out",
+              isPlaying && "opacity-0",
+            )}
+            loading="lazy"
+            decoding="async"
+          />
         )}
-        onPlaying={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-      />
+        <video
+          ref={videoRef}
+          src={shouldLoad ? src : undefined}
+          autoPlay={shouldPlay}
+          loop
+          muted
+          playsInline
+          preload="none"
+          className={cn(
+            "h-full w-full object-cover transition-opacity duration-[1200ms] ease-out",
+            poster && !isPlaying ? "opacity-0" : "opacity-100",
+          )}
+          onPlaying={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+        />
+      </div>
     </div>
   );
 }
@@ -141,7 +144,7 @@ export default function CasesBentoGrid({
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover opacity-85 transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-102"
                     loading={imageLoading}
                     fetchPriority={index < 3 ? "low" : "auto"}
                     decoding="async"

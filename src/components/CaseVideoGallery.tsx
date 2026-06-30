@@ -67,6 +67,7 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
     const [videoStates, setVideoStates] = useState<Record<string, VideoState>>({});
     const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
     const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
+    const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -232,10 +233,10 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
     }
 
     return (
-        <section className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
+        <section ref={sectionRef} className="relative border-b border-white/10 px-[var(--page-margin)] py-20 bg-[#0a0a0a]">
             {cursor.visible && (
                 <div
-                    className="pointer-events-none fixed left-0 top-0 z-[100] font-sans text-xs font-bold uppercase tracking-[0.24em] text-white mix-blend-difference transition-transform duration-150 ease-out will-change-transform"
+                    className="pointer-events-none absolute left-0 top-0 z-[100] font-sans text-xs font-bold uppercase tracking-[0.24em] text-white mix-blend-difference will-change-transform"
                     style={{ transform: `translate3d(${cursor.x}px, ${cursor.y}px, 0) translate(-50%, -50%)` }}
                 >
                     Смотреть
@@ -271,8 +272,13 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                                 aria-label={`Смотреть ${item.name || `видео кейса ${index + 1}`}`}
                                 onClick={() => handleVideoCardClick(item.src)}
                                 onMouseMove={(event) => {
-                                    if (activeVideoSrc !== item.src) {
-                                        setCursor({ visible: true, x: event.clientX, y: event.clientY });
+                                    if (activeVideoSrc !== item.src && sectionRef.current) {
+                                        const rect = sectionRef.current.getBoundingClientRect();
+                                        setCursor({
+                                            visible: true,
+                                            x: event.clientX - rect.left,
+                                            y: event.clientY - rect.top,
+                                        });
                                     }
                                 }}
                                 onMouseLeave={() => setCursor({ visible: false, x: 0, y: 0 })}
@@ -287,7 +293,7 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                                     ref={(node) => {
                                         videoRefs.current[item.src] = node;
                                     }}
-                                    className="block h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                                    className="block h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.01]"
                                     controls={false}
                                     controlsList="nodownload noplaybackrate noremoteplayback"
                                     disablePictureInPicture

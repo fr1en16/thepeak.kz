@@ -32,15 +32,12 @@ export default function CasesMasonrySection() {
         </div>
       </div>
 
-      <div className="swiss-grid mt-10">
-        <div className="col-span-12 flex justify-start md:justify-end">
-          <Button01
-            href="/cases"
-            text={formatTypography("Все кейсы")}
-            variant="dark"
-            className="w-full sm:w-auto"
-          />
-        </div>
+      <div className="w-full mt-10">
+        <Button01
+          href="/cases"
+          text={formatTypography("Все кейсы")}
+          className="w-full"
+        />
       </div>
     </section>
   );

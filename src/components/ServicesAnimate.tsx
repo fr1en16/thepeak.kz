@@ -6,6 +6,7 @@ import { MorphingText } from "@/components/ui/liquid-text";
 import { formatTypography } from "@/utils/typography";
 import PhoneInput from "@/components/ui/PhoneInput";
 import PrivacyConsentCheckbox from "@/components/PrivacyConsentCheckbox";
+import { Button01 } from "@/components/ui/nextjsshop-button";
 
 interface ServiceItem {
   title: string;
@@ -475,13 +476,13 @@ export default function ServicesAnimate() {
                     </p>
                   )}
 
-                  <button
+                  <Button01
                     type="submit"
                     disabled={modalStatus === "loading"}
-                    className="w-full flex items-center justify-center bg-white text-black font-medium py-3.5 tracking-wider uppercase text-xs transition-opacity duration-400 cursor-pointer rounded-none disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-100"
-                  >
-                    {modalStatus === "loading" ? "Отправка..." : "Отправить заявку"}
-                  </button>
+                    text={modalStatus === "loading" ? "Отправка..." : "Отправить заявку"}
+                    variant="dark"
+                    className="w-full cursor-pointer"
+                  />
                 </form>
               )}
             </div>

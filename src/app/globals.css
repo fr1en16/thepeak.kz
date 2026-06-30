@@ -306,6 +306,22 @@ html {
   }
 }
 
+/* Keeps difference blending stable for project card text in Safari & Chrome. */
+.project-card-blend {
+  -webkit-mix-blend-mode: difference !important;
+  mix-blend-mode: difference !important;
+  color: #ffffff !important;
+}
+
+@supports (-webkit-hyphens: none) {
+  .project-card-blend {
+    -webkit-transform: translate3d(0, 0, 0) !important;
+    transform: translate3d(0, 0, 0) !important;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
 /* Apply difference blending globally to all headlines, text paragraphs, links, and custom blend elements, excluding no-invert class */
 h1:not(.no-invert), h2:not(.no-invert), h3:not(.no-invert), h4:not(.no-invert), h5:not(.no-invert), h6:not(.no-invert), p:not(.no-invert), nav a:not(.no-invert), a[href^="tel:"]:not(.no-invert), .inverttext {
   mix-blend-mode: difference !important;
@@ -561,3 +577,209 @@ p,
     @apply font-sans;
   }
 }
+
+/* --- Retro Pixel Button (Button01) Styles --- */
+.button01 {
+  color: #f9f4eb;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  -webkit-user-select: none;
+  user-select: none;
+  font-size: .875rem;
+  line-height: 1em;
+  text-decoration: none;
+  display: grid;
+  transition: color 0.3s ease;
+}
+
+.dark .button01, .button01.dark {
+  color: #000;
+}
+
+.button01_bg {
+  grid-area: 1/1;
+  grid-template-columns: 1fr auto;
+  display: grid;
+}
+
+.button01_bg-mid {
+  background-color: #000;
+  transition: background-color 0.3s ease;
+}
+
+.dark .button01_bg-mid, .button01.dark .button01_bg-mid {
+  background-color: #fff;
+}
+
+.button01_bg-right {
+  grid-area: 1/2;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  display: grid;
+}
+
+.button01_bg-pixel {
+  aspect-ratio: 1;
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  transition: background-color 0.3s ease, opacity 0s;
+  transition-delay: 0s, calc(var(--index) * .06s);
+}
+
+.dark .button01_bg-pixel, .button01.dark .button01_bg-pixel {
+  background-color: #fff;
+}
+
+.button01_bg-right-overlay {
+  grid-area: 1/2;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  display: grid;
+}
+
+.button01_inner {
+  grid-area: 1/1;
+  padding: .875rem 3.75rem .875rem 1rem;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  overflow: clip;
+}
+
+.button01_text {
+  grid-area: 1/1;
+}
+
+.button01 {
+  --characters: 10; /* overwritten inline by text length */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button01_bg-pixel:is(:nth-child(13)) {
+  opacity: 0;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+.button01_inner::after {
+  content: attr(data-text);
+  grid-area: 1 / 1;
+  pointer-events: none;
+  transition: width 0s;
+  white-space: nowrap;
+  width: 0;
+  overflow: clip;
+  opacity: 0;
+}
+
+/* position of pixel arrow */
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(1) {
+  grid-area: 1 / 2;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(2) {
+  grid-area: 1 / 3;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(3) {
+  grid-area: 1 / 4;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(4) {
+  grid-area: 1 / 5;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(5) {
+  grid-area: 2 / 4;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(6) {
+  grid-area: 2 / 5;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(7) {
+  grid-area: 3 / 3;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(8) {
+  grid-area: 3 / 5;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(9) {
+  grid-area: 4 / 2;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(10) {
+  grid-area: 4 / 5;
+}
+
+.button01_bg-right-overlay .button01_bg-pixel:nth-child(11) {
+  grid-area: 5 / 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button01:is(:hover, :focus-visible) {
+    color: #fff !important;
+  }
+
+  .button01:is(:hover, :focus-visible) .button01_bg-mid {
+    background-color: #FD4B32;
+  }
+
+  .button01:is(:hover, :focus-visible) .button01_bg-pixel {
+    background-color: #FD4B32;
+  }
+
+  .button01:is(:hover, :focus-visible) .button01_inner::after {
+    width: 100%;
+    opacity: 1;
+    transition: width .5s steps(var(--characters));
+  }
+  
+  .button01:is(:hover, :focus-visible) .button01_text {
+    opacity: 0;
+  }
+  
+  .button01:is(:hover, :focus-visible) .button01_bg-right .button01_bg-pixel {
+    opacity: 0;
+  }
+  
+  .button01:is(:hover, :focus-visible) .button01_bg-right-overlay .button01_bg-pixel {
+    opacity: 1;
+    transition-delay: calc(var(--index) * .06s);
+  }
+}
+
+/* style only for touch devices */
+@media (hover: none) or (pointer: coarse) {
+  .button-pixel-broke_bg-pixel {
+    transition: opacity .2s;
+  }
+
+  .button01:active {
+    color: #fff !important;
+  }
+
+  .button01:active .button01_bg-mid {
+    background-color: #FD4B32;
+  }
+
+  .button01:active .button01_bg-pixel {
+    background-color: #FD4B32;
+  }
+
+  .button01:active .button01_bg-right .button01_bg-pixel {
+    opacity: 0;
+    transition: opacity 0s;
+  }
+  
+  .button01:active .button01_bg-right-overlay .button01_bg-pixel {
+    opacity: 1;
+    transition: opacity 0s;
+  }
+}
+
