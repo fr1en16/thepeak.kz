@@ -167,7 +167,6 @@ export default function SphereChart() {
     window.addEventListener("mousemove", handleMouseMove);
 
     // Anim configuration
-    const targetPercent = 100;
     const duration = 3600;
     const introDuration = 1800;
     let startTime: number | null = null;

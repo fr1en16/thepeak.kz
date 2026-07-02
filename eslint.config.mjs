@@ -7,8 +7,11 @@ const eslintConfig = defineConfig([
   ...nextTs,
   {
     rules: {
-      "@typescript-eslint/ban-ts-comment": "warn",
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/no-explicit-any": "error",
+      // The site deliberately uses native img elements for tracking pixels,
+      // animated duplicate marquees, WebGL fallbacks, and runtime Cloudinary media.
+      "@next/next/no-img-element": "off",
       "react-hooks/immutability": "off",
       "react-hooks/purity": "off",
       "react-hooks/refs": "off",

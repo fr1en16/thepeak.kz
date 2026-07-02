@@ -5,7 +5,7 @@ import {
   useScroll,
   useTransform,
   type MotionValue,
-} from "motion/react";
+} from "framer-motion";
 import React, {
   forwardRef,
   useCallback,

@@ -109,13 +109,7 @@ export const BentoCard = ({
   type,
   text,
   href,
-  tiltFactor = 4,
-  perspective = 1000,
   transitionDuration = 0.2,
-  hoverScale = 1.03,
-  glareEffect = true,
-  glareIntensity = 0.4,
-  glareSize = 70,
 }: {
   className?: string;
   background: ReactNode;

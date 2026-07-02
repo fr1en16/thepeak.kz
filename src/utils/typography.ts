@@ -9,5 +9,15 @@ export function formatTypography(text: string): string {
   // preceded by start of line, space, or quotes, and followed by a regular space.
   const regex = /(^|\s|«|")([а-яА-ЯёЁ]{1,2}|для|или|как|где|там|под|над|без|при|про|через|так|что|кто|чем|тем|все|всех|под|обо|обо|изо|всеми)([ \t]+)/g;
   
-  return text.replace(regex, "$1$2\u00a0");
+  let formattedText = text;
+  let previousText: string;
+
+  // Repeat until stable so adjacent short words (for example, "и в")
+  // are both bound to the word that follows them.
+  do {
+    previousText = formattedText;
+    formattedText = formattedText.replace(regex, "$1$2\u00a0");
+  } while (formattedText !== previousText);
+
+  return formattedText;
 }

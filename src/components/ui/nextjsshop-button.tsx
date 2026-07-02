@@ -1,12 +1,16 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-interface Button01Props extends React.AllHTMLAttributes<HTMLElement> {
+interface Button01Props extends React.HTMLAttributes<HTMLElement> {
   text: string;
   href?: string;
   className?: string;
   variant?: 'light' | 'dark';
-  onClick?: React.MouseEventHandler<any>;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  disabled?: boolean;
+  rel?: string;
+  target?: string;
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }
 
 export const Button01 = React.forwardRef<HTMLElement, Button01Props>(
@@ -73,13 +77,13 @@ export const Button01 = React.forwardRef<HTMLElement, Button01Props>(
 
     return (
       <button
-        type={type as any}
+        type={type}
         className={buttonClass}
         onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
         ref={ref as React.ForwardedRef<HTMLButtonElement>}
         disabled={disabled}
         style={{ '--characters': text.length } as React.CSSProperties}
-        {...props}
+        {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       >
         {content}
       </button>

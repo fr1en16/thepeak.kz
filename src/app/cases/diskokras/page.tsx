@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import HeroWave from "@/components/ui/dynamic-wave-canvas-background";
 import CaseVideoGallery from "@/components/CaseVideoGallery";
 import CaseDescriptionColumns from "@/components/CaseDescriptionColumns";
 import { formatTypography } from "@/utils/typography";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CONTACTS } from "@/config/contacts";
 import {
@@ -150,7 +150,6 @@ function ContactInfoDark({
 
 // ─── Main Page Component ───────────────────────────────────────────────────────
 export default function DiskokrasCasePage() {
-  const [scrollY, setScrollY] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     contact: "+7",
@@ -201,12 +200,6 @@ export default function DiskokrasCasePage() {
       setIsSubmitting(false);
     }
   };
-
-  useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <>

@@ -202,7 +202,7 @@ const FuzzyWrapper = ({
   }, [baseIntensity]);
 
   return (
-    <div className="relative w-full flex justify-center">
+    <div className={`relative w-full flex justify-center ${className || ""}`}>
       {/* Hidden SVG container for rendering */}
       <div
         ref={svgContainerRef}

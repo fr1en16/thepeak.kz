@@ -37,9 +37,18 @@ export default function PhoneInput({ value, onChange, theme = "light", required 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<Country>(countries[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const didDetectCountryRef = useRef(false);
+  const initialOnChangeRef = useRef(onChange);
+  const initialValueRef = useRef(value);
 
   // 1. Automatic Country Selection by User Location/Timezone/Locale on Mount
   useEffect(() => {
+    if (didDetectCountryRef.current) {
+      return;
+    }
+
+    didDetectCountryRef.current = true;
+
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const lang = navigator.language || "";
@@ -89,10 +98,11 @@ export default function PhoneInput({ value, onChange, theme = "light", required 
       }
 
       setSelectedCountry(detectedCountry);
-      if (!value || value === "+7" || value === "+") {
-        onChange(detectedCountry.prefix + " ");
+      const initialValue = initialValueRef.current;
+      if (!initialValue || initialValue === "+7" || initialValue === "+") {
+        initialOnChangeRef.current(detectedCountry.prefix + " ");
       }
-    } catch (e) {
+    } catch {
       // Fail silently
     }
   }, []);

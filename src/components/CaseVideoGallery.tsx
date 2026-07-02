@@ -242,7 +242,10 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                     Смотреть
                 </div>
             )}
-            <div className="grid grid-cols-2 items-start gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            <div
+                data-testid="case-gallery-grid"
+                className="grid grid-cols-2 items-start gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+            >
                 {mediaItems.map((item, index) => (
                     <div
                         key={`${item.src}-${index}`}
@@ -263,6 +266,7 @@ export default function CaseVideoGallery({ slug }: CaseVideoGalleryProps) {
                             />
                         ) : (
                             <div
+                                data-testid="case-gallery-video"
                                 className={`group relative w-full bg-zinc-900 overflow-hidden ${
                                     activeVideoSrc === item.src ? "cursor-auto" : "cursor-none"
                                 }`}

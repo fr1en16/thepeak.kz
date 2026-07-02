@@ -356,7 +356,9 @@ export async function GET(request: NextRequest) {
     }
 
     const localPosters = await getLocalPosters(slug);
-    const cloudinaryVideos = await getCloudinaryVideos(slug, localPosters);
+    const cloudinaryVideos = process.env.PLAYWRIGHT_TEST === "1"
+        ? null
+        : await getCloudinaryVideos(slug, localPosters);
     const fallbackVideos = getManifestMedia(slug, new Set(["video"]), localPosters);
 
     if (cloudinaryVideos && cloudinaryVideos.length > 0) {

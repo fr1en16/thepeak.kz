@@ -164,7 +164,6 @@ export default function SplineChart() {
     window.addEventListener("mousemove", handleMouseMove);
 
     // Animation variables
-    const targetPercent = 100;
     const duration = 3600;
     const introDuration = 1800;
     let startTime: number | null = null;
@@ -192,8 +191,6 @@ export default function SplineChart() {
       // 1. Dynamic active curve extrusion
       const progress = Math.min(elapsed / duration, 1);
       const timelineProgress = easeOutCubic(progress);
-      const currentPercent = timelineProgress * targetPercent;
-
       if (progress <= 1) {
         const subPoints: THREE.Vector3[] = [];
         const subSegments = 100;

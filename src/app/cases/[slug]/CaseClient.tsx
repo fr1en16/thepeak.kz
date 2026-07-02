@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import CaseVideoGallery from "@/components/CaseVideoGallery";
 import { formatTypography } from "@/utils/typography";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CONTACTS } from "@/config/contacts";
 import {
@@ -244,7 +244,6 @@ function ContactInfoDark({
 }
 
 export default function CaseClient({ data, slug }: { data: CaseData; slug: string }) {
-    const [scrollY, setScrollY] = useState(0);
     const caseTitle = data.title || data.name || slug;
     const heroMedia = CASE_HERO_MEDIA[slug];
     const [formData, setFormData] = useState({
@@ -296,12 +295,6 @@ export default function CaseClient({ data, slug }: { data: CaseData; slug: strin
             setIsSubmitting(false);
         }
     };
-
-    useEffect(() => {
-        const onScroll = () => setScrollY(window.scrollY);
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
 
     return (
         <>

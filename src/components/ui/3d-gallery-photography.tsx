@@ -364,7 +364,6 @@ function GalleryScene({
 		const imageAdvance =
 			totalImages > 0 ? visibleCount % totalImages || totalImages : 0;
 		const totalRange = depthRange;
-		const halfRange = totalRange / 2;
 
 		planesData.current.forEach((plane, i) => {
 			let newZ = plane.z + scrollVelocity * delta * 10;
@@ -480,7 +479,7 @@ function GalleryScene({
 				const worldZ = plane.z - depthRange / 2;
 
 				// Calculate scale to maintain aspect ratio
-				const img = texture.image as any;
+				const img = texture.image as { height?: number; width?: number } | undefined;
 				const aspect = img && img.width && img.height
 					? img.width / img.height
 					: 1;
@@ -555,7 +554,7 @@ export default function InfiniteGallery({
 			if (!gl) {
 				setWebglSupported(false);
 			}
-		} catch (e) {
+		} catch {
 			setWebglSupported(false);
 		}
 	}, []);

@@ -14,7 +14,7 @@ interface Stage {
   iconName: string;
 }
 
-const iconMap: Record<string, React.ComponentType<any>> = {
+const iconMap: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   Search,
   Target,
   Layers,

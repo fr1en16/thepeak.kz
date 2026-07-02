@@ -1,7 +1,5 @@
 "use client";
 
-import { formatTypography } from "@/utils/typography";
-
 export default function ClientLogosBlock() {
   const baseRow1 = [
     12, 2, 11, 3, 1, 10, 5, 18, 13, 8, 6, 4, 7, 17, 19, 15, 16, 14, 9,
